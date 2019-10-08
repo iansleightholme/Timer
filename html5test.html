@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+         #svgelem {
+            position: relative;
+            left: 10%;
+            -webkit-transform: translateX(-20%);
+            -ms-transform: translateX(-20%);
+            transform: translateX(-20%);
+            filter: drop-shadow(5px 5px 2px #333333);
+            clip-path: ellipse(100pt 100pt at 10% 20%);
+            background-color: chartreuse;
+         }
+
+      </style>
+      <title>SVG</title>
+   </head>
+
+   <body>
+      <svg id="svgelem" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+         <defs>
+            <filter id="SVGID_0">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
+                  <feOffset dx="5" dy="5"/>
+                  <feMerge>
+                     <feMergeNode/>
+                     <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+            </filter>
+            <filter id="f1" x="0" y="0">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+            </filter>
+            <g id="hand">
+               <rect x="-11.5" y="-15.5" rx="3" ry="3" width="23" height="31" style="fill:#dddddd;" />
+               <rect x="-9" y="-13" rx="1" ry="1"  width="18" height="26" style="fill:#174F22;" />
+            </g>
+            <g id="dot">
+               <ellipse cx="0" cy="0" rx="4" ry="4" /> 
+            </g>
+         </defs>
+         <g id="board" style="transform: translateX(50pt) translateY(50pt);">
+            <rect  x="-35" y="-40" rx="5" ry="5"  width="70" height="80" style="fill:#2F8C64;stroke-width:3.5;stroke:#015127;" />
+
+            <use x="-20" y="-21" xlink:href="#hand" style="clip-path: inset(0 0 60% 0);" />
+            <use x="20" y="-21" xlink:href="#hand" style="clip-path: inset(0 0 0 60%);" />
+            <use x="-20" y="21" xlink:href="#hand" style="clip-path: inset(0 60% 0 0);" />
+            <use x="20" y="21" xlink:href="#hand" style="clip-path: inset(60% 0 0 0);" />
+
+            <use x="0.25" y="0.25" xlink:href="#dot" style="fill:#bbbbbb;" />
+            <use x="13" y="-20" xlink:href="#dot" style="fill:#bbbbbb;" />
+            <use x="-13" y="20" xlink:href="#dot" style="fill:#bbbbbb;" />
+            <use x="-20" y="-15" xlink:href="#dot" style="fill:#FF3030;" />
+            <use x="20" y="15" xlink:href="#dot" style="fill:#FF3030;" />
+
+            <line x1="-31.5" y1="-24" x2="-8.5" y2="-24" style="stroke-width: 0.5pt;stroke:#333333;" />
+            <line x1="22" y1="-36.5" x2="22" y2="-5.5" style="stroke-width: 0.5pt;stroke:#333333;" />
+            <line x1="-22" y1="5.5" x2="-22" y2="36.5" style="stroke-width: 0.5pt;stroke:#333333;" />
+            <line x1="8.5" y1="24" x2="31.5" y2="24" style="stroke-width: 0.5pt;stroke:#333333;" />
+         </g>
+      </svg>
+   </body>
+</html>
+
+
+         <!-- ="drop-shadow(-6px -6px 6px #333333)"  style="box-shadow: 0 4px 6px -6px #222;" -->
+
+<!-- //id="svgelem" -->
+      <!-- <h2>HTML5 SVG Rectangle</h2>
+      <svg>
+            <defs>
+               <filter id="f1" x="0" y="0" width="200%" height="200%">
+                     <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                     <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+               </filter>
+            </defs>
+            <line x1="8.5" y1="24" x2="31.5" y2="24" style="
+               stroke-width: 0.5pt;stroke:#333333;
+               filter:drop-shadow(5pt 5pt 5pt rgba(0, 0, 0, .7))"></line>
+            <rect width="10" height="10" x="30" y="30" style="fill: #174F22;" filter="url(#f1)"></rect>
+      </svg>
+
+      /* 
+         .drop {
+            filter: drop-shadow(5px 5px 2px #333333);
+            box-shadow: 10px 10px 5px #000000;
+         } */
+
+         /* .shadow {
+            -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+            filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+            /* Similar syntax to box-shadow */
+         } */
+
+ -->
+
+              <!-- filter="url(#filter1)" /> -->
+               <!-- filter:url(#filter1); -->
+            <!-- <path d="M 0 83 Q 0 83 0 83 Q 0 83 6 79.5 L 364 122" 
+               stroke-linecap="round" 
+               style="stroke: #333333; stroke-width: 0.5; fill: #333333; filter: url(#filter1);" /> -->
+            <!-- <path stroke-linejoin="round" stroke-linecap="round" stroke="red" stroke-opacity="1" stroke-width="0.5" fill="none" class="leaflet-clickable" d="M 0 83 Q 0 83 0 83 Q 0 83 6 79.5 L 364 122" filter="url(#filter1)"></path> -->
+
+            <!-- <filter id="SVGID_0">
+               <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
+               <feOffset dx="0" dy="1"/>
+               <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+               </feMerge>
+            </filter>
+            <filter id="filter1" x="0" y="0">
+                  <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1.5" />
+                  <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+
+ -->
+
+
+            <!-- clip-path: ellipse(50px 50px at 10% 20%); scale(0.5) translateX(100pt)  transform = "rotate(45, 50, 50)"
+            clip-path: rect(0,120,10, 10);
+                     <g id="board" x ="135" y ="140" width="70" height="80">
+            <rect  x="-11.5" y="114.5" rx="3" ry="3" width="23" height="31" style="fill:#dddddd;" />
+stroke-width:1;stroke: #333333;
+            <rect x="-12.5" y="-16.5" rx="1" ry="1" width="25" height="33" style="fill:#777777;" />
+         Dot4	pos -24.0 -17.0		#FF3030 circle 8.0 8.0 
+box-shadow(5px 5px 2px #333333);
+
+url(#SVGID_0);
+
+            <path d="M 0 83 Q 0 83 0 83 Q 0 83 6 79.5 Q 12 76 17 71 Q 22 66 30.5 57.5 Q 39 49 54 36 Q 69 23 82.5 16.5 Q 96 10 120 4.5 Q 144 -1 170.5 0 Q 197 1 218 16.5 Q 239 32 253.5 51 Q 268 70 278 83.5 Q 288 97 299 110 Q 310 123 320 129.5 Q 330 136 338 136.5 Q 346 137 355 129.5 L 364 122" 
+               stroke-linecap="round" 
+               style="stroke: #005e7a; stroke-width: 30; fill: none; filter: url(#SVGID_0);" 
+               transform="translate(50 50)" />
+
+
+ style="transform: translateX(11.5pt) translateY(15.5pt);"
+
+Dot1	pos 5.0 -25.0
+Dot2	pos -4.0 -4.0
+Dot3	pos -13.0 17.0
+Dot4	pos -24.0 -17.0
+Dot5	pos 16.0 9.0
+
+<line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+
+
+         </g>
+         <g id="board" x ="135" y ="140" width="70" height="80">
+            </g>
+         -->
