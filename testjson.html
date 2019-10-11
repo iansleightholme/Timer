@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <script>
+
+    var index = 0;
+
+    function DoSomething()
+    {
+         document.getElementById('textForAdding').textContent += GetEmployeeName(index++);
+    }
+
+    function SaveData() { localStorage.setItem("company1", JSON.stringify(GetEmployees())); }
+
+    function GetData()
+    {
+var c = JSON.parse(localStorage.getItem("company1"));
+if (c == null)
+      return;
+document.getElementById('textForAdding').textContent += c.employees[0].firstName;
+    }
+
+    function GetEmployeeName(i)
+    {
+        return GetEmployees().employees[i].firstName;
+    }
+
+   function GetEmployees()
+   {
+      return {
+        "employees":[
+          {"firstName":"John", "lastName":"Doe"},
+          {"firstName":"Anna", "lastName":"Smith"},
+          {"firstName":"Peter", "lastName":"Jones"}
+        ]
+      }
+   }
+   </script>
+   </head>
+   <body >
+loaded
+<button  onclick="DoSomething();">Click me</button>
+<button onclick="SaveData();">Save data</button>
+<button onclick="GetData();">Load data</button>
+
+
+    <p id="textForAdding"></p>
+   </body>
+</html>
+
+
+<!-- alert(GetEmployeeName()); -->
