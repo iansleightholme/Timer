@@ -4,7 +4,6 @@
       <title>Bridge Timer</title>
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
       <style>
-
          #svgelem {
             position: relative;
             left: 10%;
@@ -13,10 +12,46 @@
             transform: translateX(-20%);
             filter: drop-shadow(5px 5px 2px #333333);
          }
+
+         text.label {
+            font-family: Roboto Condensed, sans-serif;
+            font-size: 48px; 
+            fill: #888888;
+         }
+
+         text.value {
+            font-family: Roboto Condensed, sans-serif;
+            font-size: 96px;
+            fill: #000000;
+         }
+
       </style>
       <title>SVG</title>
 
       <script>
+         var rotation = 50;
+
+         // #region experimental
+         function load() {
+            setAverage('06:34', 290);
+            setClockHand(40);
+            createBoards(5,60);
+         }
+
+         function loadValues(name) {
+            setDisplayName('My local bridge club');
+            setRound(4);
+            setBoard(10);
+            setTotalBoards(16);
+            setProjectedTime('16:42');
+            setAverage('08:20');
+         }
+
+         function setPattern() {
+            document.getElementById('patt1').setAttribute('fill', 'url(#jigsawOrange)');
+         }
+         // #endregion experimental
+
          // #region public functions
          function setDisplayName(value) { setText('displayName', value); }
          function setRound(value) { setText('round', value); }
@@ -30,13 +65,36 @@
             rotate('averageMark1', rotation);
          }
 
+         function createBoards(numBoards, rotation) {
+            var activeBoards = document.getElementById('activeBoards');
+            var playedBoards = document.getElementById('playedBoards');
+
+            for (i = 0; i < numBoards; i++) {
+               // active
+               var active = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+               active.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#board');
+               active.setAttribute('x', 0); 
+               active.setAttribute('y', -155);
+               active.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)');
+               activeBoards.appendChild(active);
+
+               // played
+               var played = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+               played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#reverseBoard');
+               played.setAttribute('x', 0); 
+               played.setAttribute('y', -155);
+               played.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)');
+               playedBoards.appendChild(played);
+            }
+         }
+
          function setClockHand(rotation) {
             rotate('clockHand1', rotation);
-            document.getElementById('clip1').setAttribute('d','M 0 -220 a 220 220  0 1 0  0 440 a 220 220  0 1 0  174 -370 L 0 0 Z');
+            setBackroundClipPath(rotation);
          }
          // #endregion public functions
 
-         // #region helper functions
+         // #region private and helper functions
          function setText(id, value) {
             document.getElementById(id).textContent = value;
          }
@@ -44,37 +102,29 @@
          function rotate(id, value) {
             document.getElementById(id).setAttribute('transform','rotate(' + value + ' 0 0)');
          }
-         // #endregion helper functions
 
-         function loadValues(name) {
-            setDisplayName('My local bridge club');
-            setRound(4);
-            setBoard(10);
-            setTotalBoards(16);
-            setProjectedTime('16:42');
-            setAverage('08:20');
+         function setBackroundClipPath(rotation) {
+            var x = 220 * Math.sin(rotation /360 * 2 * Math.PI);
+            var y = -220 * Math.cos(rotation /360 * 2 * Math.PI);
+            var path = 'M 0 -220 ';
+            if (rotation <= 180)
+               path += 'A 220 220  0 1 0  0 220 ';
+            path += 'A 220 220  0 1 0 ' + x + ' ' + y + ' L 0 0 Z';
+            document.getElementById('clip1').setAttribute('d', path);
          }
-
-         function setPosition() {
-
-            for (i = 0; i < 7; i++) {
-               var op = 'rotate(' + (i * 40) + ' 0 0)';
-               document.getElementById('board' + i).setAttribute('transform', op);
-               document.getElementById('playedBoard' + i).setAttribute('transform', op);
-            }
-            
-            // myElement.setAttribute('transform','translate(30,100)');
-         }
+         // #endregion private and helper functions
 
       </script>
    </head>
 
-   <body width="100%" height="100%">
-      <button onclick="setPosition();" >Click me</button>
-      <button onclick="setAverage('06:34', 290);" >Set average</button>
-      <button onclick="setClockHand(50);" >Set clock hand</button>
+   <body width="100%" height="100%" onload="load();">
+      <!-- <button onclick="setPosition();" >Click me</button>
+      <button onclick="setAverage('06:34', 290);" >Set average</button> -->
+      <button onclick="setClockHand(rotation);rotation+=10;" >Set clock hand</button>
+      <button onclick="setPattern();" >Set pattern</button>
+            <!-- <button onclick="createBoards(5,60);" >Create</button> -->
+
       <svg id="s1" width="1200" height="700" xmlns="http://www.w3.org/2000/svg" filter="url(#Bevel2)">
-         <!--  -->
          <defs>
             <filter id="SVGID_0">
                   <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
@@ -122,10 +172,19 @@
             </filter>
 
             <!-- https://webdesign.tutsplus.com/tutorials/how-to-use-svg-patterns-as-backgrounds--cms-31507 -->
-            <!-- TODO swap this for something with suitable licence -->
+            <!-- TODO swap this for something with a suitable licence -->
             <pattern id="jigsaw" x="0" y="0" width="192" height="192" patternUnits="userSpaceOnUse">
                <rect fill="#008800" x="0" y="0" width="192" height="192" />
                <path fill="#009800" d="M192 15v2a11 11 0 0 0-11 11c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H145v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11 13 13 0 1 1 .02 26 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43a6.1 6.1 0 0 0-3.03 4.87V143h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 181 164a11 11 0 0 0 11 11v2a13 13 0 0 1-13-13 12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84a6.1 6.1 0 0 0-4.87-3.03H145v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 124 181a11 11 0 0 0-11 11h-2a13 13 0 0 1 13-13c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43a6.1 6.1 0 0 0 3.03-4.87V145h-35.02a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 107 124a11 11 0 0 0-22 0c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H49v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11A13 13 0 0 1 81 192h-2a11 11 0 0 0-11-11c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V145H11.98a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 0 1 0 177v-2a11 11 0 0 0 11-11c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H47v-35.02a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 28 109a13 13 0 1 1 0-26c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43A6.1 6.1 0 0 0 47 84.02V49H11.98a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 11 28 11 11 0 0 0 0 17v-2a13 13 0 0 1 13 13c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84A6.1 6.1 0 0 0 11.98 47H47V11.98a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 68 11 11 11 0 0 0 79 0h2a13 13 0 0 1-13 13 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43A6.1 6.1 0 0 0 49 11.98V47h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 85 68a11 11 0 0 0 22 0c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H143V11.98a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 124 13a13 13 0 0 1-13-13h2a11 11 0 0 0 11 11c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V47h35.02a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 179 28a13 13 0 0 1 13-13zM84.02 143a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 83 124a13 13 0 1 1 26 0c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84a6.1 6.1 0 0 0 4.87 3.03H143v-35.02a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 164 107a11 11 0 0 0 0-22c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V49h-35.02a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 1 1 83 68a12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84A6.1 6.1 0 0 0 84.02 49H49v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 28 85a11 11 0 0 0 0 22c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V143h35.02z"></path>
+            </pattern>
+            <pattern id="jigsawOrange" x="0" y="0" width="192" height="192" patternUnits="userSpaceOnUse">
+                  <rect fill="#ff9900" x="0" y="0" width="192" height="192" />
+                  <path fill="#ffa900" d="M192 15v2a11 11 0 0 0-11 11c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H145v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11 13 13 0 1 1 .02 26 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43a6.1 6.1 0 0 0-3.03 4.87V143h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 181 164a11 11 0 0 0 11 11v2a13 13 0 0 1-13-13 12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84a6.1 6.1 0 0 0-4.87-3.03H145v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 124 181a11 11 0 0 0-11 11h-2a13 13 0 0 1 13-13c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43a6.1 6.1 0 0 0 3.03-4.87V145h-35.02a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 107 124a11 11 0 0 0-22 0c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H49v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11A13 13 0 0 1 81 192h-2a11 11 0 0 0-11-11c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V145H11.98a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 0 1 0 177v-2a11 11 0 0 0 11-11c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H47v-35.02a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 28 109a13 13 0 1 1 0-26c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43A6.1 6.1 0 0 0 47 84.02V49H11.98a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 11 28 11 11 0 0 0 0 17v-2a13 13 0 0 1 13 13c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84A6.1 6.1 0 0 0 11.98 47H47V11.98a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 68 11 11 11 0 0 0 79 0h2a13 13 0 0 1-13 13 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43A6.1 6.1 0 0 0 49 11.98V47h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 85 68a11 11 0 0 0 22 0c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H143V11.98a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 124 13a13 13 0 0 1-13-13h2a11 11 0 0 0 11 11c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V47h35.02a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 179 28a13 13 0 0 1 13-13zM84.02 143a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 83 124a13 13 0 1 1 26 0c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84a6.1 6.1 0 0 0 4.87 3.03H143v-35.02a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 164 107a11 11 0 0 0 0-22c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V49h-35.02a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 1 1 83 68a12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84A6.1 6.1 0 0 0 84.02 49H49v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 28 85a11 11 0 0 0 0 22c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V143h35.02z"></path>
+            </pattern>
+            <pattern id="plain" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                  <rect fill="#eeeeee" x="0" y="0" width="32" height="32" />
+                  <rect fill="#e6e6e6" x="16" y="0" width="16" height="16" />
+                  <rect fill="#e6e6e6" x="0" y="16" width="16" height="16" />
             </pattern>
 
             <filter id="f1" x="0" y="0">
@@ -140,6 +199,7 @@
                <ellipse cx="0" cy="0" rx="274" ry="274" fill="#222222" filter="url(#Bevel2)" />
                <ellipse cx="0" cy="0" rx="230" ry="230" fill="#777777" />
                <ellipse cx="0" cy="0" rx="226" ry="226" fill="#eeeeee" />
+               <ellipse cx="0" cy="0" rx="220" ry="220" fill="url(#plain)" />
             </g>
             <g id="hand">
                <rect x="-11.5" y="-15.5" rx="3" ry="3" width="23" height="31" style="fill:#dddddd;" />
@@ -192,46 +252,29 @@
          
          <g>
             <text id="displayName" x="350" y="100" fill="#333333" font-family="Calibri" font-weight="bold" font-size="72" >Stafford Bridge Club</text>
-            <text x="1120" y="200" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" text-anchor="end">Total Boards</text>
-            <text id="totalBoards" x="970" y="300" fill="#000000" font-family="Roboto Condensed, sans-serif" font-size="96" >27</text>
-            <text x="1120" y="390" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" text-anchor="end">Projected</text>
-            <text x="1120" y="440" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" text-anchor="end">Session</text>
-            <text x="1120" y="490" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" text-anchor="end">End Time</text>
-            <text id="projectedTime" x="920" y="590" fill="#000000" font-family="Roboto Condensed, sans-serif" font-size="96" >22:35</text>
-            <text x="200" y="200" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" >Round</text>
-            <text id="round" x="200" y="300" fill="#000000" font-family="Roboto Condensed, sans-serif" font-size="96" >3</text>
-            <text x="200" y="490" fill="#888888" font-family="Roboto Condensed, sans-serif" font-size="48" >Board</text>
-            <text id="boardIndex" x="200" y="590" fill="#000000" font-family="Roboto Condensed, sans-serif" font-size="96" >8</text>
+            <text class="label" x="1120" y="200" text-anchor="end">Total Boards</text>
+            <text id="totalBoards" class="value" x="970" y="300" >27</text>
+            <text class="label" x="1120" y="390" text-anchor="end">Projected</text>
+            <text class="label" x="1120" y="440" text-anchor="end">Session</text>
+            <text class="label" x="1120" y="490" text-anchor="end">End Time</text>
+            <text id="projectedTime" class="value" x="920" y="590" >22:35</text>
+            <text class="label" x="200" y="200" >Round</text>
+            <text id="round" class="value" x="200" y="300" >3</text>
+            <text class="label" x="200" y="490" >Board</text>
+            <text id="boardIndex" class="value" x="200" y="590" >8</text>
          </g>
  
          <g transform="translate(650 400)" >
             <use id="averageTab1" xlink:href="#averageTab" x=0 y=-292 transform="rotate(0 0 0) " />
-            <use xlink:href="#clockface"/>
+            <use xlink:href="#clockface" />
             <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 transform="rotate(0 0 0)" />
 
-            <g id="playedBoards" >
-               <use id="playedBoard0" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard1" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard2" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard3" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard4" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard5" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard6" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard7" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="playedBoard8" xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/>
-            </g>
+            <!-- children created dynamically <use xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/> -->
+            <g id="playedBoards" />
 
-            <g  id="activeBoards" clip-path="url(#clip)">
-               <circle cx="0" cy="0" r="220" fill="url(#jigsaw)" fill-opacity="0.7" />
-               <use id="board0" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board1" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board2" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)" />
-               <use id="board3" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board4" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board5" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board6" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board7" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
-               <use id="board8" xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/>
+            <!-- children created dynamically <use xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/> -->
+            <g id="activeBoards" clip-path="url(#clip)"> 
+               <circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" fill-opacity="0.7" />
             </g>
 
             <use id="clockHand1" xlink:href="#clockhand" x="0" y="0" transform="rotate(135 0 0)" />
