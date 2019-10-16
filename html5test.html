@@ -27,13 +27,62 @@
       <title>Bridge Timer</title>
       <script>
           // #region experimental
+         // your code goes here
          var rotation = 50;
          var timer;
-
+         var settings;
+         
          function load() {
+            // your code goes here
+            settings = getSettings();
+            //alert(settings.name);
             setAverage('06:34', 290);
             setClockHand(40);
             createBoards(5,60);
+
+
+         }
+
+         function start() {
+            // your code goes here
+            document.getElementById('paused').setAttribute('visibility', 'hidden');
+            timer = setInterval(update, 500);
+         }
+
+         function pause() {
+            clearInterval(timer);
+            // your code goes here
+            document.getElementById('paused').setAttribute('visibility', 'visible');
+         }
+
+         function update() {
+            // your code goes here
+            var date = new Date();
+            setTime(date.getMinutes() + date.getHours() * 60, date.getSeconds());
+            setClockHand(date.getMinutes() * 60 + date.getSeconds());
+         }
+
+         function getSettings() {
+            return {
+                "version": "1.0",
+                "enabled": true,
+                "name": "Friday evening",
+                "displayName": "My Stafford Bridge Club",
+                "boardsPerRound": "4",
+                "rounds": "6",
+                "tones": false,
+                "commands": false,
+                "pause": true,
+                "pauseAfterRound": "4",
+                "boardTime": "400",
+                "overtime": "75",
+                "autoCalcOvertime": true,
+                "moveTime": "120",
+                "average": true,
+                "averageOption": "percent",
+                "averagePercent": "80",
+                "averageSeconds": "320" 
+              };
          }
 
          function loadValues(name) {
@@ -49,16 +98,6 @@
             document.getElementById('patt1').setAttribute('fill', 'url(#jigsawOrange)');
          }
 
-         function start() {
-            document.getElementById('paused').setAttribute('visibility', 'hidden');
-            timer = setInterval(update, 500);
-         }
-
-         function pause() {
-            clearInterval(timer);
-            document.getElementById('paused').setAttribute('visibility', 'visible');
-         }
-
          function fullscreen() {
             document.documentElement.requestFullscreen();
          }
@@ -66,16 +105,8 @@
          function exitFullscreen() {
             document.exitFullscreen();
          }
-         // function play();
-         // {
+       
 
-         // }
-
-         function update() {
-            var date = new Date();
-            setTime(date.getMinutes() + date.getHours() * 60, date.getSeconds());
-            setClockHand(date.getMinutes() * 60 + date.getSeconds());
-         }
          // #endregion experimental
 
          // #region public functions
