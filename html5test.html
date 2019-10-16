@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
    <head>
-      <title>Bridge Timer</title>
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
       <style>
          #svgelem {
@@ -24,14 +23,13 @@
             font-size: 96px;
             fill: #000000;
          }
-
       </style>
-      <title>SVG</title>
-
+      <title>Bridge Timer</title>
       <script>
+          // #region experimental
          var rotation = 50;
+         var timer;
 
-         // #region experimental
          function load() {
             setAverage('06:34', 290);
             setClockHand(40);
@@ -50,6 +48,34 @@
          function setPattern() {
             document.getElementById('patt1').setAttribute('fill', 'url(#jigsawOrange)');
          }
+
+         function start() {
+            document.getElementById('paused').setAttribute('visibility', 'hidden');
+            timer = setInterval(update, 500);
+         }
+
+         function pause() {
+            clearInterval(timer);
+            document.getElementById('paused').setAttribute('visibility', 'visible');
+         }
+
+         function fullscreen() {
+            document.documentElement.requestFullscreen();
+         }
+
+         function exitFullscreen() {
+            document.exitFullscreen();
+         }
+         // function play();
+         // {
+
+         // }
+
+         function update() {
+            var date = new Date();
+            setTime(date.getMinutes() + date.getHours() * 60, date.getSeconds());
+            setClockHand(date.getMinutes() * 60 + date.getSeconds());
+         }
          // #endregion experimental
 
          // #region public functions
@@ -58,6 +84,19 @@
          function setBoard(value) { setText('boardIndex', value); }
          function setTotalBoards(value) { setText('totalBoards', value); }
          function setProjectedTime(value) { setText('projectedTime', value); }
+         
+         function setTime(minutes, seconds) { 
+            if (minutes > 99) {
+               setText('timeMinutesHundred', (minutes - minutes % 100)/100);
+               setText('timeMinutesLower', toTwoDigitString(minutes % 100));
+            }
+            else {
+               setText('timeMinutesHundred', '');
+               setText('timeMinutesLower', minutes);
+            }
+
+            setText('timeSeconds', toTwoDigitString(seconds)); 
+         }
          
          function setAverage(value, rotation) { 
             setText('average', value);
@@ -68,6 +107,7 @@
          function createBoards(numBoards, rotation) {
             var activeBoards = document.getElementById('activeBoards');
             var playedBoards = document.getElementById('playedBoards');
+            var boardMarkers = document.getElementById('boardMarkers');
 
             for (i = 0; i < numBoards; i++) {
                // active
@@ -85,6 +125,16 @@
                played.setAttribute('y', -155);
                played.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)');
                playedBoards.appendChild(played);
+
+               // marker
+               var played = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+               played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#boardMarker');
+               played.setAttribute('x', 0); 
+               played.setAttribute('y', -220);
+               //played.setAttribute('y', -251);
+               played.setAttribute('fill', "white");
+               played.setAttribute('transform', 'rotate(' + ((i + 1) * rotation) + ' 0 0)');
+               boardMarkers.appendChild(played);
             }
          }
 
@@ -101,6 +151,13 @@
 
          function rotate(id, value) {
             document.getElementById(id).setAttribute('transform','rotate(' + value + ' 0 0)');
+         }
+
+         function toTwoDigitString(value) {
+            if (value < 10)
+               return '0' + value.toString();
+            else
+               return value.toString(); 
          }
 
          function setBackroundClipPath(rotation) {
@@ -120,8 +177,13 @@
    <body width="100%" height="100%" onload="load();">
       <!-- <button onclick="setPosition();" >Click me</button>
       <button onclick="setAverage('06:34', 290);" >Set average</button> -->
-      <button onclick="setClockHand(rotation);rotation+=10;" >Set clock hand</button>
-      <button onclick="setPattern();" >Set pattern</button>
+      <button onclick="setClockHand(rotation);rotation+=10;" >Set clock hand</button><br />
+      <button onclick="setPattern();" >Set pattern</button><br />
+      <button onclick="update();" >Update</button><br />
+      <button onclick="start();" >Start</button><br />
+      <button onclick="pause();" >Pause</button><br />
+      <button onclick="fullscreen();" >Full screen</button><br />
+      <button onclick="exitFullscreen();" >Exit full screen</button><br />
             <!-- <button onclick="createBoards(5,60);" >Create</button> -->
 
       <svg id="s1" width="1200" height="700" xmlns="http://www.w3.org/2000/svg" filter="url(#Bevel2)">
@@ -156,9 +218,7 @@
             
             </filter>
             <filter id="blurBoard">
-               <!-- <feDropShadow dx="-2" dy="-2" stdDeviation="0.2" flood-opacity="0.3"/>  -->
                <feGaussianBlur stdDeviation="2.5"/>
-                <!-- flood-color="#666666"  -->
             </filter>
 
 
@@ -177,6 +237,7 @@
                <rect fill="#008800" x="0" y="0" width="192" height="192" />
                <path fill="#009800" d="M192 15v2a11 11 0 0 0-11 11c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H145v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11 13 13 0 1 1 .02 26 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43a6.1 6.1 0 0 0-3.03 4.87V143h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 181 164a11 11 0 0 0 11 11v2a13 13 0 0 1-13-13 12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84a6.1 6.1 0 0 0-4.87-3.03H145v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 124 181a11 11 0 0 0-11 11h-2a13 13 0 0 1 13-13c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43a6.1 6.1 0 0 0 3.03-4.87V145h-35.02a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 107 124a11 11 0 0 0-22 0c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H49v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11A13 13 0 0 1 81 192h-2a11 11 0 0 0-11-11c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V145H11.98a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 0 1 0 177v-2a11 11 0 0 0 11-11c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H47v-35.02a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 28 109a13 13 0 1 1 0-26c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43A6.1 6.1 0 0 0 47 84.02V49H11.98a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 11 28 11 11 0 0 0 0 17v-2a13 13 0 0 1 13 13c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84A6.1 6.1 0 0 0 11.98 47H47V11.98a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 68 11 11 11 0 0 0 79 0h2a13 13 0 0 1-13 13 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43A6.1 6.1 0 0 0 49 11.98V47h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 85 68a11 11 0 0 0 22 0c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H143V11.98a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 124 13a13 13 0 0 1-13-13h2a11 11 0 0 0 11 11c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V47h35.02a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 179 28a13 13 0 0 1 13-13zM84.02 143a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 83 124a13 13 0 1 1 26 0c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84a6.1 6.1 0 0 0 4.87 3.03H143v-35.02a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 164 107a11 11 0 0 0 0-22c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V49h-35.02a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 1 1 83 68a12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84A6.1 6.1 0 0 0 84.02 49H49v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 28 85a11 11 0 0 0 0 22c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V143h35.02z"></path>
             </pattern>
+            <!-- TODO duplication -->
             <pattern id="jigsawOrange" x="0" y="0" width="192" height="192" patternUnits="userSpaceOnUse">
                   <rect fill="#ff9900" x="0" y="0" width="192" height="192" />
                   <path fill="#ffa900" d="M192 15v2a11 11 0 0 0-11 11c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H145v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11 13 13 0 1 1 .02 26 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43a6.1 6.1 0 0 0-3.03 4.87V143h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 181 164a11 11 0 0 0 11 11v2a13 13 0 0 1-13-13 12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84a6.1 6.1 0 0 0-4.87-3.03H145v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 124 181a11 11 0 0 0-11 11h-2a13 13 0 0 1 13-13c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43a6.1 6.1 0 0 0 3.03-4.87V145h-35.02a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 107 124a11 11 0 0 0-22 0c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H49v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11A13 13 0 0 1 81 192h-2a11 11 0 0 0-11-11c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V145H11.98a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 0 1 0 177v-2a11 11 0 0 0 11-11c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H47v-35.02a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 28 109a13 13 0 1 1 0-26c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43A6.1 6.1 0 0 0 47 84.02V49H11.98a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 11 28 11 11 0 0 0 0 17v-2a13 13 0 0 1 13 13c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84A6.1 6.1 0 0 0 11.98 47H47V11.98a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 68 11 11 11 0 0 0 79 0h2a13 13 0 0 1-13 13 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43A6.1 6.1 0 0 0 49 11.98V47h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 85 68a11 11 0 0 0 22 0c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H143V11.98a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 124 13a13 13 0 0 1-13-13h2a11 11 0 0 0 11 11c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V47h35.02a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 179 28a13 13 0 0 1 13-13zM84.02 143a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 83 124a13 13 0 1 1 26 0c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84a6.1 6.1 0 0 0 4.87 3.03H143v-35.02a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 164 107a11 11 0 0 0 0-22c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V49h-35.02a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 1 1 83 68a12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84A6.1 6.1 0 0 0 84.02 49H49v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 28 85a11 11 0 0 0 0 22c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V143h35.02z"></path>
@@ -191,9 +252,7 @@
                   <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
             </filter>
 
-            <g id="clockhand">
-               <path d="M-5 0 L5 0 L2 -290 L-2 -290 Z" />
-            </g>
+            <path id="clockhand" d="M-5 0 L5 0 L2 -290 L-2 -290 Z" />
             <g id="clockface">
                <ellipse cx="0" cy="0" rx="278" ry="278" fill="#191919" />
                <ellipse cx="0" cy="0" rx="274" ry="274" fill="#222222" filter="url(#Bevel2)" />
@@ -205,9 +264,7 @@
                <rect x="-11.5" y="-15.5" rx="3" ry="3" width="23" height="31" style="fill:#dddddd;" />
                <rect x="-9" y="-13" rx="1" ry="1"  width="18" height="26" style="fill:#174F22;" />
             </g>
-            <g id="dot">
-               <ellipse cx="0" cy="0" rx="4" ry="4" />
-            </g>
+            <ellipse id="dot" cx="0" cy="0" rx="4" ry="4" />
             <g id="board">
                <rect  x="-34" y="-42" rx="5" ry="5"  width="68" height="84" style="fill:#000000;"  filter="url(#blurBoard)" />
                <rect  x="-32" y="-40" rx="5" ry="5"  width="64" height="80" style="fill:#2F8C64;stroke-width:3.5;stroke:#015127;" />
@@ -232,13 +289,12 @@
                <rect  x="-34" y="-42" rx="5" ry="5"  width="68" height="84" style="fill:#000000;"  filter="url(#blurBoard)" />
                <rect  x="-32" y="-40" rx="5" ry="5" width="64" height="80" style="fill:#2F8C64;stroke-width:3.5;stroke:#015127;" />
             </g>
-            <g id="averageMark">
-               <path d="M8 0 L0 12 L-8 0 L0 -12 Z" style="fill:#ff9900"/>
-            </g>
+            <path id="boardMarker" fill="#ffffff" d="M-8 0 a 220 220 0 0 1 8 8 l 8 -8 Z" />
+            <path id="averageMark" d="M8 0 L0 12 L-8 0 L0 -12 Z" style="fill:#ff9900"/>
             <g id="averageTab" >
-               <rect  rx="10" ry="10" x="-50" y="-35" width="100" height="70" fill="#343434" />
-               <text x="-40" y="-21" fill="white" font-family="arial narrow" font-size="x-small" font-weight="bold">AVERAGE BOARDS</text>
-               <text id="average" x="-35" y="8" fill="#FF9900" font-family="arial narrow" font-weight="normal" font-size="32">00:00</text>
+               <rect  rx="10" ry="10" x="-45" y="-35" width="90" height="70" fill="#343434" />
+               <text x="0" y="-18" fill="white" font-family="arial narrow" font-size="x-small" font-weight="bold" text-anchor="middle" >NO NEW BOARDS</text>
+               <text id="average" x="0" y="9" fill="#FF9900" font-family="arial narrow" font-weight="normal" font-size="32" text-anchor="middle" >00:00</text>
             </g>
 
             <clipPath id="clip">
@@ -254,7 +310,11 @@
             <text id="displayName" x="350" y="100" fill="#333333" font-family="Calibri" font-weight="bold" font-size="72" >Stafford Bridge Club</text>
             <text class="label" x="1120" y="200" text-anchor="end">Total Boards</text>
             <text id="totalBoards" class="value" x="970" y="300" >27</text>
-            <text class="label" x="1120" y="390" text-anchor="end">Projected</text>
+            <text class="label" x="1120" y="390" text-anchor="end">Projected
+               <!-- <tspan x="1120" dy="1.4em" >Projected</tspan>
+               <tspan x="1120" dy="1.4em" >Session</tspan>
+               <tspan x="1120" dy="1.4em" >End Time</tspan> -->
+            </text>
             <text class="label" x="1120" y="440" text-anchor="end">Session</text>
             <text class="label" x="1120" y="490" text-anchor="end">End Time</text>
             <text id="projectedTime" class="value" x="920" y="590" >22:35</text>
@@ -265,22 +325,34 @@
          </g>
  
          <g transform="translate(650 400)" >
-            <use id="averageTab1" xlink:href="#averageTab" x=0 y=-292 transform="rotate(0 0 0) " />
+            <use id="averageTab1" xlink:href="#averageTab" x=0 y=-292 />
             <use xlink:href="#clockface" />
-            <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 transform="rotate(0 0 0)" />
+            <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 />
 
-            <!-- children created dynamically <use xlink:href="#reverseBoard" x=0 y=-155 transform="rotate(0 0 0)"/> -->
+            <!-- board children created dynamically 
+               <use xlink:href="#reverseBoard" x=0 y=-155 /> 
+               <use xlink:href="#board" x=0 y=-155 />
+               <use xlink:href="#boardMarker" x=0 y=-220 /> -->
             <g id="playedBoards" />
-
-            <!-- children created dynamically <use xlink:href="#board" x=0 y=-155 transform="rotate(0 0 0)"/> -->
-            <g id="activeBoards" clip-path="url(#clip)"> 
-               <circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" fill-opacity="0.7" />
-            </g>
-
+            <g id="activeBoards" clip-path="url(#clip)"><circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" fill-opacity="0.7" /></g>
+            <g id="boardMarkers" ><use xlink:href="#boardMarker" x=0 y=-220 /></g>
+            
             <use id="clockHand1" xlink:href="#clockhand" x="0" y="0" transform="rotate(135 0 0)" />
             <ellipse cx="0" cy="0" rx="94" ry="94" fill="#777777" />
             <ellipse cx="0" cy="0" rx="90" ry="90" fill="#222222" filter="url(#Bevel2)"/>
-            <text x="-68" y="15" fill="white" font-family="Impact" font-size="72" >21:27</text>
+            <!-- <text id="time" x="-68" y="15" fill="white" font-family="Impact" font-size="72" >21:27</text> -->
+            <!-- <text id="time" x="0" y="15" fill="white" font-family="Impact"  > -->
+
+            <g>
+               <text x="40" y="20" fill="white" font-family="Impact" font-size="96" text-anchor="end" word-spacing="-17px">
+                  <tspan id="timeMinutesHundred" font-size="24" >1</tspan>
+                  <tspan id="timeMinutesLower" font-size="96" >21</tspan>
+               </text>
+               <text fill="white" x="40" y="20" font-family="Impact" font-size="30">:</text>
+               <text id="timeSeconds" fill="white"  x="48" y="20" font-size="30" font-family="Impact" text-anchor="start" >34</text>
+               <text id="paused" visibility="hidden" fill="white" x="0" y="58" font-family="Impact" font-size="32" text-anchor="middle" >PAUSED</text>
+            </g>
+            <!-- </text> -->
          </g>
 <!-- 
          <g visibility="hidden">
