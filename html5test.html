@@ -8,6 +8,13 @@
             filter: url(#Bevel2);
          }
 
+         text.title {
+            font-family: Calibri;
+            font-size: 72px;
+            font-weight: bold; 
+            fill: #333333;
+         }
+
          text.label {
             font-family: Roboto Condensed, sans-serif;
             font-size: 48px; 
@@ -18,6 +25,12 @@
             font-family: Roboto Condensed, sans-serif;
             font-size: 96px;
             fill: #000000;
+         }
+
+         text.info {
+            font-family: Arial, sans-serif;
+            font-size: 10px; 
+            fill: #888888;
          }
       </style>
 
@@ -42,6 +55,7 @@
             setBoard(10);
             setTotalBoards(16);
             setProjectedTime('16:42');
+            //setProgress(1.0);
          }
 
          function start() {
@@ -124,7 +138,8 @@
          function setBoard(value) { setText('boardIndex', value); }
          function setTotalBoards(value) { setText('totalBoards', value); }
          function setProjectedTime(value) { setText('projectedTime', value); }
-         
+         function setProgress(percent) { document.getElementById('progress').setAttribute('width', 8 + 400 * percent); }
+
          function setTime(minutes, seconds) { 
             if (minutes > 99)
                setText('timeMinutesHundred', (minutes - minutes % 100)/100);
@@ -189,25 +204,12 @@
          // #endregion public functions
 
          // #region private and helper functions
-         function fullscreen() {
-            document.documentElement.requestFullscreen();
-         }
-
-         function exitFullscreen() {
-            document.exitFullscreen();
-         }
-
-         function setText(id, value) {
-            document.getElementById(id).textContent = value;
-         }
-
-         function show(id) {
-            document.getElementById(id).setAttribute('visibility', 'visible');
-         }
-
-         function rotate(id, value) {
-            document.getElementById(id).setAttribute('transform','rotate(' + value + ' 0 0)');
-         }
+         function fullscreen() { document.documentElement.requestFullscreen(); }
+         function exitFullscreen() { document.exitFullscreen(); }
+         function setText(id, value) { document.getElementById(id).textContent = value; }
+         function show(id) { document.getElementById(id).setAttribute('visibility', 'visible'); }
+         function hide(id) { document.getElementById(id).setAttribute('visibility', 'hidden'); }
+         function rotate(id, value) { document.getElementById(id).setAttribute('transform', 'rotate(' + value + ' 0 0)'); }
 
          function toTwoDigitString(value) {
             if (value < 10)
@@ -354,10 +356,14 @@
                <ellipse cx="0" cy="0" rx="27" ry="27" fill="#777777" />
                <ellipse cx="0" cy="0" rx="25" ry="25" fill="green" />
             </g>
+            <g id="progressBar" >
+               <rect x="-204" y="0" rx="4" ry="4" width="408" height="8" fill="#bbbbbb"></rect>
+               <rect id="progress" x="-204" y="0" rx="4" ry="4" width="8" height="8" fill="#777777"></rect>
+            </g>
          </defs>
          
          <g>
-            <text id="displayName" class="bevel2" x="650" y="100" fill="#333333" font-family="Calibri" font-weight="bold" font-size="72" text-anchor="middle" />
+            <text id="displayName" class="title bevel2" x="650" y="75" text-anchor="middle" />
             <text class="label" x="1120" y="200" text-anchor="end">Total Boards</text>
             <text id="totalBoards" class="value bevel2" x="970" y="300" />
             <text class="label" x="1120" y="390" text-anchor="end">Projected</text>
@@ -368,13 +374,15 @@
             <text id="round" class="value bevel2" x="200" y="300" />
             <text class="label" x="200" y="490" >Board</text>
             <text id="boardIndex" class="value bevel2" x="200" y="590" />
+            <text class="info" x="1120" y="670" text-anchor="end" >https://www.bridgetimer.com/timer.html</text>
+            <text class="info" x="1120" y="685" text-anchor="end" >©SBV Computing 2011-2019.  All rights reserved</text>
          </g>
  
-         <g transform="translate(650 400)" >
+         <g transform="translate(650 380)" >
             <use id="averageTab1" xlink:href="#averageTab" x=0 y=-289 visibility="hidden" />
             <use xlink:href="#clockface" />
             <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 visibility="hidden" />
-
+            <use xlink:href="#progressBar" y="295" />
             <!-- board children created dynamically 
                <use xlink:href="#reverseBoard" x=0 y=-155 /><use xlink:href="#board" x=0 y=-155 /><use xlink:href="#boardMarker" x=0 y=-220 /> -->
             <g id="playedBoards" />
@@ -418,7 +426,8 @@
          </g> -->
 
          <!-- <text id="move" x="335" y="420" fill="#7700ff" font-family="Impact" font-size="432" fill="#ff0000">1:39</text> -->
-         <text visibility="hidden" x="200" y="435" id="text2383" xml:space="preserve" style="font-size:432;font-style:normal;font-weight:normal; fill:#ff9900;fill-opacity:1;stroke:#FF0000;stroke-width:15px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Impact;" >2:14</text>>
+
+         <text visibility="hidden" x="200" y="635" id="text2383" xml:space="preserve" style="font-size:432;font-style:normal;font-weight:normal; fill:#ff9900;fill-opacity:1;stroke:#FF0000;stroke-width:15px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Impact;" >2:14</text>>
       </svg>
    </body>
 </html>
