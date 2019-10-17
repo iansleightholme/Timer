@@ -31,11 +31,45 @@
          
          function load() {
             // your code goes here
+            alert("entering load ");
             settings = getSettings();
+            setDisplayName(settings.displayName);
             //alert(settings.name);
-            setAverage('06:34', 290);
-            setClockHand(40);
-            createBoards(9, 34);
+
+           
+            setClockHand(0);
+            var normalPlayTime = settings.boardsPerRound*settings.boardTime;
+            var overtimePlusPlayTime = normalPlayTime + settings.overtime;
+            //normalPlayTime and overtimePlusPlayTime may have had some separate use in Flash actionscript for text in centre
+            var roundTime = settings.boardsPerRound*settings.boardTime+settings.overtime;         
+            var degreesPerBoard=settings.boardTime/roundTime*360;
+            //alert("degrees " + degreesPerBoard + " round time " + roundTime);
+            createBoards(settings.boardsPerRound,degreesPerBoard);
+            var actualAverageSeconds = settings.boardTime;
+            alert("settings.averageOption " + settings.averageOption);
+            if(settings.averageOption="percent"){
+               alert("it is %");
+               
+               actualAverageSeconds = settings.boardTime * settings.averagePercent/100;
+               alert('percent actualAverageSeconds ' + actualAverageSeconds + ", settings.boardTime " + settings.boardTime + ", settings.averagePercent " + settings.averagePercent);
+               
+               }
+               else{
+                  alert("it is not %");
+                  actualAverageSeconds = settings.averageSeconds;
+                  
+                  }
+
+
+
+
+           
+            var minsAverage = Math.floor(actualAverageSeconds/60);
+            var secsAverage = actualAverageSeconds%60;
+            alert("minsAverage " + minsAverage + " secsAverage " + secsAverage);
+            setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360*(1 - settings.averageSeconds/roundTime));
+            alert("settings.averageSeconds " + settings.averageSeconds + " round time " + roundTime + " settings.averageSeconds/roundTime " + settings.averageSeconds/roundTime);
+
 
             setDisplayName(settings.displayName);
             setRound(4);
@@ -46,6 +80,7 @@
 
          function start() {
             // your code goes here
+            alert(settings.averageSeconds);
             document.getElementById('paused').setAttribute('visibility', 'hidden');
             timer = setInterval(update, 500);
          }
@@ -76,21 +111,21 @@
                 "version": "1.0",
                 "enabled": true,
                 "name": "Friday evening",
-                "displayName": "My Stafford Bridge Club",
-                "boardsPerRound": "4",
-                "rounds": "6",
+                "displayName": "The Hollies Bridge Club",
+                "boardsPerRound": 6,
+                "rounds": 6,
                 "tones": false,
-                "commands": false,
+                "voiceCommands": false,
                 "pause": true,
-                "pauseAfterRound": "4",
-                "boardTime": "400",
-                "overtime": "75",
+                "pauseAfterRound": 4,
+                "boardTime": 400,
+                "overtime": 180,
                 "autoCalcOvertime": true,
                 "moveTime": "120",
                 "average": true,
                 "averageOption": "percent",
-                "averagePercent": "80",
-                "averageSeconds": "320" 
+                "averagePercent": 80,
+                "averageSeconds": 309 
               };
          }
 

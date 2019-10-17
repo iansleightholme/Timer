@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html  xml:lang="en" lang="en">
   <head>
-      <script>
+    <title>Bridge Timer Settings</title>
+    <script>
         function loadValues(name) {
           var settings = getSettingsByName(name);
           if (settings == null)
@@ -11,7 +12,7 @@
           setValue('numRounds', settings.rounds);
           setValue('displayName', settings.title);
           setCheck('hasTones', settings.tones);
-          setCheck('hasVoice', settings.commands);
+          setCheck('hasVoice', settings.voiceCommands);
           setValue('hasPause', settings.pause);
           setValue('numPause', settings.pauseAfterRound);
           setValue('boardTime', settings.boardTime);
@@ -47,7 +48,7 @@
                 "boardsPerRound": "3",
                 "rounds": "9",
                 "tones": true,
-                "commands": true,
+                "voiceCommands": true,
                 "pause": true,
                 "pauseAfterRound": "3",
                 "boardTime": "375",
@@ -67,7 +68,7 @@
                 "boardsPerRound": "4",
                 "rounds": "6",
                 "tones": false,
-                "commands": false,
+                "voiceCommands": false,
                 "pause": true,
                 "pauseAfterRound": "4",
                 "boardTime": "400",
@@ -105,13 +106,13 @@ Restore factory defaults<br />
 
 <h4>Boards per round <input type="number" id="boardsPerRound" min="1" max="5" /></h4>
 <h4>Number of rounds <input type="number" id="numRounds" min="1" max="50" /></h4>
-<h4>Title/club name <input type="string" id="displayName" minlength="1" maxlength="50" width="50" /></h4>
+<h4>Title/club name <input type="text" id="displayName" minlength="1" maxlength="50"  /></h4>
 
 <div style="background-color: green; color:white;">
   <h2>Summary</h2>
 <h4>Total session boards <span id="numBoards">27</span></h4>
-<h4>Total session time <span id="numBoards">3:24</span></h4>
-<h4>Boards per hour <span id="numBoards">7.9</span></h4>
+<h4>Total session time <span id="numSessionHoursMins">3:24</span></h4>
+<h4>Boards per hour <span id="numBoardsPerHour">7.9</span></h4>
 </div>
 <h3>Sounds</h3>
 <h4>Tones <input type="checkbox" id="hasTones" checked /></h4>
@@ -131,9 +132,9 @@ Autocalculate overtime
 
 <h2>Averaging</h2>
 <h4>Signal no further boards should be started in the current round after less than <input type="checkbox" name="hasAverage" value="true"></h4>
-<input type="radio" id="at1" name="averageOption" value="percent" checked="true"><input id="averagePercent" type="number" min="5" max="200" /> percent of an average board time</imput><br />
-<input type="radio" id="at2" name="averageOption" value="fixed"><input type="number" min="5" max="2000" /> seconds</imput>
-
+<input type="radio" id="at1" name="averageOption" value="percent" checked /><input id="averagePercent" type="number" min="5" max="200" /> percent of an average board time<br />
+<input type="radio" id="at2" name="averageOption" value="fixed" /><input type="number" min="5" max="2000" /> seconds
+</div>
 
   </body>
 </html>
