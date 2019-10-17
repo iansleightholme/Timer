@@ -1,15 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
    <head>
+      <title>Bridge Timer</title>
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
       <style>
-         #svgelem {
-            position: relative;
-            left: 10%;
-            -webkit-transform: translateX(-20%);
-            -ms-transform: translateX(-20%);
-            transform: translateX(-20%);
-            filter: drop-shadow(5px 5px 2px #333333);
+         .bevel2 {
+            filter: url(#Bevel2);
          }
 
          text.label {
@@ -24,13 +20,14 @@
             fill: #000000;
          }
       </style>
-      <title>Bridge Timer</title>
+
       <script>
           // #region experimental
          // your code goes here
          var rotation = 50;
          var timer;
          var settings;
+         var counter = 0;
          
          function load() {
             // your code goes here
@@ -74,6 +71,11 @@
             alert("settings.averageSeconds " + settings.averageSeconds + " round time " + roundTime + " settings.averageSeconds/roundTime " + settings.averageSeconds/roundTime);
 
 
+            setDisplayName(settings.displayName);
+            setRound(4);
+            setBoard(10);
+            setTotalBoards(16);
+            setProjectedTime('16:42');
          }
 
          function start() {
@@ -86,14 +88,22 @@
          function pause() {
             clearInterval(timer);
             // your code goes here
-            document.getElementById('paused').setAttribute('visibility', 'visible');
+            show('paused');
          }
 
          function update() {
             // your code goes here
             var date = new Date();
-            setTime(date.getMinutes() + date.getHours() * 60, date.getSeconds());
+            setTime(date.getMinutes(), date.getSeconds());
             setClockHand(date.getMinutes() * 60 + date.getSeconds());
+         }
+
+         function backward() {
+            // your code goes here
+         }
+
+         function forward() {
+            // your code goes here
          }
 
          function getSettings() {
@@ -119,28 +129,28 @@
               };
          }
 
-         function loadValues(name) {
-            setDisplayName('My local bridge club');
-            setRound(4);
-            setBoard(10);
-            setTotalBoards(16);
-            setProjectedTime('16:42');
-            setAverage('08:20');
-         }
-
          function setPattern() {
             document.getElementById('patt1').setAttribute('fill', 'url(#jigsawOrange)');
          }
 
-         function fullscreen() {
-            document.documentElement.requestFullscreen();
-         }
 
-         function exitFullscreen() {
-            document.exitFullscreen();
-         }
        
+         function mouseMove() {
+            show('navigation');
+         }
 
+         function beep() {
+            var snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");  
+            alert(snd.volume);
+            snd.play();
+         }
+
+         function soundUp() {
+            //var vid = document.getElementById("myVideo");
+            //alert(vid.volume);
+            //vid.volume = 0.2;
+            beep();
+         }
          // #endregion experimental
 
          // #region public functions
@@ -151,26 +161,31 @@
          function setProjectedTime(value) { setText('projectedTime', value); }
          
          function setTime(minutes, seconds) { 
-            if (minutes > 99) {
+            if (minutes > 99)
                setText('timeMinutesHundred', (minutes - minutes % 100)/100);
-               setText('timeMinutesLower', toTwoDigitString(minutes % 100));
-            }
-            else {
+            else
                setText('timeMinutesHundred', '');
-               setText('timeMinutesLower', minutes);
-            }
-
+            setText('timeMinutesLower', toTwoDigitString(minutes % 100));
             setText('timeSeconds', toTwoDigitString(seconds)); 
          }
          
          function setAverage(value, rotation) { 
             setText('average', value);
             rotate('averageTab1', rotation);
+            show('averageTab1');
             rotate('averageMark1', rotation);
+            show('averageMark1');
          }
 
          function createBoards(numBoards, rotation) {
             var activeBoards = document.getElementById('activeBoards');
+
+            var transformScale = '';
+            if (rotation < 25)
+               transformScale = ' scale(0.7 0.7) translate(0 -90)';
+            else if (rotation < 35)
+               transformScale = ' scale(0.9 0.9) translate(0 -30)';
+
             var playedBoards = document.getElementById('playedBoards');
             var boardMarkers = document.getElementById('boardMarkers');
 
@@ -180,7 +195,7 @@
                active.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#board');
                active.setAttribute('x', 0); 
                active.setAttribute('y', -155);
-               active.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)');
+               active.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)' + transformScale);
                activeBoards.appendChild(active);
 
                // played
@@ -188,7 +203,7 @@
                played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#reverseBoard');
                played.setAttribute('x', 0); 
                played.setAttribute('y', -155);
-               played.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)');
+               played.setAttribute('transform', 'rotate(' + ((i + 0.5) * rotation) + ' 0 0)' + transformScale);
                playedBoards.appendChild(played);
 
                // marker
@@ -196,7 +211,6 @@
                played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#boardMarker');
                played.setAttribute('x', 0); 
                played.setAttribute('y', -220);
-               //played.setAttribute('y', -251);
                played.setAttribute('fill', "white");
                played.setAttribute('transform', 'rotate(' + ((i + 1) * rotation) + ' 0 0)');
                boardMarkers.appendChild(played);
@@ -210,8 +224,20 @@
          // #endregion public functions
 
          // #region private and helper functions
+         function fullscreen() {
+            document.documentElement.requestFullscreen();
+         }
+
+         function exitFullscreen() {
+            document.exitFullscreen();
+         }
+
          function setText(id, value) {
             document.getElementById(id).textContent = value;
+         }
+
+         function show(id) {
+            document.getElementById(id).setAttribute('visibility', 'visible');
          }
 
          function rotate(id, value) {
@@ -238,20 +264,8 @@
 
       </script>
    </head>
-
-   <body width="100%" height="100%" onload="load();">
-      <!-- <button onclick="setPosition();" >Click me</button>
-      <button onclick="setAverage('06:34', 290);" >Set average</button> -->
-      <button onclick="setClockHand(rotation);rotation+=10;" >Set clock hand</button><br />
-      <button onclick="setPattern();" >Set pattern</button><br />
-      <button onclick="update();" >Update</button><br />
-      <button onclick="start();" >Start</button><br />
-      <button onclick="pause();" >Pause</button><br />
-      <button onclick="fullscreen();" >Full screen</button><br />
-      <button onclick="exitFullscreen();" >Exit full screen</button><br />
-            <!-- <button onclick="createBoards(5,60);" >Create</button> -->
-
-      <svg id="s1" width="1200" height="700" xmlns="http://www.w3.org/2000/svg" filter="url(#Bevel2)">
+   <body width="100%" height="100%" onload="load();" onmousemove="mouseMove();">
+      <svg id="s1" width="1200" height="700" xmlns="http://www.w3.org/2000/svg">
          <defs>
             <filter id="SVGID_0">
                   <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
@@ -357,11 +371,11 @@
             <path id="boardMarker" fill="#ffffff" d="M-8 0 a 220 220 0 0 1 8 8 l 8 -8 Z" />
             <path id="averageMark" d="M8 0 L0 12 L-8 0 L0 -12 Z" style="fill:#ff9900"/>
             <g id="averageTab" >
-               <rect  rx="10" ry="10" x="-45" y="-35" width="90" height="70" fill="#343434" />
-               <text x="0" y="-18" fill="white" font-family="arial narrow" font-size="x-small" font-weight="bold" text-anchor="middle" >NO NEW BOARDS</text>
-               <text id="average" x="0" y="9" fill="#FF9900" font-family="arial narrow" font-weight="normal" font-size="32" text-anchor="middle" >00:00</text>
+               <rect  rx="10" ry="10" x="-44" y="-34" width="88" height="68" fill="#222222" />
+               <rect  rx="10" ry="10" x="-43" y="-32" width="84" height="64" fill="#343434" />
+               <text x="0" y="-21" fill="white" font-family="arial narrow" font-size="x-small" font-weight="bold" text-anchor="middle" >NO NEW BOARDS</text>
+               <text id="average" x="0" y="6" fill="#FF9900" font-family="arial narrow" font-weight="normal" font-size="32" text-anchor="middle" >00:00</text>
             </g>
-
             <clipPath id="clip">
                <path id="clip1" d="
                M 0 -220
@@ -369,45 +383,42 @@
                L 0 0 Z" 
                />  
             </clipPath>
+            <g id="button" >
+               <ellipse cx="0" cy="0" rx="34" ry="34" fill="#191919" />
+               <ellipse cx="0" cy="0" rx="31" ry="31" fill="#222222" filter="url(#Bevel2)" />
+               <ellipse cx="0" cy="0" rx="27" ry="27" fill="#777777" />
+               <ellipse cx="0" cy="0" rx="25" ry="25" fill="green" />
+            </g>
          </defs>
          
          <g>
-            <text id="displayName" x="350" y="100" fill="#333333" font-family="Calibri" font-weight="bold" font-size="72" >Stafford Bridge Club</text>
+            <text id="displayName" class="bevel2" x="650" y="100" fill="#333333" font-family="Calibri" font-weight="bold" font-size="72" text-anchor="middle" />
             <text class="label" x="1120" y="200" text-anchor="end">Total Boards</text>
-            <text id="totalBoards" class="value" x="970" y="300" >27</text>
-            <text class="label" x="1120" y="390" text-anchor="end">Projected
-               <!-- <tspan x="1120" dy="1.4em" >Projected</tspan>
-               <tspan x="1120" dy="1.4em" >Session</tspan>
-               <tspan x="1120" dy="1.4em" >End Time</tspan> -->
-            </text>
+            <text id="totalBoards" class="value bevel2" x="970" y="300" />
+            <text class="label" x="1120" y="390" text-anchor="end">Projected</text>
             <text class="label" x="1120" y="440" text-anchor="end">Session</text>
             <text class="label" x="1120" y="490" text-anchor="end">End Time</text>
-            <text id="projectedTime" class="value" x="920" y="590" >22:35</text>
+            <text id="projectedTime" class="value bevel2" x="920" y="590" />
             <text class="label" x="200" y="200" >Round</text>
-            <text id="round" class="value" x="200" y="300" >3</text>
+            <text id="round" class="value bevel2" x="200" y="300" />
             <text class="label" x="200" y="490" >Board</text>
-            <text id="boardIndex" class="value" x="200" y="590" >8</text>
+            <text id="boardIndex" class="value bevel2" x="200" y="590" />
          </g>
  
          <g transform="translate(650 400)" >
-            <use id="averageTab1" xlink:href="#averageTab" x=0 y=-292 />
+            <use id="averageTab1" xlink:href="#averageTab" x=0 y=-289 visibility="hidden" />
             <use xlink:href="#clockface" />
-            <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 />
+            <use id="averageMark1" xlink:href="#averageMark" x=0 y=-251 visibility="hidden" />
 
             <!-- board children created dynamically 
-               <use xlink:href="#reverseBoard" x=0 y=-155 /> 
-               <use xlink:href="#board" x=0 y=-155 />
-               <use xlink:href="#boardMarker" x=0 y=-220 /> -->
+               <use xlink:href="#reverseBoard" x=0 y=-155 /><use xlink:href="#board" x=0 y=-155 /><use xlink:href="#boardMarker" x=0 y=-220 /> -->
             <g id="playedBoards" />
             <g id="activeBoards" clip-path="url(#clip)"><circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" fill-opacity="0.7" /></g>
             <g id="boardMarkers" ><use xlink:href="#boardMarker" x=0 y=-220 /></g>
-            
             <use id="clockHand1" xlink:href="#clockhand" x="0" y="0" transform="rotate(135 0 0)" />
             <ellipse cx="0" cy="0" rx="94" ry="94" fill="#777777" />
             <ellipse cx="0" cy="0" rx="90" ry="90" fill="#222222" filter="url(#Bevel2)"/>
-            <!-- <text id="time" x="-68" y="15" fill="white" font-family="Impact" font-size="72" >21:27</text> -->
-            <!-- <text id="time" x="0" y="15" fill="white" font-family="Impact"  > -->
-
+            <!-- centre text -->
             <g>
                <text x="40" y="20" fill="white" font-family="Impact" font-size="96" text-anchor="end" word-spacing="-17px">
                   <tspan id="timeMinutesHundred" font-size="24" >1</tspan>
@@ -417,7 +428,23 @@
                <text id="timeSeconds" fill="white"  x="48" y="20" font-size="30" font-family="Impact" text-anchor="start" >34</text>
                <text id="paused" visibility="hidden" fill="white" x="0" y="58" font-family="Impact" font-size="32" text-anchor="middle" >PAUSED</text>
             </g>
-            <!-- </text> -->
+         </g>
+
+         <g id="navigation" transform="translate(100 100)" visibility="hidden" >
+            <rect rx="5" ry="5"  width="200" height="320" style="fill:#777777;" fill-opacity="0.7" />
+            <use x="50" y="60" xlink:href="#button" onclick="pause();" />
+            <use x="150" y="60" xlink:href="#button" onclick="start();" />
+
+            <text x="20" y="130" fill="#444444" font-family="Impact" font-size="16">
+               <tspan x="30" onclick="mute();" >Mute</tspan>  
+               <tspan x="30" y="150" >8</tspan>
+               <tspan x="30" y="170" onclick="soundUp();" >Sound up</tspan>
+               <tspan x="30" y="190" onclick="soundDown();" >Sound down</tspan> 
+               <tspan x="30" y="230" onclick="backward();" >Backward</tspan>
+               <tspan x="30" y="250" onclick="forward();" >Forward</tspan>
+               <tspan x="30" y="270" onclick="fullscreen();" >Fullscreen</tspan>
+               <tspan x="30" y="290" onclick="exitFullscreen();" >Not fullscreen</tspan>
+            </text>
          </g>
 <!-- 
          <g visibility="hidden">
