@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xml:lang="en" lang="en">
    <head>
       <title>Bridge Timer</title>
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
@@ -31,58 +31,77 @@
          
          function load() {
             // your code goes here
-            alert("entering load ");
+           
             settings = getSettings();
             setDisplayName(settings.displayName);
-            //alert(settings.name);
+            
 
            
             setClockHand(0);
             var normalPlayTime = settings.boardsPerRound*settings.boardTime;
             var overtimePlusPlayTime = normalPlayTime + settings.overtime;
-            //normalPlayTime and overtimePlusPlayTime may have had some separate use in Flash actionscript for text in centre
+            
             var roundTime = settings.boardsPerRound*settings.boardTime+settings.overtime;         
             var degreesPerBoard=settings.boardTime/roundTime*360;
-            //alert("degrees " + degreesPerBoard + " round time " + roundTime);
-            createBoards(settings.boardsPerRound,degreesPerBoard);
-            var actualAverageSeconds = settings.boardTime;
-            alert("settings.averageOption " + settings.averageOption);
-            if(settings.averageOption="percent"){
-               alert("it is %");
-               
-               actualAverageSeconds = settings.boardTime * settings.averagePercent/100;
-               alert('percent actualAverageSeconds ' + actualAverageSeconds + ", settings.boardTime " + settings.boardTime + ", settings.averagePercent " + settings.averagePercent);
-               
-               }
-               else{
-                  alert("it is not %");
-                  actualAverageSeconds = settings.averageSeconds;
-                  
-                  }
-
-
-
-
            
+            createBoards(settings.boardsPerRound,degreesPerBoard);
+            var actualAverageSeconds = 0;
+            
+            if(settings.averageOption="percent"){
+                             
+               actualAverageSeconds = settings.boardTime * settings.averagePercent/100;
+                              
+            }
+            else
+            {
+                 
+                  actualAverageSeconds = settings.averageSeconds;
+            }
             var minsAverage = Math.floor(actualAverageSeconds/60);
             var secsAverage = actualAverageSeconds%60;
-            alert("minsAverage " + minsAverage + " secsAverage " + secsAverage);
-            setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360*(1 - settings.averageSeconds/roundTime));
-            alert("settings.averageSeconds " + settings.averageSeconds + " round time " + roundTime + " settings.averageSeconds/roundTime " + settings.averageSeconds/roundTime);
+            
+            // only if average  actually required go through set average
+            if(settings.average) 
+            {
+               setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360*(1 - settings.averageSeconds/roundTime));
+            }
+
+            
 
 
             setDisplayName(settings.displayName);
-            setRound(4);
-            setBoard(10);
-            setTotalBoards(16);
-            setProjectedTime('16:42');
+            setRound(1);
+            setBoard(1);
+            
+            setTotalBoards(settings.boardsPerRound * settings.rounds);
+            alert("Round time " + roundTime + " seconds");
+            var totalSessionSeconds = settings.rounds * (roundTime + settings.moveTime)  - settings.moveTime;
+            var totalSessionMinutes = totalSessionSeconds/60;
+            var currentBoardNumber = 1;
+            var currentRoundNumber = 1;
+            var startTime = new Date();
+            alert("startTime " + startTime + " seconds?");
+            var projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
+            alert("projectedFinishTime " + projectedFinishTime + " seconds?");
+            var blnFirstAttempt = true;
+            var blnChangedColour = true;
+            setProjectedTime(projectedFinishTime.getHours() + ":" + projectedFinishTime.getMinutes());
          }
 
          function start() {
             // your code goes here
-            alert(settings.averageSeconds);
+            alert("starting ");
             document.getElementById('paused').setAttribute('visibility', 'hidden');
             timer = setInterval(update, 500);
+            //set up round Fash Code
+            alert("Round time " + roundTime + " seconds");
+            var totalSessionSeconds = settings.rounds * (roundTime + sessions.moveTime)  - sessions.moveTime;
+            var currentBoardNumber = 1;
+            var currentRoundNumber = 1;
+            var date = new Date();
+            //var projectedFinishTime = setProjectedTime(date.getMinutes());
+            var blnFirstAttempt = true;
+            var blnChangedColour = true;
          }
 
          function pause() {
@@ -92,9 +111,10 @@
          }
 
          function update() {
-            // your code goes here
+            // your code goes here after start has been pressed at the interval set by the timer - started out at every half second
             var date = new Date();
-            setTime(date.getMinutes(), date.getSeconds());
+            //test used actual time, in reality needs time remaining for round
+            setClockTime(date.getMinutes(), date.getSeconds());
             setClockHand(date.getMinutes() * 60 + date.getSeconds());
          }
 
@@ -160,7 +180,7 @@
          function setTotalBoards(value) { setText('totalBoards', value); }
          function setProjectedTime(value) { setText('projectedTime', value); }
          
-         function setTime(minutes, seconds) { 
+         function setClockTime(minutes, seconds) { 
             if (minutes > 99)
                setText('timeMinutesHundred', (minutes - minutes % 100)/100);
             else
@@ -260,11 +280,16 @@
             path += 'A 220 220  0 1 0 ' + x + ' ' + y + ' L 0 0 Z';
             document.getElementById('clip1').setAttribute('d', path);
          }
+         function addMinutesToDate(date, minutes) {
+            return new Date(date.getTime() + minutes * 60000);
+         }
          // #endregion private and helper functions
 
       </script>
    </head>
-   <body width="100%" height="100%" onload="load();" onmousemove="mouseMove();">
+   <!-- width and height not permitted body attributes -->
+  
+   <body onload="load();" onmousemove="mouseMove();">
       <svg id="s1" width="1200" height="700" xmlns="http://www.w3.org/2000/svg">
          <defs>
             <filter id="SVGID_0">
@@ -310,7 +335,7 @@
                <feComposite in="SourceGraphic" in2="specOut2" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint" />
             </filter>
 
-            <!-- https://webdesign.tutsplus.com/tutorials/how-to-use-svg-patterns-as-backgrounds--cms-31507 -->
+            <!-- https://webdesign.tutsplus.com/tutorials/how-to-use-svg-patterns-as-backgrounds-cms-31507 -->
             <!-- TODO swap this for something with a suitable licence -->
             <pattern id="jigsaw" x="0" y="0" width="192" height="192" patternUnits="userSpaceOnUse">
                <rect fill="#008800" x="0" y="0" width="192" height="192" />
@@ -453,7 +478,7 @@
          </g> -->
 
          <!-- <text id="move" x="335" y="420" fill="#7700ff" font-family="Impact" font-size="432" fill="#ff0000">1:39</text> -->
-         <text visibility="hidden" x="200" y="435" id="text2383" xml:space="preserve" style="font-size:432;font-style:normal;font-weight:normal; fill:#ff9900;fill-opacity:1;stroke:#FF0000;stroke-width:15px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Impact;" >2:14</text>>
+         <text visibility="hidden" x="200" y="435" id="text2383" xml:space="preserve" style="font-size:432;font-style:normal;font-weight:normal; fill:#ff9900;fill-opacity:1;stroke:#FF0000;stroke-width:15px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Impact;" >2:14</text>
       </svg>
    </body>
 </html>
