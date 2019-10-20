@@ -1,0 +1,15 @@
+.bevel2 {
+    filter: url(#Bevel2);
+ }
+
+ text.label {
+    font-family: Roboto Condensed, sans-serif;
+    font-size: 48px; 
+    fill: #888888;
+ }
+
+ text.value {
+    font-family: Roboto Condensed, sans-serif;
+    font-size: 96px;
+    fill: #000000;
+ }
