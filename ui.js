@@ -93,32 +93,12 @@ function setPattern() {
  // #endregion public functions
 
  // #region private and helper functions
- function fullscreen() {
-    document.documentElement.requestFullscreen();
- }
-
- function exitFullscreen() {
-    document.exitFullscreen();
- }
-
- function setText(id, value) {
-    document.getElementById(id).textContent = value;
- }
-
- function show(id) {
-    document.getElementById(id).setAttribute('visibility', 'visible');
- }
-
- function rotate(id, value) {
-    document.getElementById(id).setAttribute('transform','rotate(' + value + ' 0 0)');
- }
-
- function toTwoDigitString(value) {
-    if (value < 10)
-       return '0' + value.toString();
-    else
-       return value.toString(); 
- }
+ function fullscreen() { document.documentElement.requestFullscreen(); }
+ function exitFullscreen() { document.exitFullscreen(); }
+ function setText(id, value) { document.getElementById(id).textContent = value; }
+ function show(id) { document.getElementById(id).setAttribute('visibility', 'visible'); }
+ function rotate(id, value) { document.getElementById(id).setAttribute('transform','rotate(' + value + ' 0 0)'); }
+ function toTwoDigitString(value) { return (value < 10 ? '0' : '') + value.toString(); }
 
  function setBackroundClipPath(rotation) {
     var x = 220 * Math.sin(rotation /360 * 2 * Math.PI);
@@ -129,6 +109,7 @@ function setPattern() {
     path += 'A 220 220  0 1 0 ' + x + ' ' + y + ' L 0 0 Z';
     document.getElementById('clip1').setAttribute('d', path);
  }
+ 
  function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
  }
