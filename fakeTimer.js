@@ -6,6 +6,7 @@ function load() {
 
     settings = getSettings();
     setDisplayName(settings.displayName);
+    createBoards(5, 60);
     setProgress(0.43);
     start();
 }

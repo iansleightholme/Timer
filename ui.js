@@ -28,6 +28,7 @@ function setPattern() {
  function setBoard(value) { setText('boardIndex', value); }
  function setTotalBoards(value) { setText('totalBoards', value); }
  function setProjectedTime(value) { setText('projectedTime', value); }
+ function setProgress(percent) { document.getElementById('progress').setAttribute('width', 8 + 400 * percent); }
  
  function setClockTime(minutes, seconds) { 
     if (minutes > 99)
