@@ -1,6 +1,13 @@
 .bevel2 {
     filter: url(#Bevel2);
- }
+}
+
+ text.title {
+   font-family: Calibri;
+   font-size: 72px;
+   font-weight: bold; 
+   fill: #333333;
+}
 
  text.label {
     font-family: Roboto Condensed, sans-serif;
@@ -13,3 +20,9 @@
     font-size: 96px;
     fill: #000000;
  }
+
+ text.info {
+   font-family: Arial, sans-serif;
+   font-size: 10px; 
+   fill: #888888;
+}

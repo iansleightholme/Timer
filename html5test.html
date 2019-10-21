@@ -10,10 +10,10 @@
    </head>
    <!-- <body onload="load();" onmousemove="mouseMove();"> -->
   
-   <body onload="load();" >
-  
-      <svg id="svg" width="1200" height="700" xmlns="http://www.w3.org/2000/svg">
-
+   <body onload="load();" onmousemove="mouseMove();" onresize="positionText();" >
+      <svg id="svg" height="100%" xmlns="http://www.w3.org/2000/svg"
+         viewBox="-350 0 700 700" preserveAspectRatio="xMidYMax meet"
+         width="auto" height="100%" >
          <defs>
             <filter id="Bevel2" filterUnits="objectBoundingBox" x="-10%" y="-10%" width="150%" height="150%">
                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
