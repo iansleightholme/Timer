@@ -100,7 +100,7 @@
                <rect x="-204" y="0" rx="4" ry="4" width="408" height="8" fill="#bbbbbb"></rect>
                <rect id="progress" x="-204" y="0" rx="4" ry="4" width="8" height="8" fill="#2F8C64"></rect>
             </g>
-            <text id="overtime" x="-194" y="0" font-family="Impact" fill="white" font-size="18px" >OVERTIME</text>
+            <text id="overtime" x="-194" y="0" font-family="Impact" fill="white" font-size="16px" >OVERTIME</text>
             <g id="button" >
                <ellipse cx="0" cy="0" rx="34" ry="34" fill="#191919" />
                <ellipse cx="0" cy="0" rx="31" ry="31" fill="#222222" filter="url(#Bevel2)" />
@@ -164,28 +164,28 @@
             </g>
          </g>
          
-         <g id="navigation" transform="translate(-600 500)" >
+         <g id="navigation" transform="translate(-600 315)" >
             <!-- <animate id="fadeOut" attributeType="XML" attributeName="fill-opacity" 
                from="1.0" to="0.0"
                begin="navigation.mouseout" dur="8s"
                end="mybody.mousemove"
                fill="remove" />
-            <rect rx="5" ry="5"  width="200" height="320" style="fill:#777777;" style="cursor:pointer;"/> -->
-
+             -->
+            <rect rx="5" ry="5"  width="300" height="125" style="fill:#777777;" style="cursor:pointer;"/>
 
             
-            <use y="60" xlink:href="#button" onclick="pause();" />
-            <use y="60" xlink:href="#button" onclick="play();" />
+            <use x="170" y="50" xlink:href="#button" onclick="pause();" />
+            <use x="250" y="50" xlink:href="#button" onclick="play();" />
 
-            <text fill="#444444" font-family="Impact" font-size="10">
-               <tspan x="30" onclick="mute();" >Mute</tspan>  
-               <tspan x="30" >8</tspan>
-               <tspan x="30" onclick="soundUp();" >Sound up</tspan>
-               <tspan x="30" y="190" onclick="soundDown();" >Sound down</tspan> 
-               <tspan x="30" y="230" onclick="backward();" >Backward</tspan>
-               <tspan x="30" y="250" onclick="forward();" >Forward</tspan>
-               <tspan x="30" y="270" onclick="fullscreen();" >Fullscreen</tspan>
-               <tspan x="30" y="290" onclick="exitFullscreen();" >Not fullscreen</tspan>
+            <text fill="#444444" font-family="Impact" font-size="14">
+               <tspan x="30" y="20" onclick="mute();" >Mute</tspan>  
+               <tspan x="80" y="20" >8</tspan>
+               <tspan x="30" y="36" onclick="soundUp();" >Sound up</tspan>
+               <tspan x="30" y="52" onclick="soundDown();" >Sound down</tspan> 
+               <tspan x="30" y="68" onclick="backward();" >Backward</tspan>
+               <tspan x="30" y="84" onclick="forward();" >Forward</tspan>
+               <tspan x="30" y="100" onclick="fullscreen();" >Fullscreen</tspan>
+               <tspan x="30" y="116" onclick="exitFullscreen();" >Not fullscreen</tspan>
             </text>
          </g>
 <!-- 

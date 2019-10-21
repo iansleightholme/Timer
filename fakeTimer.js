@@ -8,6 +8,13 @@ function load() {
     setDisplayName(settings.displayName);
     createBoards(5, 60);
     setProgress(0.43);
+    setOvertime(330);
+    setAverage('06:34', 280);
+    setRound(2);
+    setBoard(5);
+    setTotalBoards(24);
+    setClockTime(120, 13);
+    setProjectedTime('15:56');
     start();
 }
 
