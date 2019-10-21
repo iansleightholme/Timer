@@ -118,5 +118,4 @@ function setPattern() {
    document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
 }
 
- 
  // #endregion private and helper functions
