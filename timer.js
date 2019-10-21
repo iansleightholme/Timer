@@ -174,3 +174,7 @@ function pause() {
     // your code goes here
     show('paused');
 }
+
+function addMinutesToDate(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
+ }

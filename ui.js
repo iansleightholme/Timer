@@ -110,7 +110,13 @@ function setPattern() {
     document.getElementById('clip1').setAttribute('d', path);
  }
  
- function addMinutesToDate(date, minutes) {
-    return new Date(date.getTime() + minutes * 60000);
- }
+ function positionText() {
+   var aspect = window.innerWidth / window.innerHeight;
+   if (aspect > 1.7)
+      aspect = 1.7;
+   document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
+   document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
+}
+
+ 
  // #endregion private and helper functions
