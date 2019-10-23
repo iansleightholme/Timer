@@ -9,6 +9,7 @@ function setMode(mode, value) {
    switch(mode) {
       case 'normal':
          hide('movePlay');
+         hide('overtimePlay');
          setAveragingTheme(false);
          show('normalPlay');
          break;
