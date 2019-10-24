@@ -141,7 +141,7 @@ function update() {
     }
     else {
         //possibilities are normal mid round play, averaging, overtime, move time, paused, fast forward, back 
-        //calcProgress, using zero to start testing
+        
         perUnitTimeGone = calcPerUnitTimeGone();
 
         setProgress(perUnitTimeGone);
@@ -247,10 +247,32 @@ function nextRound() {
 function overtimePeriodReached() { }
 function backward() {
     // your code goes here
-}
+    // last board, move or last round
+}setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+
+setClockTime(thisRoundToGo);
 
 function forward() {
     // your code goes here
+    // move either to next board, move  or new round
+    alert(" forward Pressed, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    if (currentBoardNumber < settings.boardsPerRound){
+        thisRoundToGo = roundTime - (currentBoardNumber * settings.boardTime) ;
+        currentBoardNumber++;
+        setBoard(currentBoardNumber);
+        setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+        setClockTime(thisRoundToGo);
+    }
+    else if (thisRoundToGo > 0) {
+        thisRoundToGo = 0;
+        setMode('move');
+    }
+    else
+    {
+        thisRoundToGo = - settings.moveTime;
+        setMode('normal');
+    }
+    alert(" forward Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
 }
 function pause() {
     // clearInterval(timer);

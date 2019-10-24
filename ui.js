@@ -8,8 +8,9 @@ function setMode(mode, value) {
    
    switch(mode) {
       case 'normal':
-         hide('movePlay');
-         hide('overtimePlay');
+        hide('normalPlay');
+        hide('movePlay');
+        hide('overtimePlay');
          setAveragingTheme(false);
          show('normalPlay');
          break;
@@ -20,14 +21,20 @@ function setMode(mode, value) {
          break;
       case 'overtime':
          hide('normalPlay');
+         hide('movePlay');
+         hide('overtimePlay');
          show('overtimePlay');
          break;
       case 'move':
-         hide('overtimePlay');
-         show('movePlay');
+        hide('normalPlay');
+        hide('movePlay');
+        hide('overtimePlay');
+        show('movePlay');
          break;
       case 'ended':
-         hide('active');
+        hide('normalPlay');
+        hide('movePlay');
+        hide('overtimePlay');
          setText('farewell', value);
          show('sessionEnded');
          break;
