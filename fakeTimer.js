@@ -76,11 +76,9 @@ function forward() {
     // your code goes here
 }
 
-
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
 }
-
 
 function getFarewell() {
     var hour = new Date().getHours();

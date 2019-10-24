@@ -169,12 +169,25 @@ function setBackroundClipPath(rotation) {
    document.getElementById('clip1').setAttribute('d', path);
 }
 
-function positionText() {
+function resize() {
    var aspect = window.innerWidth / window.innerHeight;
    if (aspect > 1.7)
       aspect = 1.7;
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
    document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
+
+   if (aspect < 1.33) {
+      var labels = document.getElementsByClassName('label');
+      while (labels.length > 0) {
+         labels[0].setAttribute('class', 'smallLabel'); 
+      }
+   }
+   else {
+      var labels = document.getElementsByClassName('smallLabel');
+      while (labels.length > 0) {
+         labels[0].setAttribute('class', 'label'); 
+      }
+   }
 }
 
 function setAveragingTheme(value)
