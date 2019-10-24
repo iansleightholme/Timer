@@ -60,7 +60,7 @@ function setRound(value) { setText('round', value); }
 function setBoard(value) { setText('boardIndex', value); }
 function setTotalBoards(value) { setText('totalBoards', value); }
 function setProjectedTime(value) { setText('projectedTime', value); }
-function setProgress(percent) { document.getElementById('progress').setAttribute('width', 8 + 400 * (percent > 1.0 ? 1.0 : percent < 0.0 ? 0.0 : percent)); }
+function setProgress(perunit) { document.getElementById('progress').setAttribute('width', 8 + 400 * (perunit > 1.0 ? 1.0 : perunit < 0.0 ? 0.0 : perunit)); }
 
 function setClockTime(seconds) {
    if (seconds < 0.0)

@@ -29,6 +29,7 @@ var updateInterval = 500;
 var blnPaused = false;
 var blnMoving = false;
 var blnPauseAfterRoundN = false;
+var perUnitTimeGone = 0.0;
 
 
 function load() {
@@ -134,9 +135,16 @@ function update() {
         projectedFinishTime= addMinutesToDate(startTime, totalSessionMinutes);
         setMode("normal", true);
         blnFirstAttempt = false;
+        perUnitTimeGone = 0.0;
+
+        setProgress(perUnitTimeGone);
     }
     else {
         //possibilities are normal mid round play, averaging, overtime, move time, paused, fast forward, back 
+        //calcProgress, using zero to start testing
+        perUnitTimeGone = calcPerUnitTimeGone();
+
+        setProgress(perUnitTimeGone);
         if (blnPaused) {
             projectedFinishTime = addMillisecondsToDate(projectedFinishTime, updateInterval);
             setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
@@ -235,7 +243,6 @@ function nextRound() {
             setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - actualAverageSeconds / roundTime));
         }
     }
-    
 }
 function overtimePeriodReached() { }
 function backward() {
@@ -270,7 +277,13 @@ function play() {
     
     hide('paused');
 }
+function calcPerUnitTimeGone() {
+   //full time  is totalSessionSeconds
+   secondsGone = (currentRoundNumber - 1) * (roundTime + settings.moveTime) + (roundTime - thisRoundToGo);
+   return (secondsGone/totalSessionSeconds);
+  
 
+}
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
  }
