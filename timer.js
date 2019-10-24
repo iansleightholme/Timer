@@ -24,12 +24,20 @@ var currentRoundNumber = 1;
 var startTime = new Date();
 var projectedFinishTime = new Date();
 var blnChangedColour = true;
+// updateInterval is set in milliseconds
+var updateInterval = 500;
+var blnPaused = false;
+var blnMoving = false;
+var blnPauseAfterRoundN = false;
+
 
 function load() {
     // your code goes here
 
     settings = getSettings();
     setDisplayName(settings.displayName);
+    blnPauseAfterRoundN = settings.pause;
+    alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
     start();
 }
 
@@ -44,13 +52,17 @@ function start() {
     overtimeInSeconds = settings.overtime;
     // ensure averaging cannot be less than a board and overtime is sensible
 
-    alert(" overtimeInSeconds " + overtimeInSeconds + ", settings.boardTime " + settings.boardTime);
     if (overtimeInSeconds > settings.boardTime) { overtimeInSeconds = settings.boardTime };
-    alert(" overtimeInSeconds " + overtimeInSeconds + ", settings.boardTime " + settings.boardTime);
-
+ 
+    
     overtimePlusPlayTime = normalPlayTime + overtimeInSeconds;
 
     roundTime = settings.boardsPerRound * settings.boardTime + overtimeInSeconds;
+    if (overtimeInSeconds > 0) {
+        
+        setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds)/(roundTime));
+        
+    }
     thisRoundToGo = roundTime;
     degreesPerBoard = settings.boardTime / roundTime * 360;
 
@@ -66,9 +78,9 @@ function start() {
 
         actualAverageSeconds = settings.averageSeconds;
     }
-    alert(" actualAverageSeconds " + actualAverageSeconds + ", settings.boardTime " + settings.boardTime);
+    
     if (actualAverageSeconds < settings.boardTime) { actualAverageSeconds = settings.boardTime };
-    alert(" actualAverageSeconds " + actualAverageSeconds + ", settings.boardTime " + settings.boardTime);
+    
     minsAverage = Math.floor(actualAverageSeconds / 60);
     secsAverage = actualAverageSeconds % 60;
 
@@ -85,7 +97,7 @@ function start() {
 
 
     setTotalBoards(settings.boardsPerRound * settings.rounds);
-    alert("Round time " + roundTime + " seconds");
+
     totalSessionSeconds = settings.rounds * (roundTime + settings.moveTime) - settings.moveTime;
     totalSessionMinutes = totalSessionSeconds / 60;
     currentBoardNumber = 1;
@@ -93,17 +105,20 @@ function start() {
     currentRoundNumber = 1;
     setRound(currentRoundNumber);
     startTime = new Date();
-    alert("startTime " + startTime + " seconds?");
+  
     projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
-    alert("projectedFinishTime " + projectedFinishTime + " seconds?");
+  
     blnFirstAttempt = true;
     blnChangedColour = true;
+   
+    //alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
+      //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
     setProjectedTime(projectedFinishTime.getHours() + ":" + projectedFinishTime.getMinutes());
 
 
 
     document.getElementById('paused').setAttribute('visibility', 'hidden');
-    timer = setInterval(update, 500);
+    timer = setInterval(update, updateInterval);
     //update();
 
 
@@ -112,35 +127,68 @@ function start() {
 
 // called once and repeats until such time as the timer interval is cleared.
 function update() {
+    
     if (blnFirstAttempt) {
         var safetyCountDown = 1000;
         startTime = new Date();
-        projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
-
+        projectedFinishTime= addMinutesToDate(startTime, totalSessionMinutes);
+        setMode("normal", true);
         blnFirstAttempt = false;
     }
     else {
-        thisRoundToGo = thisRoundToGo - 0.5;
-        safetyCountDown = safetyCountDown - 1;
-        if (safetyCountDown < 1) {
-            Alert("should stop for testing");
+        //possibilities are normal mid round play, averaging, overtime, move time, paused, fast forward, back 
+        if (blnPaused) {
+            projectedFinishTime = addMillisecondsToDate(projectedFinishTime, updateInterval);
+            setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
+
             return;
         }
+        thisRoundToGo = thisRoundToGo - updateInterval/1000;
+        safetyCountDown = safetyCountDown - 1;
+        if (safetyCountDown < 1) {
+            alert("should stop for testing");
+            return;
+        }
+
         //calcBarLength();
     }
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
     // check end of board, overtime, round limits
-    if (thisRoundToGo < 0) {
-        nextRound();
+    //either move on to the next round or go to move time or finish
+    if (thisRoundToGo < 0 ) {
+        if(currentRoundNumber  >= settings.rounds || thisRoundToGo < -settings.moveTime)
+        {
+            nextRound();
+        }
+    else if (thisRoundToGo < 0 ) {
+            moving(-thisRoundToGo);
+            if(blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound){
+                blnPaused = true;
+                alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  currentRoundNumber " + currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
+               
+               
+                pause();
+            }
+           // else
+           // {
+               // moving(-thisRoundToGo);
+           // }
+        }
     }
     else
+    {
+        if (thisRoundToGo < actualAverageSeconds && settings.average && thisRoundToGo > overtimeInSeconds)
+        {
+            setMode("average");
+        }
         if (thisRoundToGo < overtimeInSeconds) {
-            overtimePeriodReached();
+            //overtimePeriodReached();
+            setMode("overtime", true);
         }
         else {
             var boardBeingPlayed = Math.ceil((roundTime - thisRoundToGo) / settings.boardTime);
             if (boardBeingPlayed > currentBoardNumber) {
-                alert("current board " + currentBoardNumber + ", boardBeingPlayed " + boardBeingPlayed);
+                // alert("current board " + currentBoardNumber + ", boardBeingPlayed " + boardBeingPlayed);
                 currentBoardNumber = currentBoardNumber + 1;
                 setBoard(currentBoardNumber);
                 beep();
@@ -155,12 +203,40 @@ function update() {
 
     setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
 
-
-    setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60));
-
+    setClockTime(thisRoundToGo);
+    //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
+    }
 
 }
-function nextRound() { }
+function nextRound() { 
+    currentRoundNumber++;
+    if(currentRoundNumber > settings.rounds)
+    {
+        alert("reached the end - should stop!");
+        clearInterval(timer);
+        setMode('ended', getFarewell());
+        return;
+        
+        //setMode('end', getFarewell());
+    }
+    else
+    {
+        currentBoardNumber = 1;
+        setMode('normal');
+        setBoard(currentBoardNumber);
+        
+        setRound(currentRoundNumber);
+        thisRoundToGo = roundTime;
+        degreesPerBoard = settings.boardTime / roundTime * 360;
+
+        createBoards(settings.boardsPerRound, degreesPerBoard);
+        setClockHand(0);
+        if (settings.average) {
+            setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - actualAverageSeconds / roundTime));
+        }
+    }
+    
+}
 function overtimePeriodReached() { }
 function backward() {
     // your code goes here
@@ -170,11 +246,47 @@ function forward() {
     // your code goes here
 }
 function pause() {
-    clearInterval(timer);
+    // clearInterval(timer);
     // your code goes here
+    blnPaused = true;
+    
     show('paused');
+}
+
+function moving(movingTime) {
+    // clearInterval(timer);
+    // your code goes here
+    setMode("move");
+    setClockHand(360 * (movingTime/settings.moveTime));
+
+    setClockTime(settings.moveTime - movingTime);
+}
+function play() {
+    // clearInterval(timer);
+    // your code goes here
+    blnPaused = false;
+    alert("play pressed, blnPauseAfterRoundN " + blnPauseAfterRoundN)
+    blnPauseAfterRoundN = false;
+    
+    hide('paused');
 }
 
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
+ }
+ function addMillisecondsToDate(date, milliseconds) {
+    return new Date(date.getTime() + milliseconds);
+ }
+ function getFarewell() {
+    var hour = new Date().getHours();
+    if (hour < 6)
+       return 'Good bye';
+    else if (hour < 12)
+       return 'Good morning';
+    else if (hour < 17)
+       return 'Good afternoon';
+    else if (hour < 20)
+        return 'Good evening';
+    else
+       return 'Good night';
  }
