@@ -16,8 +16,8 @@ function load() {
     setTotalBoards(24);
     setClockTime(120, 13);
     setProjectedTime('15:56');
-    setMode('break');
-    //start();
+    //setMode('break');
+    start();
 
     //alert(getFarewell());
 }
@@ -29,7 +29,7 @@ function start() {
 
 function play() {
     // your code goes here
-    beep();
+    // beep();
     hide('paused');
 }
 
