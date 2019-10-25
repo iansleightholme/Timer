@@ -16,8 +16,8 @@ function load() {
     setTotalBoards(24);
     setClockTime(120, 13);
     setProjectedTime('15:56');
-    //setMode('overtime');
-    start();
+    setMode('break');
+    //start();
 
     //alert(getFarewell());
 }
