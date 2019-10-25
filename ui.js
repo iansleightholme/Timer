@@ -26,6 +26,10 @@ function setMode(mode, value) {
          hide('overtimePlay');
          show('movePlay');
          break;
+      case 'break':
+         hide('normalPlay');
+         show('breakPlay');
+         break;
       case 'ended':
          hide('active');
          setText('farewell', value);
