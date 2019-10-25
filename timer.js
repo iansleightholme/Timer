@@ -38,7 +38,7 @@ function load() {
     settings = getSettings();
     setDisplayName(settings.displayName);
     blnPauseAfterRoundN = settings.pause;
-    alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
+    //alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
     start();
 }
 
@@ -130,7 +130,7 @@ function start() {
 function update() {
     
     if (blnFirstAttempt) {
-        var safetyCountDown = 1000;
+        var safetyCountDown = 20000;
         startTime = new Date();
         projectedFinishTime= addMinutesToDate(startTime, totalSessionMinutes);
         setMode("normal", true);
@@ -248,14 +248,59 @@ function overtimePeriodReached() { }
 function backward() {
     // your code goes here
     // last board, move or last round
-}setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+    alert(" back requested, currentBoardNumber " + currentBoardNumber + ", currentRoundNumber " + currentRoundNumber);
+    var originalThisRoundToGo = thisRoundToGo;
+    var originalTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime - (roundTime - thisRoundToGo);
+    var boardActuallyReached = settings.boardsPerRound * (currentRoundNumber - 1) + currentBoardNumber;
+    var roundToGoAtStartOfCurrentBoard = roundTime - settings.boardTime * (currentBoardNumber - 1);
+    alert("boardActiallyReached " + boardActuallyReached);
+    alert("thisRoundToGo - roundToGoAtStartOfCurrentBoard " + (thisRoundToGo - roundToGoAtStartOfCurrentBoard ));
+    alert("settings.boardTime * 0.05 " + settings.boardTime * 0.05);
+    if (thisRoundToGo - roundToGoAtStartOfCurrentBoard  < (settings.boardTime * 0.05) || boardActuallyReached == 1) {
+        //just restart last board
+        thisRoundToGo = roundToGoAtStartOfCurrentBoard;
+        alert("no change to board number or round number thisRoundToGo " + thisRoundToGo);
+        alert("was thisRoundToGo " + originalThisRoundToGo);
+    }
+    else
+    {
+        //go back one board
+        boardActuallyReached--;
+        currentRoundNumber = 1 + Math.floor((boardActuallyReached-1)/settings.boardsPerRound);
+        currentBoardNumber = (boardActuallyReached%settings.boardsPerRound);
+        thisRoundToGo = roundTime - settings.boardTime * (currentBoardNumber - 1);
+        alert("change to board number -- boardActuallyReached now " + boardActuallyReached );
+        alert("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
 
-setClockTime(thisRoundToGo);
+    }
+    setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+    setClockTime(thisRoundToGo);
+    setMode('normal');
+    setBoard(currentBoardNumber);
+    setRound(currentRoundNumber);
+    
+    createBoards(settings.boardsPerRound, degreesPerBoard);
+    
+    if (settings.average) {
+        setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - actualAverageSeconds / roundTime));
+    }
+    var revisedTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime;
+    var changeFinishTime = revisedTimeLeftToGo - originalTimeLeftToGo;
+    projectedFinishTime = addMillisecondsToDate(projectedFinishTime, changeFinishTime * 1000);
+    setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
+    alert(" back Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    alert( " revisedTimeLeftToGo " + revisedTimeLeftToGo + " seconds, originalTimeLeftToGo " + originalTimeLeftToGo + "seconds");
+    alert( " projected end time altered by adding changeFinishTime" + changeFinishTime + " seconds");
+   
+}
+
+
 
 function forward() {
     // your code goes here
     // move either to next board, move  or new round
-    alert(" forward Pressed, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    //alert(" forward Pressed, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    var originalThisRoundToGo = thisRoundToGo;
     if (currentBoardNumber < settings.boardsPerRound){
         thisRoundToGo = roundTime - (currentBoardNumber * settings.boardTime) ;
         currentBoardNumber++;
@@ -272,7 +317,11 @@ function forward() {
         thisRoundToGo = - settings.moveTime;
         setMode('normal');
     }
-    alert(" forward Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    var changeFinishTime = originalThisRoundToGo - thisRoundToGo ;
+    projectedFinishTime = addMillisecondsToDate(projectedFinishTime, -changeFinishTime * 1000);
+    setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
+    //alert(" forward Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    //alert( " projected end time altered by subtracting changeFinishTime" + changeFinishTime + " seconds");
 }
 function pause() {
     // clearInterval(timer);
@@ -294,7 +343,7 @@ function play() {
     // clearInterval(timer);
     // your code goes here
     blnPaused = false;
-    alert("play pressed, blnPauseAfterRoundN " + blnPauseAfterRoundN)
+    //alert("play pressed, blnPauseAfterRoundN " + blnPauseAfterRoundN)
     blnPauseAfterRoundN = false;
     
     hide('paused');
