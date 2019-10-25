@@ -22,6 +22,12 @@ function load() {
     //alert(getFarewell());
 }
 
+function soundAverage()
+{
+    playAudio('alert');
+    setTimeout("playAudio('average');", 1500);
+}
+
 function start() {
     endTime = new Date(new Date().getTime() + 90 * 1000);
     timer = setInterval(update, 500);
