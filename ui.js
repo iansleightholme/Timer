@@ -52,6 +52,14 @@ function beep() {
    snd.play();
 }
 
+function playSound(sound) {
+   var src = './sounds/alert.mp3';
+   
+   var snd = new Audio(src);
+   snd.volume = volume /10;
+   snd.play();
+}
+
 function toggleMute() {
    if (!mute)
       mute = true;
