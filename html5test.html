@@ -6,12 +6,13 @@
       <link type="text/css" href="theme.css" rel="stylesheet" >
       <script src="fakeTimer.js" ></script>
       <script src="ui.js" ></script>
+      <script src="audio.js" ></script>
       <script src="settings.js" ></script>
    </head>
    <body onload="load();resize();" onmousemove="mouseMove();" onresize="resize();" >
-      <svg id="svg" height="100%" xmlns="http://www.w3.org/2000/svg"
+      <svg id="svg" xmlns="http://www.w3.org/2000/svg"
          viewBox="-350 0 700 700" preserveAspectRatio="xMidYMax meet"
-         width="auto" height="100%" >
+         width="100%" height="100%" >
          <defs>
             <filter id="bevel2" filterUnits="objectBoundingBox" x="-10%" y="-10%" width="150%" height="150%">
                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
@@ -184,28 +185,35 @@
             </g>
             
 
-            <g id="navigation" transform="translate(-680 15)" >
+            <g id="navigation" transform="translate(-420 515)" >
                <!-- <animate id="fadeOut" attributeType="XML" attributeName="fill-opacity" 
                   from="1.0" to="0.0"
                   begin="navigation.mouseout" dur="8s"
                   end="mybody.mousemove"
                   fill="remove" />
                -->
-               <rect rx="5" ry="5"  width="300" height="125" style="fill:#777777;" style="cursor:pointer;"/>
+               <rect rx="5" ry="5"  width="112" height="90" style="fill:#aaaaaa;" style="cursor:pointer;"/>
 
                
-               <use x="170" y="50" xlink:href="#button" onclick="pause();" />
-               <use x="250" y="50" xlink:href="#button" onclick="play();" />
+               <!-- <use x="170" y="50" xlink:href="#button" onclick="pause();" />
+               <use x="250" y="50" xlink:href="#button" onclick="play();" /> -->
 
-               <text fill="#444444" font-family="Impact" font-size="10">
-                  <tspan x="30" y="20" onclick="mute();" >Mute</tspan>  
-                  <tspan x="80" y="20" >8</tspan>
-                  <tspan x="30" y="30" onclick="soundUp();" >Sound up</tspan>
-                  <tspan x="30" y="40" onclick="soundDown();" >Sound down</tspan> 
-                  <tspan x="30" y="40" onclick="backward();" >Backward</tspan>
-                  <tspan x="30" y="60" onclick="forward();" >Forward</tspan>
-                  <tspan x="30" y="70" onclick="fullscreen();" >Fullscreen</tspan>
-                  <tspan x="30" y="80" onclick="exitFullscreen();" >Not fullscreen</tspan>
+               <text fill="#444444" font-family="Impact" font-size="10" style="cursor:hand;user-select: none;">
+                  <tspan x="20" y="20" onclick="backward();" >&lt;&lt;</tspan>
+                  <tspan x="35" y="20" onclick="pause();" >Pause</tspan>  
+                  <tspan x="65" y="20" onclick="play();" >Play</tspan>
+                  <tspan x="90" y="20" onclick="forward();" >&gt;&gt;</tspan>
+
+                  <tspan x="20" y="40" style="cursor:pointer;" >Sound</tspan>
+                  <tspan x="50" y="40" onclick="soundUp();"  >+</tspan>
+                  <tspan x="60" y="40" onclick="soundDown();" >-</tspan>
+                  <tspan id="volume1" x="70" y="40" >7</tspan>
+                  <tspan x="80" y="40" onclick="toggleMute();" >Mute</tspan>  
+
+                  <tspan x="20" y="60" onclick="fullscreen();" >Fullscreen</tspan>
+                  <tspan x="20" y="80" onclick="exitFullscreen();" >Exit fullscreen</tspan>
+
+                  <tspan x="20" y="90" onclick="soundAverage();" >Beep</tspan>
                </text>
             </g>
          </g>
