@@ -4,6 +4,7 @@ var endTime;
 
 function load() {
     // your code goes here
+    // playing audio on load causes a promise exception
 
     settings = getSettings();
     setDisplayName(settings.displayName);
@@ -16,16 +17,9 @@ function load() {
     setTotalBoards(24);
     setClockTime(120, 13);
     setProjectedTime('15:56');
-    //setMode('break');
+    setMode('break');
+
     start();
-
-    //alert(getFarewell());
-}
-
-function soundAverage()
-{
-    playAudio('alert');
-    setTimeout("playAudio('average');", 1500);
 }
 
 function start() {
@@ -36,6 +30,7 @@ function start() {
 function play() {
     // your code goes here
     // beep();
+    soundNextBoard(true);
     hide('paused');
 }
 

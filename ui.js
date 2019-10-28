@@ -6,8 +6,6 @@ function setMode(mode, value) {
    if (mode == _mode)
       return;
 
-   // beep();
-   
    switch(mode) {
       case 'normal':
          hide('movePlay');
@@ -79,12 +77,6 @@ function setClockTime(seconds) {
    setText('overtimeSeconds', toTwoDigitString(secs));
 }
 
-// function setClockTime(minutes, seconds) {
-//    setText('timeMinutesHundred', minutes > 99 ? (minutes - minutes % 100) / 100 : '');
-//    setText('timeMinutesLower', toTwoDigitString(minutes % 100));
-//    setText('timeSeconds', toTwoDigitString(seconds));
-// }
-
 function setAverage(value, rotation) {
    setText('average', value);
    rotate('averageTab1', rotation);
@@ -143,11 +135,36 @@ function setClockHand(rotation) {
    setBackroundClipPath(rotation);
 }
 
-function playAudio(sound) {
-   var snd = new Audio(getAudioFile(sound));
-   snd.volume = volume /10;
-   snd.play();
+function soundAverage(tones, commands) {
+   if (tones && commands) {
+       playAudio('alert');
+       setTimeout("playAudio('average');", 1500);
+   }
+   else if (tones)
+       playAudio('alert');
+   else if (commands) 
+       playAudio('average');
 }
+
+function soundMove(tones, commands) {
+   if (tones && commands) {
+       playAudio('triangle');
+       setTimeout("playAudio('move');", 3500);
+   }
+   else if (tones)
+       playAudio('triangle');
+   else if (commands) 
+       playAudio('move');
+}
+
+function soundNextBoard(tones, repeat) {
+   if (tones) {
+       playAudio('dong');
+       if (repeat)
+           setTimeout("playAudio('dong');", 700);
+   }
+}
+
 // #endregion public functions
 
 // #region private and helper functions
@@ -205,14 +222,20 @@ function getAudioFile(sound) {
       case 'triangle':
          return './sounds/triangle.mp3';
       case 'move':
-         return getMoveSpeech();
+         return getMoveVoiceCommand();
       case 'average':
-         return getAverageSpeech();
+         return getAverageVoiceCommand();
       case 'dong':
       case 'beep':
       default:
          return './sounds/dong.mp3';
    }
+}
+
+function playAudio(sound) {
+   var snd = new Audio(getAudioFile(sound));
+   snd.volume = volume /10;
+   snd.play();
 }
 
 function toggleMute() {
