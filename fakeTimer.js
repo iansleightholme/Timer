@@ -19,6 +19,9 @@ function load() {
     setProjectedTime('15:56');
     setMode('break');
 
+    // var config = getBrowserConfig();
+    // alert(JSON.stringify(config));
+    
     start();
 }
 
@@ -30,7 +33,9 @@ function start() {
 function play() {
     // your code goes here
     // beep();
+    registerClient();
     soundNextBoard(true);
+
     hide('paused');
 }
 
