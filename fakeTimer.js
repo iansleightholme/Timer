@@ -19,24 +19,28 @@ function load() {
     setProjectedTime('15:56');
     // setMode('break');
 
+    setSummary();
     // var config = getBrowserConfig();
     // alert(JSON.stringify(config));
     
-    start();
+    //
 }
 
 function start() {
     endTime = new Date(new Date().getTime() + 90 * 1000);
+    registerClient();
     timer = setInterval(update, 500);
 }
 
 function play() {
     // your code goes here
     // beep();
-    registerClient();
-    soundNextBoard(true);
 
+    start();
+    soundNextBoard(true);
+    setMode('normal');
     hide('paused');
+    //timer = setInterval(update, 500);
 }
 
 function pause() {
