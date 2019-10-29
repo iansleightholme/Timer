@@ -1,11 +1,11 @@
 var _mode;
+var volume = 7;
+var mute = false;
 
 function setMode(mode, value) {
    if (mode == _mode)
       return;
 
-   beep();
-   
    switch(mode) {
       case 'normal':
         hide('normalPlay');
@@ -31,6 +31,10 @@ function setMode(mode, value) {
         hide('overtimePlay');
         show('movePlay');
          break;
+      case 'break':
+         hide('normalPlay');
+         show('breakPlay');
+         break;
       case 'ended':
         hide('normalPlay');
         hide('movePlay');
@@ -47,18 +51,6 @@ function mouseMove() {
    show('navigation');
 }
 
-function beep() {
-   var snd = new Audio("data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Rz/y8QADBwMWgQAZG/ILNAARQ4GLTcDeIIIhxGOBAuD7hOfBB3/94gcJ3w+o5/5eIAIAAAVwWgQAVQ2ORaIQwEMAJiDg95G4nQL7mQVWI6GwRcfsZAcsKkJvxgxEjzFUgfHoSQ9Qq7KNwqHwuB13MA4a1q/DmBrHgPcmjiGoh//EwC5nGPEmS4RcfkVKOhJf+WOgoxJclFz3kgn//dBA+ya1GhurNn8zb//9NNutNuhz31f////9vt///z+IdAEAAAK4LQIAKobHItEIYCGAExBwe8jcToF9zIKrEdDYIuP2MgOWFSE34wYiR5iqQPj0JIeoVdlG4VD4XA67mAcNa1fhzA1jwHuTRxDUQ//iYBczjHiTJcIuPyKlHQkv/LHQUYkuSi57yQT//uggfZNajQ3Vmz+Zt//+mm3Wm3Q576v////+32///5/EOgAAADVghQAAAAA//uQZAUAB1WI0PZugAAAAAoQwAAAEk3nRd2qAAAAACiDgAAAAAAABCqEEQRLCgwpBGMlJkIz8jKhGvj4k6jzRnqasNKIeoh5gI7BJaC1A1AoNBjJgbyApVS4IDlZgDU5WUAxEKDNmmALHzZp0Fkz1FMTmGFl1FMEyodIavcCAUHDWrKAIA4aa2oCgILEBupZgHvAhEBcZ6joQBxS76AgccrFlczBvKLC0QI2cBoCFvfTDAo7eoOQInqDPBtvrDEZBNYN5xwNwxQRfw8ZQ5wQVLvO8OYU+mHvFLlDh05Mdg7BT6YrRPpCBznMB2r//xKJjyyOh+cImr2/4doscwD6neZjuZR4AgAABYAAAABy1xcdQtxYBYYZdifkUDgzzXaXn98Z0oi9ILU5mBjFANmRwlVJ3/6jYDAmxaiDG3/6xjQQCCKkRb/6kg/wW+kSJ5//rLobkLSiKmqP/0ikJuDaSaSf/6JiLYLEYnW/+kXg1WRVJL/9EmQ1YZIsv/6Qzwy5qk7/+tEU0nkls3/zIUMPKNX/6yZLf+kFgAfgGyLFAUwY//uQZAUABcd5UiNPVXAAAApAAAAAE0VZQKw9ISAAACgAAAAAVQIygIElVrFkBS+Jhi+EAuu+lKAkYUEIsmEAEoMeDmCETMvfSHTGkF5RWH7kz/ESHWPAq/kcCRhqBtMdokPdM7vil7RG98A2sc7zO6ZvTdM7pmOUAZTnJW+NXxqmd41dqJ6mLTXxrPpnV8avaIf5SvL7pndPvPpndJR9Kuu8fePvuiuhorgWjp7Mf/PRjxcFCPDkW31srioCExivv9lcwKEaHsf/7ow2Fl1T/9RkXgEhYElAoCLFtMArxwivDJJ+bR1HTKJdlEoTELCIqgEwVGSQ+hIm0NbK8WXcTEI0UPoa2NbG4y2K00JEWbZavJXkYaqo9CRHS55FcZTjKEk3NKoCYUnSQ0rWxrZbFKbKIhOKPZe1cJKzZSaQrIyULHDZmV5K4xySsDRKWOruanGtjLJXFEmwaIbDLX0hIPBUQPVFVkQkDoUNfSoDgQGKPekoxeGzA4DUvnn4bxzcZrtJyipKfPNy5w+9lnXwgqsiyHNeSVpemw4bWb9psYeq//uQZBoABQt4yMVxYAIAAAkQoAAAHvYpL5m6AAgAACXDAAAAD59jblTirQe9upFsmZbpMudy7Lz1X1DYsxOOSWpfPqNX2WqktK0DMvuGwlbNj44TleLPQ+Gsfb+GOWOKJoIrWb3cIMeeON6lz2umTqMXV8Mj30yWPpjoSa9ujK8SyeJP5y5mOW1D6hvLepeveEAEDo0mgCRClOEgANv3B9a6fikgUSu/DmAMATrGx7nng5p5iimPNZsfQLYB2sDLIkzRKZOHGAaUyDcpFBSLG9MCQALgAIgQs2YunOszLSAyQYPVC2YdGGeHD2dTdJk1pAHGAWDjnkcLKFymS3RQZTInzySoBwMG0QueC3gMsCEYxUqlrcxK6k1LQQcsmyYeQPdC2YfuGPASCBkcVMQQqpVJshui1tkXQJQV0OXGAZMXSOEEBRirXbVRQW7ugq7IM7rPWSZyDlM3IuNEkxzCOJ0ny2ThNkyRai1b6ev//3dzNGzNb//4uAvHT5sURcZCFcuKLhOFs8mLAAEAt4UWAAIABAAAAAB4qbHo0tIjVkUU//uQZAwABfSFz3ZqQAAAAAngwAAAE1HjMp2qAAAAACZDgAAAD5UkTE1UgZEUExqYynN1qZvqIOREEFmBcJQkwdxiFtw0qEOkGYfRDifBui9MQg4QAHAqWtAWHoCxu1Yf4VfWLPIM2mHDFsbQEVGwyqQoQcwnfHeIkNt9YnkiaS1oizycqJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
-   //alert(snd.volume);
-   snd.play();
-}
-
-function soundUp() {
-   //var vid = document.getElementById("myVideo");
-   //alert(vid.volume);
-   //vid.volume = 0.2;
-   beep();
-}
 // #endregion experimental
 
 // #region public functions
@@ -91,12 +83,6 @@ function setClockTime(seconds) {
    setText('moveSeconds', toTwoDigitString(secs));
    setText('overtimeSeconds', toTwoDigitString(secs));
 }
-
-// function setClockTime(minutes, seconds) {
-//    setText('timeMinutesHundred', minutes > 99 ? (minutes - minutes % 100) / 100 : '');
-//    setText('timeMinutesLower', toTwoDigitString(minutes % 100));
-//    setText('timeSeconds', toTwoDigitString(seconds));
-// }
 
 function setAverage(value, rotation) {
    setText('average', value);
@@ -155,6 +141,37 @@ function setClockHand(rotation) {
    rotate('clockHand1', rotation);
    setBackroundClipPath(rotation);
 }
+
+function soundAverage(tones, commands) {
+   if (tones && commands) {
+       playAudio('alert');
+       setTimeout("playAudio('average');", 1500);
+   }
+   else if (tones)
+       playAudio('alert');
+   else if (commands) 
+       playAudio('average');
+}
+
+function soundMove(tones, commands) {
+   if (tones && commands) {
+       playAudio('triangle');
+       setTimeout("playAudio('move');", 3500);
+   }
+   else if (tones)
+       playAudio('triangle');
+   else if (commands) 
+       playAudio('move');
+}
+
+function soundNextBoard(tones, repeat) {
+   if (tones) {
+       playAudio('dong');
+       if (repeat)
+           setTimeout("playAudio('dong');", 700);
+   }
+}
+
 // #endregion public functions
 
 // #region private and helper functions
@@ -176,12 +193,34 @@ function setBackroundClipPath(rotation) {
    document.getElementById('clip1').setAttribute('d', path);
 }
 
-function positionText() {
+function resize() {
+   // 1.44 1.7
    var aspect = window.innerWidth / window.innerHeight;
    if (aspect > 1.7)
       aspect = 1.7;
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
-   document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
+   document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320 + (aspect < 1.3 ? 20 : 0)) + ' 0)');
+
+   if (aspect < 1.44) {
+      var labels = document.getElementsByClassName('label');
+      while (labels.length > 0) {
+         labels[0].setAttribute('class', 'smallLabel'); 
+      }
+      var values = document.getElementsByClassName('value');
+      while (values.length > 0) {
+         values[0].setAttribute('class', 'smallValue'); 
+      }
+   }
+   else {
+      var labels = document.getElementsByClassName('smallLabel');
+      while (labels.length > 0) {
+         labels[0].setAttribute('class', 'label'); 
+      }
+      var values = document.getElementsByClassName('smallValue');
+      while (values.length > 0) {
+         values[0].setAttribute('class', 'value'); 
+      }
+   }
 }
 
 function setAveragingTheme(value)
@@ -192,4 +231,65 @@ function setAveragingTheme(value)
       document.getElementById('patt1').setAttribute('fill', 'url(#jigsaw)');
 }
 
+function getAudioFile(sound) {
+   switch(sound) {
+      case 'alert':
+         // http://soundbible.com/1540-Computer-Error-Alert.html
+         return './sounds/alert.mp3';
+      case 'triangle':
+         // http://soundbible.com/1525-Triangle-Dinner-Bell.html
+         return './sounds/triangle.mp3';
+      case 'move':
+         // https://cloud.google.com/text-to-speech/
+         return getMoveVoiceCommand();
+      case 'average':
+         // https://cloud.google.com/text-to-speech/
+         return getAverageVoiceCommand();
+      case 'dong':
+      case 'beep':
+      default:
+         // http://soundbible.com/1598-Electronic-Chime.html
+         return './sounds/dong.mp3';
+   }
+}
+
+function playAudio(sound) {
+   var snd = new Audio(getAudioFile(sound));
+   snd.volume = volume /10;
+   snd.play();
+}
+
+function toggleMute() {
+   if (!mute)
+      mute = true;
+   else {
+      mute = false;
+      if (volume == 0)
+         volume = 1;
+      playAudio('beep');
+   }
+}
+
+function soundUp() {
+   setVolume(volume + 1);
+}
+
+function soundDown() {
+   setVolume(volume - 1);
+}
+
+function setVolume(value) {
+   volume = value;
+   if (volume > 10)
+      volume = 10;
+   else if (volume < 0.0)
+      volume = 0;
+
+   if (mute)
+      mute = false;
+
+   setText('volume1', volume);
+   
+   playAudio('beep');
+}
  // #endregion private and helper functions

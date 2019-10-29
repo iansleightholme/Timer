@@ -4,6 +4,7 @@ var endTime;
 
 function load() {
     // your code goes here
+    // playing audio on load causes a promise exception
 
     settings = getSettings();
     setDisplayName(settings.displayName);
@@ -16,10 +17,12 @@ function load() {
     setTotalBoards(24);
     setClockTime(120, 13);
     setProjectedTime('15:56');
-    //setMode('overtime');
-    start();
+    // setMode('break');
 
-    //alert(getFarewell());
+    // var config = getBrowserConfig();
+    // alert(JSON.stringify(config));
+    
+    start();
 }
 
 function start() {
@@ -29,7 +32,10 @@ function start() {
 
 function play() {
     // your code goes here
-    beep();
+    // beep();
+    registerClient();
+    soundNextBoard(true);
+
     hide('paused');
 }
 
@@ -76,11 +82,9 @@ function forward() {
     // your code goes here
 }
 
-
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
 }
-
 
 function getFarewell() {
     var hour = new Date().getHours();

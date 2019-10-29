@@ -16,7 +16,7 @@ function getSettings() {
         "moveTime": 90,
         "average": true,
         "averageOption": "percent",
-        "averagePercent": 80,
+        "averagePercent": 60,
         "averageSeconds": 309 
         };
 }
