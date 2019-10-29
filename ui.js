@@ -8,17 +8,20 @@ function setMode(mode, value) {
 
    switch(mode) {
       case 'normal':
-        hide('normalPlay');
-        hide('movePlay');
-        hide('breakplay');
-        hide('overtimePlay');
+         hide('ready');
+         hide('summary');
+         hide('leftTextSummary');
+         hide('movePlay');
+         hide('overtimePlay');
+         hide('ifStartedNow');
+         show('leftTextNormal');
          setAveragingTheme(false);
          show('normalPlay');
+         show('progressBar1');
          break;
       case 'average':
          setAveragingTheme(true);
-         document.getElementById('patt1').setAttribute('fill', 'url(#jigsaw)');
-         document.getElementById('patt1').setAttribute('fill', 'url(#jigsawOrange)');
+         soundAverage(settings.tones, settings.voiceCommands);
          break;
       case 'overtime':
          hide('normalPlay');
@@ -30,10 +33,11 @@ function setMode(mode, value) {
       case 'move':
         hide('normalPlay');
         hide('movePlay');
-        hide('overtimePlay');
         hide('breakplay');
+        hide('overtimePlay');
         show('movePlay');
-         break;
+        soundMove(settings.tones, settings.voiceCommands);
+        break;
       case 'break':
         hide('normalPlay');
         hide('movePlay');
@@ -56,6 +60,17 @@ function setMode(mode, value) {
 
 function mouseMove() {
    show('navigation');
+}
+
+function setSummary() {
+   setText('numBoardsPerRound', settings.boardsPerRound);
+   setText('numRounds', settings.rounds);
+   setText('breaks', settings.pause);
+   setText('boardTime', getHoursMinutesSecond(settings.boardTime));
+   setText('overtimeSummary', getHoursMinutesSecond(settings.overtime));
+   setText('averagingSummary', getHoursMinutesSecond(settings.averageSeconds));
+   setText('moveSummary', getHoursMinutesSecond(settings.moveTime));
+   show('summary');
 }
 
 // #endregion experimental
@@ -207,6 +222,7 @@ function resize() {
       aspect = 1.7;
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
    document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320 + (aspect < 1.3 ? 20 : 0)) + ' 0)');
+   document.getElementById('summary').setAttribute('transform', 'translate(' + (aspect * -320) + ' 380)');
 
    if (aspect < 1.44) {
       var labels = document.getElementsByClassName('label');
@@ -298,5 +314,13 @@ function setVolume(value) {
    setText('volume1', volume);
    
    playAudio('beep');
+}
+
+function getHoursMinutesSecond(seconds) {
+   var hours = Math.floor(seconds / 3600);
+   var minutes = Math.floor((seconds % 3600) / 60);
+   var secs = Math.floor(seconds % 60);
+
+   return (hours > 0 ? hours + ':' + toTwoDigitString(minutes) : minutes) + ':' + toTwoDigitString(secs);
 }
  // #endregion private and helper functions
