@@ -21,6 +21,12 @@ text.smallLabel {
    fill: #888888;
 }
 
+text.tinyLabel {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 14px; 
+   fill: #888888;
+}
+
 text.value {
    font-family: Roboto Condensed, sans-serif;
    font-size: 96px;
@@ -81,4 +87,10 @@ text.farewell {
    stroke-width: 1px;
    stroke-linecap: butt;
    stroke-linejoin: miter;
+}
+
+text.summary {
+   font-family: Impact;
+   font-size: 10px; 
+   fill: #555555;
 }
