@@ -17,7 +17,7 @@ function load() {
     setTotalBoards(24);
     setClockTime(120, 13);
     setProjectedTime('15:56');
-    setMode('break');
+    // setMode('break');
 
     // var config = getBrowserConfig();
     // alert(JSON.stringify(config));

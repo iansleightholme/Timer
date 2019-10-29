@@ -25,6 +25,14 @@ text.value {
    font-family: Roboto Condensed, sans-serif;
    font-size: 96px;
    fill: #000000;
+   filter: url(#bevel2);
+}
+
+text.smallValue {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 72px;
+   fill: #000000;
+   filter: url(#bevel2);
 }
 
 text.info {

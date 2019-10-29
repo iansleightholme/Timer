@@ -187,22 +187,31 @@ function setBackroundClipPath(rotation) {
 }
 
 function resize() {
+   // 1.44 1.7
    var aspect = window.innerWidth / window.innerHeight;
    if (aspect > 1.7)
       aspect = 1.7;
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
    document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
 
-   if (aspect < 1.33) {
+   if (aspect < 1.44) {
       var labels = document.getElementsByClassName('label');
       while (labels.length > 0) {
          labels[0].setAttribute('class', 'smallLabel'); 
+      }
+      var values = document.getElementsByClassName('value');
+      while (values.length > 0) {
+         values[0].setAttribute('class', 'smallValue'); 
       }
    }
    else {
       var labels = document.getElementsByClassName('smallLabel');
       while (labels.length > 0) {
          labels[0].setAttribute('class', 'label'); 
+      }
+      var values = document.getElementsByClassName('smallValue');
+      while (values.length > 0) {
+         values[0].setAttribute('class', 'value'); 
       }
    }
 }
