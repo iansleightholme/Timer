@@ -218,16 +218,21 @@ function setAveragingTheme(value)
 function getAudioFile(sound) {
    switch(sound) {
       case 'alert':
+         // http://soundbible.com/1540-Computer-Error-Alert.html
          return './sounds/alert.mp3';
       case 'triangle':
+         // http://soundbible.com/1525-Triangle-Dinner-Bell.html
          return './sounds/triangle.mp3';
       case 'move':
+         // https://cloud.google.com/text-to-speech/
          return getMoveVoiceCommand();
       case 'average':
+         // https://cloud.google.com/text-to-speech/
          return getAverageVoiceCommand();
       case 'dong':
       case 'beep':
       default:
+         // http://soundbible.com/1598-Electronic-Chime.html
          return './sounds/dong.mp3';
    }
 }

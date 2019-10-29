@@ -9,25 +9,25 @@
    fill: #333333;
 }
 
- text.label {
-    font-family: Roboto Condensed, sans-serif;
-    font-size: 48px; 
-    fill: #888888;
- }
+text.label {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 48px; 
+   fill: #888888;
+}
 
- text.smallLabel {
+text.smallLabel {
    font-family: Roboto Condensed, sans-serif;
    font-size: 36px; 
    fill: #888888;
- }
+}
 
- text.value {
-    font-family: Roboto Condensed, sans-serif;
-    font-size: 96px;
-    fill: #000000;
- }
+text.value {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 96px;
+   fill: #000000;
+}
 
- text.info {
+text.info {
    font-family: Arial, sans-serif;
    font-size: 10px; 
    fill: #888888;
