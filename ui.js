@@ -192,7 +192,7 @@ function resize() {
    if (aspect > 1.7)
       aspect = 1.7;
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
-   document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320) + ' 0)');
+   document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320 + (aspect < 1.3 ? 20 : 0)) + ' 0)');
 
    if (aspect < 1.44) {
       var labels = document.getElementsByClassName('label');
