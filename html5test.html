@@ -219,35 +219,27 @@
                <use id="progressBar1" xlink:href="#progressBar" y="295" visibility="hidden" />
             </g>
             
-
-            <g id="navigation" transform="translate(420 15)" visibility="hidden" >
+            <g id="navigation" transform="translate(420 15)"  >
+               <!-- Animation restart does not work on this version of Chrome -->
                <!-- <animate id="fadeOut" attributeType="XML" attributeName="fill-opacity" 
                   from="1.0" to="0.0"
-                  begin="navigation.mouseout" dur="8s"
-                  end="mybody.mousemove"
-                  fill="remove" />
-               -->
-               <rect rx="5" ry="5"  width="112" height="90" style="fill:#aaaaaa;" style="cursor:pointer;"/>
-
-               
-               <!-- <use x="170" y="50" xlink:href="#button" onclick="pause();" />
-               <use x="250" y="50" xlink:href="#button" onclick="play();" /> -->
-
+                  dur="5s"
+                  begin="indefinite"
+                  restart="always"
+                  fill="freeze" />  -->
+               <rect rx="5" ry="5" width="112" height="90" style="fill:#aaaaaa;" style="cursor:pointer;"/>
                <text fill="#444444" font-family="Impact" font-size="10" style="cursor:hand;user-select: none;">
                   <tspan x="20" y="20" onclick="backward();" >&lt;&lt;</tspan>
                   <tspan x="35" y="20" onclick="pause();" >Pause</tspan>  
                   <tspan x="65" y="20" onclick="play();" >Play</tspan>
                   <tspan x="90" y="20" onclick="forward();" >&gt;&gt;</tspan>
-
                   <tspan x="20" y="40" style="cursor:pointer;" >Sound</tspan>
                   <tspan x="50" y="40" onclick="soundUp();"  >+</tspan>
                   <tspan x="60" y="40" onclick="soundDown();" >-</tspan>
                   <tspan id="volume1" x="70" y="40" >7</tspan>
                   <tspan x="80" y="40" onclick="toggleMute();" >Mute</tspan>  
-
                   <tspan x="20" y="60" onclick="fullscreen();" >Fullscreen</tspan>
                   <tspan x="20" y="80" onclick="exitFullscreen();" >Exit fullscreen</tspan>
-
                   <tspan x="20" y="90" onclick="soundAverage();" >Beep</tspan>
                </text>
             </g>

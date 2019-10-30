@@ -1,6 +1,9 @@
 var _mode;
 var volume = 7;
 var mute = false;
+var count = 0;
+var fadeTimer;
+var lastMouseMove;
 
 function setMode(mode, value) {
    if (mode == _mode)
@@ -48,6 +51,25 @@ function setMode(mode, value) {
 
 function mouseMove() {
    show('navigation');
+   document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
+
+   lastMouseMove = new Date();
+   if (fadeTimer == null)
+      fadeTimer = setInterval(fadeOut, 100);
+}
+
+function fadeOut() {
+   var diff = new Date() - lastMouseMove;
+   if (diff > 10000)
+   {
+      fadeTimer = null;
+      hide('navigation');
+      document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
+   }
+   if (diff > 5000) {
+      var opacity = 1.0 - Math.min(diff - 5000, 5000)/5000;
+      document.getElementById('navigation').setAttribute('fill-opacity', opacity);
+   }
 }
 
 function setSummary() {
@@ -80,12 +102,10 @@ function setClockTime(seconds) {
    if (mins > 99) {
       setText('timeMinutesHundred', (mins - mins % 100) / 100);
       setText('timeMinutesLower', toTwoDigitString(mins % 100));
-   
    }
    else {
       setText('timeMinutesHundred', '');
       setText('timeMinutesLower', mins % 100);
-
    }
    setText('moveMinutes', mins);
    setText('overtimeMinutes', mins);
