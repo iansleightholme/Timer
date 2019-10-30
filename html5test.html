@@ -11,6 +11,7 @@
       <script src="fakeClient.js" ></script>
    </head>
    <body onload="load();resize();" onmousemove="mouseMove();" onresize="resize();" >
+      <button onclick="start();">Start</button>
       <svg id="svg" xmlns="http://www.w3.org/2000/svg"
          viewBox="-350 0 700 700" preserveAspectRatio="xMidYMax meet"
          width="100%" height="100%" >
@@ -220,7 +221,7 @@
             </g>
             
 
-            <g id="navigation" transform="translate(420 15)" visibility="hidden" >
+            <g id="navigation" transform="translate(320 15)" visibility="hidden" >
                <!-- <animate id="fadeOut" attributeType="XML" attributeName="fill-opacity" 
                   from="1.0" to="0.0"
                   begin="navigation.mouseout" dur="8s"

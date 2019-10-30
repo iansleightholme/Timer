@@ -38,22 +38,22 @@ function load() {
     settings = getSettings();
     setDisplayName(settings.displayName);
     blnPauseAfterRoundN = settings.pause;
-    //alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
-    start();
+    //Start removed and now has a button in HTML code as problem with sound promise if start part of load
+    //start();
+    setMode("normal");
 }
 
 // start is after settings agreed
 function start() {
     // your code goes here
 
-
     setClockHand(0);
     normalPlayTime = settings.boardsPerRound * settings.boardTime;
     //overtimeInSeconds needs to be calculated as yet 18/10/2019
     overtimeInSeconds = settings.overtime;
     // ensure averaging cannot be less than a board and overtime is sensible
-
-    if (overtimeInSeconds > settings.boardTime) { overtimeInSeconds = settings.boardTime };
+    
+    if (overtimeInSeconds > settings.boardTime)  {overtimeInSeconds = settings.boardTime };
  
     
     overtimePlusPlayTime = normalPlayTime + overtimeInSeconds;
@@ -70,7 +70,7 @@ function start() {
     createBoards(settings.boardsPerRound, degreesPerBoard);
     actualAverageSeconds = 0;
 
-    if (settings.averageOption = "percent") {
+    if (settings.averageOption == "percent" ) {
 
         actualAverageSeconds = settings.boardTime * settings.averagePercent / 100;
 
@@ -80,7 +80,7 @@ function start() {
         actualAverageSeconds = settings.averageSeconds;
     }
     
-    if (actualAverageSeconds < settings.boardTime) { actualAverageSeconds = settings.boardTime };
+    if (actualAverageSeconds > settings.boardTime) { actualAverageSeconds = settings.boardTime };
     
     minsAverage = Math.floor(actualAverageSeconds / 60);
     secsAverage = actualAverageSeconds % 60;
@@ -111,15 +111,14 @@ function start() {
   
     blnFirstAttempt = true;
     blnChangedColour = true;
-   
-    //alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
-      //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
+    //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
     setProjectedTime(projectedFinishTime.getHours() + ":" + projectedFinishTime.getMinutes());
 
 
 
     document.getElementById('paused').setAttribute('visibility', 'hidden');
     timer = setInterval(update, updateInterval);
+  
     //update();
 
 
@@ -136,8 +135,10 @@ function update() {
         setMode("normal", true);
         blnFirstAttempt = false;
         perUnitTimeGone = 0.0;
+        
 
         setProgress(perUnitTimeGone);
+        soundNextBoard(settings.tones);
     }
     else {
         //possibilities are normal mid round play, averaging, overtime, move time, paused, fast forward, back 
@@ -154,7 +155,7 @@ function update() {
         thisRoundToGo = thisRoundToGo - updateInterval/1000;
         safetyCountDown = safetyCountDown - 1;
         if (safetyCountDown < 1) {
-            alert("should stop for testing");
+        // should stop for testing
             return;
         }
 
@@ -172,9 +173,6 @@ function update() {
             moving(-thisRoundToGo);
             if(blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound){
                 blnPaused = true;
-                alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  currentRoundNumber " + currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
-               
-               
                 pause();
             }
            // else
@@ -196,10 +194,10 @@ function update() {
         else {
             var boardBeingPlayed = Math.ceil((roundTime - thisRoundToGo) / settings.boardTime);
             if (boardBeingPlayed > currentBoardNumber) {
-                // alert("current board " + currentBoardNumber + ", boardBeingPlayed " + boardBeingPlayed);
+                // "current board " + currentBoardNumber + ", boardBeingPlayed " + boardBeingPlayed);
                 currentBoardNumber = currentBoardNumber + 1;
                 setBoard(currentBoardNumber);
-                beep();
+                soundNextBoard(settings.tones);
             }
         }
 
@@ -220,23 +218,20 @@ function nextRound() {
     currentRoundNumber++;
     if(currentRoundNumber > settings.rounds)
     {
-        alert("reached the end - should stop!");
+        //("reached the end - should stop!");
         clearInterval(timer);
         setMode('ended', getFarewell());
         return;
-        
-        //setMode('end', getFarewell());
     }
     else
     {
+        //New round - at least one round left to play
         currentBoardNumber = 1;
         setMode('normal');
         setBoard(currentBoardNumber);
-        
         setRound(currentRoundNumber);
         thisRoundToGo = roundTime;
         degreesPerBoard = settings.boardTime / roundTime * 360;
-
         createBoards(settings.boardsPerRound, degreesPerBoard);
         setClockHand(0);
         if (settings.average) {
@@ -248,19 +243,19 @@ function overtimePeriodReached() { }
 function backward() {
     // your code goes here
     // last board, move or last round
-    alert(" back requested, currentBoardNumber " + currentBoardNumber + ", currentRoundNumber " + currentRoundNumber);
+    //(" back requested, currentBoardNumber " + currentBoardNumber + ", currentRoundNumber " + currentRoundNumber);
     var originalThisRoundToGo = thisRoundToGo;
     var originalTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime - (roundTime - thisRoundToGo);
     var boardActuallyReached = settings.boardsPerRound * (currentRoundNumber - 1) + currentBoardNumber;
     var roundToGoAtStartOfCurrentBoard = roundTime - settings.boardTime * (currentBoardNumber - 1);
-    alert("boardActiallyReached " + boardActuallyReached);
-    alert("thisRoundToGo - roundToGoAtStartOfCurrentBoard " + (thisRoundToGo - roundToGoAtStartOfCurrentBoard ));
-    alert("settings.boardTime * 0.05 " + settings.boardTime * 0.05);
+    //("boardActiallyReached " + boardActuallyReached);
+    //("thisRoundToGo - roundToGoAtStartOfCurrentBoard " + (thisRoundToGo - roundToGoAtStartOfCurrentBoard ));
+    //("settings.boardTime * 0.05 " + settings.boardTime * 0.05);
     if (thisRoundToGo - roundToGoAtStartOfCurrentBoard  < (settings.boardTime * 0.05) || boardActuallyReached == 1) {
         //just restart last board
         thisRoundToGo = roundToGoAtStartOfCurrentBoard;
-        alert("no change to board number or round number thisRoundToGo " + thisRoundToGo);
-        alert("was thisRoundToGo " + originalThisRoundToGo);
+        //("no change to board number or round number thisRoundToGo " + thisRoundToGo);
+        //("was thisRoundToGo " + originalThisRoundToGo);
     }
     else
     {
@@ -269,8 +264,8 @@ function backward() {
         currentRoundNumber = 1 + Math.floor((boardActuallyReached-1)/settings.boardsPerRound);
         currentBoardNumber = (boardActuallyReached%settings.boardsPerRound);
         thisRoundToGo = roundTime - settings.boardTime * (currentBoardNumber - 1);
-        alert("change to board number -- boardActuallyReached now " + boardActuallyReached );
-        alert("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
+        //("change to board number -- boardActuallyReached now " + boardActuallyReached );
+        //("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
 
     }
     setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
@@ -288,9 +283,9 @@ function backward() {
     var changeFinishTime = revisedTimeLeftToGo - originalTimeLeftToGo;
     projectedFinishTime = addMillisecondsToDate(projectedFinishTime, changeFinishTime * 1000);
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
-    alert(" back Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
-    alert( " revisedTimeLeftToGo " + revisedTimeLeftToGo + " seconds, originalTimeLeftToGo " + originalTimeLeftToGo + "seconds");
-    alert( " projected end time altered by adding changeFinishTime" + changeFinishTime + " seconds");
+    //(" back Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    //( " revisedTimeLeftToGo " + revisedTimeLeftToGo + " seconds, originalTimeLeftToGo " + originalTimeLeftToGo + "seconds");
+    //( " projected end time altered by adding changeFinishTime" + changeFinishTime + " seconds");
    
 }
 
@@ -299,7 +294,7 @@ function backward() {
 function forward() {
     // your code goes here
     // move either to next board, move  or new round
-    //alert(" forward Pressed, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    //(" forward Pressed, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
     var originalThisRoundToGo = thisRoundToGo;
     if (currentBoardNumber < settings.boardsPerRound){
         thisRoundToGo = roundTime - (currentBoardNumber * settings.boardTime) ;
@@ -320,8 +315,8 @@ function forward() {
     var changeFinishTime = originalThisRoundToGo - thisRoundToGo ;
     projectedFinishTime = addMillisecondsToDate(projectedFinishTime, -changeFinishTime * 1000);
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
-    //alert(" forward Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
-    //alert( " projected end time altered by subtracting changeFinishTime" + changeFinishTime + " seconds");
+    //(" forward Actioned, current thisRoundToGo" + thisRoundToGo + ", currentBoardNumber " + currentBoardNumber);
+    //( " projected end time altered by subtracting changeFinishTime" + changeFinishTime + " seconds");
 }
 function pause() {
     // clearInterval(timer);
@@ -336,14 +331,12 @@ function moving(movingTime) {
     // your code goes here
     setMode("move");
     setClockHand(360 * (movingTime/settings.moveTime));
-
     setClockTime(settings.moveTime - movingTime);
 }
 function play() {
     // clearInterval(timer);
     // your code goes here
     blnPaused = false;
-    //alert("play pressed, blnPauseAfterRoundN " + blnPauseAfterRoundN)
     blnPauseAfterRoundN = false;
     
     hide('paused');

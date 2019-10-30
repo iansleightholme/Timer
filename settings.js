@@ -4,19 +4,19 @@ function getSettings() {
         "enabled": true,
         "name": "Friday evening",
         "displayName": "Stafford Bridge Club",
-        "boardsPerRound": 3,
-        "rounds": 8,
-        "tones": false,
-        "voiceCommands": false,
+        "boardsPerRound": 2,
+        "rounds": 3,
+        "tones": true,
+        "voiceCommands": true,
         "pause": true,
         "pauseAfterRound": 4,
         "boardTime": 375,
-        "overtime": 160,
+        "overtime": 50,
         "autoCalcOvertime": true,
-        "moveTime": 90,
+        "moveTime": 15,
         "average": true,
         "averageOption": "percent",
         "averagePercent": 60,
-        "averageSeconds": 309 
+        "averageSeconds": 90 
         };
 }

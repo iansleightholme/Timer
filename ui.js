@@ -14,7 +14,9 @@ function setMode(mode, value) {
          hide('movePlay');
          hide('overtimePlay');
          hide('ifStartedNow');
+         hide('sessionEnded');
          show('leftTextNormal');
+         show('rightText');
          setAveragingTheme(false);
          show('normalPlay');
          show('progressBar1');
@@ -26,30 +28,39 @@ function setMode(mode, value) {
       case 'overtime':
          hide('normalPlay');
          hide('movePlay');
-         hide('breakplay');
+         hide('breakPlay');
          hide('overtimePlay');
+         hide('sessionEnded');
          show('overtimePlay');
+         soundNextBoard(settings.tones, true);
          break;
       case 'move':
         hide('normalPlay');
         hide('movePlay');
-        hide('breakplay');
+        hide('breakPlay');
         hide('overtimePlay');
+        hide('sessionEnded');
         show('movePlay');
         soundMove(settings.tones, settings.voiceCommands);
         break;
       case 'break':
         hide('normalPlay');
         hide('movePlay');
-        hide('breakplay');
+        hide('breakPlay');
         hide('overtimePlay');
+        hide('sessionEnded');
          show('breakPlay');
          break;
       case 'ended':
         hide('normalPlay');
         hide('movePlay');
         hide('overtimePlay');
-        hide('breakplay');
+        hide('breakPlay');
+        hide('leftTextNormal');
+        hide('rightText');
+        hide('normalPlay');
+        hide('navigation');
+        hide('progressBar1');
         setText('farewell', value);
         show('sessionEnded');
          break;
