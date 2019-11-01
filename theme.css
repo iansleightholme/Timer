@@ -94,3 +94,16 @@ text.summary {
    font-size: 10px; 
    fill: #555555;
 }
+
+.button {
+   cursor: hand;
+   fill: #dddddd;
+}
+
+.button:hover {
+   fill: white;
+}
+
+.button:active{
+   fill: #ff9900;
+}
