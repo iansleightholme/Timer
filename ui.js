@@ -1,6 +1,7 @@
 var _mode;
 var volume = 7;
 var mute = false;
+var isFullscreen = false;
 var count = 0;
 var fadeTimer;
 var lastMouseMove;
@@ -60,14 +61,14 @@ function mouseMove() {
 
 function fadeOut() {
    var diff = new Date() - lastMouseMove;
-   if (diff > 10000)
+   if (diff > 9000)
    {
       fadeTimer = null;
       hide('navigation');
-      document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
+      // document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
    }
    if (diff > 5000) {
-      var opacity = 1.0 - Math.min(diff - 5000, 5000)/5000;
+      var opacity = 1.0 - Math.min(diff - 5000, 4000)/4000;
       document.getElementById('navigation').setAttribute('fill-opacity', opacity);
    }
 }
@@ -205,8 +206,18 @@ function soundNextBoard(tones, repeat) {
 // #endregion public functions
 
 // #region private and helper functions
-function fullscreen() { document.documentElement.requestFullscreen(); }
-function exitFullscreen() { document.exitFullscreen(); }
+function fullscreen() {
+   hide('fullscreenId'); 
+   show('exitFullscreenId') 
+   document.documentElement.requestFullscreen(); 
+}
+
+function exitFullScreen() {   // function cannot have the same name as document.exitFullscreen()
+   hide('exitFullscreenId') 
+   show('fullscreenId'); 
+   document.exitFullscreen(); 
+}
+
 function setText(id, value) { document.getElementById(id).textContent = value; }
 function show(id) { document.getElementById(id).setAttribute('visibility', 'inherit'); }
 function hide(id) { document.getElementById(id).setAttribute('visibility', 'hidden'); }
@@ -291,10 +302,13 @@ function playAudio(sound) {
 }
 
 function toggleMute() {
-   if (!mute)
+   if (!mute) {
       mute = true;
+      show('muted');
+   }
    else {
       mute = false;
+      hide('muted');
       if (volume == 0)
          volume = 1;
       playAudio('beep');
@@ -317,7 +331,8 @@ function setVolume(value) {
       volume = 0;
 
    if (mute)
-      mute = false;
+      toggleMute();
+      //mute = false;
 
    setText('volume1', volume);
    
