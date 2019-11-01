@@ -251,8 +251,11 @@ function backward() {
     //("boardActiallyReached " + boardActuallyReached);
     //("thisRoundToGo - roundToGoAtStartOfCurrentBoard " + (thisRoundToGo - roundToGoAtStartOfCurrentBoard ));
     //("settings.boardTime * 0.05 " + settings.boardTime * 0.05);
-    if (thisRoundToGo - roundToGoAtStartOfCurrentBoard  < (settings.boardTime * 0.05) || boardActuallyReached == 1) {
+    
+    if (roundToGoAtStartOfCurrentBoard - thisRoundToGo > 5 || boardActuallyReached == 1) {
+        //if (roundToGoAtStartOfCurrentBoard - thisRoundToGo > (settings.boardTime * 0.01) || boardActuallyReached == 1) {
         //just restart last board
+        
         thisRoundToGo = roundToGoAtStartOfCurrentBoard;
         //("no change to board number or round number thisRoundToGo " + thisRoundToGo);
         //("was thisRoundToGo " + originalThisRoundToGo);
@@ -260,9 +263,11 @@ function backward() {
     else
     {
         //go back one board
+        
         boardActuallyReached--;
+        
         currentRoundNumber = 1 + Math.floor((boardActuallyReached-1)/settings.boardsPerRound);
-        currentBoardNumber = (boardActuallyReached%settings.boardsPerRound);
+        currentBoardNumber = 1 + (boardActuallyReached%settings.boardsPerRound);
         thisRoundToGo = roundTime - settings.boardTime * (currentBoardNumber - 1);
         //("change to board number -- boardActuallyReached now " + boardActuallyReached );
         //("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
@@ -322,7 +327,7 @@ function pause() {
     // clearInterval(timer);
     // your code goes here
     blnPaused = true;
-    
+   
     show('paused');
 }
 

@@ -12,6 +12,8 @@
    </head>
    <body onload="load();resize();" onmousemove="mouseMove();" onresize="resize();" >
       <button onclick="start();">Start</button>
+      <button onclick="play();">Play</button>
+      <button onclick="pause();">Pause</button>
       <svg id="svg" xmlns="http://www.w3.org/2000/svg"
          viewBox="-350 0 700 700" preserveAspectRatio="xMidYMax meet"
          width="100%" height="100%" >
@@ -227,8 +229,8 @@
                <g transform="translate(0 10)" onclick="play();">
                   <use xlink:href="#button" transform="scale(2 2)"  />
                   <use x=0 y=8 xlink:href="#triangle" transform="scale(3) rotate(90)" /> 
-                  <!-- <text x="0" y="10" onclick="pause();" >Pause</text>  
-                  <text x="0" y="20"  >Play</text> -->
+                  <text x="100" y="10" onclick="pause();" >Pause</text>  
+                  <text x="0" y="20"  >Play</text>
                </g>
 
                <g transform="translate(-110 40)" onclick="backward();" >

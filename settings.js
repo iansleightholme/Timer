@@ -4,7 +4,7 @@ function getSettings() {
         "enabled": true,
         "name": "Friday evening",
         "displayName": "Stafford Bridge Club",
-        "boardsPerRound": 2,
+        "boardsPerRound": 5,
         "rounds": 3,
         "tones": true,
         "voiceCommands": true,
