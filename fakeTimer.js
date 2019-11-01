@@ -80,10 +80,12 @@ function update() {
 
 function backward() {
     // your code goes here
+    alert('backward');
 }
 
 function forward() {
     // your code goes here
+    alert('forward');
 }
 
 function addMinutesToDate(date, minutes) {
