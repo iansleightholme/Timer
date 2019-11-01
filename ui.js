@@ -1,7 +1,8 @@
 var _mode;
 var volume = 7;
-var mute = false;
+var isMute = false;
 var isFullscreen = false;
+var isPaused = false;
 var count = 0;
 var fadeTimer;
 var lastMouseMove;
@@ -71,6 +72,21 @@ function setMode(mode, value) {
    }
 
    _mode = mode;
+}
+
+function togglePlayPause() {
+   if (isPaused) {
+      isPaused = false;
+      hide('pauseId');
+      show('playId');
+      pause();
+   }
+   else {
+      isPaused = true;
+      hide('playId');
+      show('pauseId');
+      play();
+   }
 }
 
 function mouseMove() {
@@ -197,6 +213,8 @@ function setClockHand(rotation) {
 }
 
 function soundAverage(tones, commands) {
+   if (isMute)
+      return;
    if (tones && commands) {
        playAudio('alert');
        setTimeout("playAudio('average');", 1500);
@@ -208,6 +226,8 @@ function soundAverage(tones, commands) {
 }
 
 function soundMove(tones, commands) {
+   if (isMute)
+      return;
    if (tones && commands) {
        playAudio('triangle');
        setTimeout("playAudio('move');", 3500);
@@ -219,6 +239,8 @@ function soundMove(tones, commands) {
 }
 
 function soundNextBoard(tones, repeat) {
+   if (isMute)
+      return;
    if (tones) {
        playAudio('dong');
        if (repeat)
@@ -265,6 +287,7 @@ function resize() {
    document.getElementById('leftText').setAttribute('transform', 'translate(' + (aspect * -320) + ' 0)');
    document.getElementById('rightText').setAttribute('transform', 'translate(' + (aspect * 320 + (aspect < 1.3 ? 20 : 0)) + ' 0)');
    document.getElementById('summary').setAttribute('transform', 'translate(' + (aspect * -320) + ' 380)');
+   document.getElementById('navigation').setAttribute('transform', 'translate(' + (aspect * -320 + 270 + (aspect - 1) * -50) + ' 570)');
 
    if (aspect < 1.44) {
       var labels = document.getElementsByClassName('label');
@@ -325,12 +348,12 @@ function playAudio(sound) {
 }
 
 function toggleMute() {
-   if (!mute) {
-      mute = true;
+   if (!isMute) {
+      isMute = true;
       show('muted');
    }
    else {
-      mute = false;
+      isMute = false;
       hide('muted');
       if (volume == 0)
          volume = 1;
@@ -353,7 +376,7 @@ function setVolume(value) {
    else if (volume < 0.0)
       volume = 0;
 
-   if (mute)
+   if (isMute)
       toggleMute();
       //mute = false;
 

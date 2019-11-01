@@ -114,14 +114,19 @@
                <rect id="progress" x="-204" y="0" rx="4" ry="4" width="8" height="8" fill="#2F8C64"></rect>
             </g>
             <text id="overtime" x="-194" y="0" font-family="Impact" fill="white" font-size="16px" >OVERTIME</text>
-            <g id="button" fill="#777777" >
+            <g id="button" >
                <ellipse cx="0" cy="0" rx="34" ry="34" fill="#191919" />
                <ellipse cx="0" cy="0" rx="31" ry="31" fill="#222222" filter="url(#bevel2)" />
                <ellipse cx="0" cy="0" rx="27" ry="27" />
-               <ellipse cx="0" cy="0" rx="25" ry="25" fill="green" />
+               <ellipse cx="0" cy="0" rx="25" ry="25" fill="#015127" />
             </g>
-            <path id="arrow" fill="white" d="M0 -3 l-6 0 l0 6 l6 0 l0 7 l10 -10 l-10 -10 l0 10 Z" />
-            <path id="triangle" fill="white" d="M-7 -5 l14 0 l-7 -10 Z" />
+            <path id="arrow" d="M0 -3 l-6 0 l0 6 l6 0 l0 7 l10 -10 l-10 -10 l0 10 Z" />
+            <path id="triangle" d="M-7 -5 l14 0 l-7 -10 Z" />
+            <g id="pauseLines" >
+               <rect x=-11 y=-18 width=8 height="36" />
+               <rect x=3 y=-18 width=8 height="36" />
+            </g>
+
          </defs>
    
          <g id="active" >
@@ -224,47 +229,43 @@
                <use id="progressBar1" xlink:href="#progressBar" y="295" visibility="hidden" />
             </g>
             
-            <g id="navigation" transform="translate(-320 570)" >
-               <rect rx="15" ry="15" x="-270" y=-10 width="500" height="100" style="fill:#333333;cursor:pointer;stroke:#666666;stroke-width:2px" />
-               <g transform="translate(0 10)" onclick="play();">
-                  <use xlink:href="#button" transform="scale(2 2)"  />
-                  <use x=0 y=8 xlink:href="#triangle" transform="scale(3) rotate(90)" /> 
-                  <text x="100" y="10" onclick="pause();" >Pause</text>  
-                  <text x="0" y="20"  >Play</text>
-               </g>
+            <g id="navigation" transform="translate(-300 570)"  >
+               <rect rx="15" ry="15" x="-270" y=-10 width="500" height="100" style="fill:#333333;stroke:#666666;stroke-width:2px; " />
 
-               <g transform="translate(-110 40)" onclick="backward();" >
+               <g class="button" onclick="toggleMute();" >
+                  <path d="M-235 34 l-8 0 l0 10 l8 0 l10 10 l0 -30 l-10 10 Z"  />
+                  <path id="muted" d="M-245 23 l30 30" stroke="#cccccc" stroke-width=3 visibility="hidden" />
+               </g>
+               <text id="volume1" x="-190" y="50" fill="white" font-family="Impact" font-size="28" style="user-select: none;" text-anchor="end" >7</text>
+               <use x=-180 y=42 xlink:href="#triangle" class="button" onclick="soundUp();" />
+               <use x=-180 y=33 xlink:href="#triangle" class="button" onclick="soundDown();" transform="rotate(180 -180 35)" />
+
+               <g transform="translate(-110 40)" onclick="backward();" class="button" >
                   <use xlink:href="#button" />
                   <use x=0 y=4 xlink:href="#triangle" transform="rotate(270)" /> 
                   <use x=0 y=12 xlink:href="#triangle" transform="rotate(270)" /> 
                </g>
-             
-               <g transform="translate(110 40)" onclick="forward();" >
+
+               <g transform="translate(0 10)" onclick="togglePlayPause();" class="button" >
+                  <use xlink:href="#button" transform="scale(2 2)" />
+                  <use id="playId" y=8 xlink:href="#triangle" transform="scale(3) rotate(90)" />
+                  <use id="pauseId" xlink:href="#pauseLines" visibility="hidden" />
+               </g>
+
+               <g transform="translate(110 40)" onclick="forward();" class="button" >
                   <use xlink:href="#button" />
                   <use x=0 y=3 xlink:href="#triangle" transform="rotate(90)" /> 
                   <use x=0 y=11 xlink:href="#triangle" transform="rotate(90)" />
                </g>
-             
-               <use x=-180 y=42 xlink:href="#triangle" style="cursor:hand" onclick="soundUp();" />
-               <use x=-180 y=33 xlink:href="#triangle" style="cursor:hand" onclick="soundDown();" transform="rotate(180 -180 35)" />
 
-               <g style="cursor:pointer;" onclick="toggleMute();" fill="white" >
-                  <path d="M-235 34 l-8 0 l0 10 l8 0 l10 10 l0 -30 l-10 10 Z"  />
-                  <path id="muted" d="M-245 23 l30 30" stroke="white" stroke-width=3 visibility="hidden" />
-               </g>
-
-               <text fill="#eeeeee" font-family="Impact" font-size="10" style="cursor:hand;user-select: none;" >
-                  <tspan id="volume1" x="-191" y="50" font-size="28" text-anchor="end" >7</tspan>
-               </text>
-
-               <g id="fullscreenId" transform="translate(185 40)" style="cursor:hand" onclick="fullscreen();"  >
+               <g id="fullscreenId" class="button" transform="translate(185 40)" onclick="fullscreen();"  >
                   <rect rx=5 ry=5 x=-24 y =-24 width=48 height=48 stroke="none" fill="#555555" /> 
                   <rect rx=3 ry=3 x=-18 y =-18 width=36 height=36 stroke="white" stroke-width="1" fill="none"  /> 
                   <use x=6 y=-6 xlink:href="#arrow" transform="rotate(-45 6 -6)" />
                   <use x=-6 y=6 xlink:href="#arrow" transform="rotate(135 -6 6)" />
                </g>
 
-               <g id="exitFullscreenId" transform="translate(185 40)" style="cursor:hand" onclick="exitFullScreen();" visibility="hidden" >
+               <g id="exitFullscreenId" class="button" transform="translate(185 40)" onclick="exitFullScreen();" visibility="hidden" >
                   <rect rx=5 ry=5 x=-24 y =-24 width=48 height=48 stroke="none" fill="#555555" /> 
                   <rect rx=3 ry=3 x=-18 y =-18 width=36 height=36 stroke="white" stroke-width="1" fill="none"  /> 
                   <use x=8 y=-8 xlink:href="#arrow" transform="rotate(135 8 -8)" />
