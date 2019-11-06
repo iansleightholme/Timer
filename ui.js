@@ -19,7 +19,9 @@ function setMode(mode, value) {
          hide('movePlay');
          hide('overtimePlay');
          hide('ifStartedNow');
+         hide('sessionEnded');
          show('leftTextNormal');
+         show('rightText');
          setAveragingTheme(false);
          show('normalPlay');
          show('progressBar1');
@@ -30,21 +32,42 @@ function setMode(mode, value) {
          break;
       case 'overtime':
          hide('normalPlay');
+         hide('movePlay');
+         hide('breakPlay');
+         hide('overtimePlay');
+         hide('sessionEnded');
          show('overtimePlay');
+         soundNextBoard(settings.tones, true);
          break;
       case 'move':
-         hide('overtimePlay');
-         show('movePlay');
-         soundMove(settings.tones, settings.voiceCommands);
-         break;
+        hide('normalPlay');
+        hide('movePlay');
+        hide('breakPlay');
+        hide('overtimePlay');
+        hide('sessionEnded');
+        show('movePlay');
+        soundMove(settings.tones, settings.voiceCommands);
+        break;
       case 'break':
-         hide('normalPlay');
+        hide('normalPlay');
+        hide('movePlay');
+        hide('breakPlay');
+        hide('overtimePlay');
+        hide('sessionEnded');
          show('breakPlay');
          break;
       case 'ended':
-         hide('active');
-         setText('farewell', value);
-         show('sessionEnded');
+        hide('normalPlay');
+        hide('movePlay');
+        hide('overtimePlay');
+        hide('breakPlay');
+        hide('leftTextNormal');
+        hide('rightText');
+        hide('normalPlay');
+        hide('navigation');
+        hide('progressBar1');
+        setText('farewell', value);
+        show('sessionEnded');
          break;
    }
 
@@ -108,7 +131,7 @@ function setRound(value) { setText('round', value); }
 function setBoard(value) { setText('boardIndex', value); }
 function setTotalBoards(value) { setText('totalBoards', value); }
 function setProjectedTime(value) { setText('projectedTime', value); }
-function setProgress(percent) { document.getElementById('progress').setAttribute('width', 8 + 400 * (percent > 1.0 ? 1.0 : percent < 0.0 ? 0.0 : percent)); }
+function setProgress(perunit) { document.getElementById('progress').setAttribute('width', 8 + 400 * (perunit > 1.0 ? 1.0 : perunit < 0.0 ? 0.0 : perunit)); }
 
 function setClockTime(seconds) {
    if (seconds < 0.0)
