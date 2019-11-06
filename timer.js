@@ -37,7 +37,7 @@ function load() {
     settings = getSettings();
     setDisplayName(settings.displayName);
     blnPauseAfterRoundN = settings.pause;
-    alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
+    alert("blnPauseAfterRoundN " + blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
     start();
 }
 
@@ -53,15 +53,15 @@ function start() {
     // ensure averaging cannot be less than a board and overtime is sensible
 
     if (overtimeInSeconds > settings.boardTime) { overtimeInSeconds = settings.boardTime };
- 
-    
+
+
     overtimePlusPlayTime = normalPlayTime + overtimeInSeconds;
 
     roundTime = settings.boardsPerRound * settings.boardTime + overtimeInSeconds;
     if (overtimeInSeconds > 0) {
-        
-        setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds)/(roundTime));
-        
+
+        setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds) / (roundTime));
+
     }
     thisRoundToGo = roundTime;
     degreesPerBoard = settings.boardTime / roundTime * 360;
@@ -78,9 +78,9 @@ function start() {
 
         actualAverageSeconds = settings.averageSeconds;
     }
-    
+
     if (actualAverageSeconds < settings.boardTime) { actualAverageSeconds = settings.boardTime };
-    
+
     minsAverage = Math.floor(actualAverageSeconds / 60);
     secsAverage = actualAverageSeconds % 60;
 
@@ -105,14 +105,14 @@ function start() {
     currentRoundNumber = 1;
     setRound(currentRoundNumber);
     startTime = new Date();
-  
+
     projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
-  
+
     blnFirstAttempt = true;
     blnChangedColour = true;
-   
+
     //alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
-      //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
+    //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
     setProjectedTime(projectedFinishTime.getHours() + ":" + projectedFinishTime.getMinutes());
 
 
@@ -127,11 +127,11 @@ function start() {
 
 // called once and repeats until such time as the timer interval is cleared.
 function update() {
-    
+
     if (blnFirstAttempt) {
         var safetyCountDown = 1000;
         startTime = new Date();
-        projectedFinishTime= addMinutesToDate(startTime, totalSessionMinutes);
+        projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
         setMode("normal", true);
         blnFirstAttempt = false;
     }
@@ -143,7 +143,7 @@ function update() {
 
             return;
         }
-        thisRoundToGo = thisRoundToGo - updateInterval/1000;
+        thisRoundToGo = thisRoundToGo - updateInterval / 1000;
         safetyCountDown = safetyCountDown - 1;
         if (safetyCountDown < 1) {
             alert("should stop for testing");
@@ -155,30 +155,27 @@ function update() {
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
     // check end of board, overtime, round limits
     //either move on to the next round or go to move time or finish
-    if (thisRoundToGo < 0 ) {
-        if(currentRoundNumber  >= settings.rounds || thisRoundToGo < -settings.moveTime)
-        {
+    if (thisRoundToGo < 0) {
+        if (currentRoundNumber >= settings.rounds || thisRoundToGo < -settings.moveTime) {
             nextRound();
         }
-    else if (thisRoundToGo < 0 ) {
+        else if (thisRoundToGo < 0) {
             moving(-thisRoundToGo);
-            if(blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound){
+            if (blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound) {
                 blnPaused = true;
-                alert("blnPauseAfterRoundN " + blnPauseAfterRoundN  + ",  currentRoundNumber " + currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
-               
-               
+                alert("blnPauseAfterRoundN " + blnPauseAfterRoundN + ",  currentRoundNumber " + currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
+
+
                 pause();
             }
-           // else
-           // {
-               // moving(-thisRoundToGo);
-           // }
+            // else
+            // {
+            // moving(-thisRoundToGo);
+            // }
         }
     }
-    else
-    {
-        if (thisRoundToGo < actualAverageSeconds && settings.average && thisRoundToGo > overtimeInSeconds)
-        {
+    else {
+        if (thisRoundToGo < actualAverageSeconds && settings.average && thisRoundToGo > overtimeInSeconds) {
             setMode("average");
         }
         if (thisRoundToGo < overtimeInSeconds) {
@@ -195,36 +192,34 @@ function update() {
             }
         }
 
-    // your code goes here after start has been pressed at the interval set by the timer - started out at every half second
-    var date = new Date();
-    //test used actual time, in reality needs time remaining for round
-    //setClockTime(date.getMinutes(), date.getSeconds());
-    //setClockHand(date.getMinutes() * 60 + date.getSeconds());
+        // your code goes here after start has been pressed at the interval set by the timer - started out at every half second
+        var date = new Date();
+        //test used actual time, in reality needs time remaining for round
+        //setClockTime(date.getMinutes(), date.getSeconds());
+        //setClockHand(date.getMinutes() * 60 + date.getSeconds());
 
-    setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+        setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
 
-    setClockTime(thisRoundToGo);
-    //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
+        setClockTime(thisRoundToGo);
+        //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
     }
 
 }
-function nextRound() { 
+function nextRound() {
     currentRoundNumber++;
-    if(currentRoundNumber > settings.rounds)
-    {
+    if (currentRoundNumber > settings.rounds) {
         alert("reached the end - should stop!");
         clearInterval(timer);
         setMode('ended', getFarewell());
         return;
-        
+
         //setMode('end', getFarewell());
     }
-    else
-    {
+    else {
         currentBoardNumber = 1;
         setMode('normal');
         setBoard(currentBoardNumber);
-        
+
         setRound(currentRoundNumber);
         thisRoundToGo = roundTime;
         degreesPerBoard = settings.boardTime / roundTime * 360;
@@ -235,7 +230,7 @@ function nextRound() {
             setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - actualAverageSeconds / roundTime));
         }
     }
-    
+
 }
 function overtimePeriodReached() { }
 function backward() {
@@ -249,7 +244,7 @@ function pause() {
     // clearInterval(timer);
     // your code goes here
     blnPaused = true;
-    
+
     show('paused');
 }
 
@@ -257,7 +252,7 @@ function moving(movingTime) {
     // clearInterval(timer);
     // your code goes here
     setMode("move");
-    setClockHand(360 * (movingTime/settings.moveTime));
+    setClockHand(360 * (movingTime / settings.moveTime));
 
     setClockTime(settings.moveTime - movingTime);
 }
@@ -267,26 +262,26 @@ function play() {
     blnPaused = false;
     alert("play pressed, blnPauseAfterRoundN " + blnPauseAfterRoundN)
     blnPauseAfterRoundN = false;
-    
+
     hide('paused');
 }
 
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
- }
- function addMillisecondsToDate(date, milliseconds) {
+}
+function addMillisecondsToDate(date, milliseconds) {
     return new Date(date.getTime() + milliseconds);
- }
- function getFarewell() {
+}
+function getFarewell() {
     var hour = new Date().getHours();
     if (hour < 6)
-       return 'Good bye';
+        return 'Good bye';
     else if (hour < 12)
-       return 'Good morning';
+        return 'Good morning';
     else if (hour < 17)
-       return 'Good afternoon';
+        return 'Good afternoon';
     else if (hour < 20)
         return 'Good evening';
     else
-       return 'Good night';
- }
+        return 'Good night';
+}
