@@ -3,12 +3,12 @@ function getSettings() {
         "version": "1.0",
         "enabled": true,
         "name": "Friday evening",
-        "displayName": "Stafford Bridge Club",
+        "displayName": "Hollies Club",
         "boardsPerRound": 3,
-        "rounds": 8,
-        "tones": false,
+        "rounds": 4,
+        "tones": true,
         "voiceCommands": true,
-        "pause": true,
+        "pause": false,
         "pauseAfterRound": 4,
         "boardTime": 375,
         "overtime": 160,
@@ -16,7 +16,7 @@ function getSettings() {
         "moveTime": 90,
         "average": true,
         "averageOption": "percent",
-        "averagePercent": 60,
+        "averagePercent": 80,
         "averageSeconds": 90 
         };
 }

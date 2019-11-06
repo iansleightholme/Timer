@@ -24,12 +24,13 @@ var currentRoundNumber = 1;
 var startTime = new Date();
 var projectedFinishTime = new Date();
 var blnChangedColour = true;
-// updateInterval is set in milliseconds
-var updateInterval = 500;
+// updateInterval is set in milliseconds, shorter the time the smoother the slider will move
+var updateInterval = 100;
 var blnPaused = false;
 var blnMoving = false;
 var blnPauseAfterRoundN = false;
 var perUnitTimeGone = 0.0;
+var currentSliderPosition = 0.0;
 
 
 function load() {
@@ -212,8 +213,18 @@ function update() {
     setClockTime(thisRoundToGo);
     //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
     }
-
 }
+function dragSlider(newSliderPosition){
+    // code needed
+    // pick up slider position but accept only 5% of round time change at a time
+    var perUnitTimeActuallyGone = calcPerUnitTimeGone();
+    newSliderPosition = Math.max(perUnitTimeActuallyGone * 0.95, 0.0);
+    newSliderPosition = Math.min(perUnitTimeActuallyGone * 1.05, 1.0);
+    //calculate accurate board and round number etc.
+    // secondsGone = (currentRoundNumber - 1) * (roundTime + settings.moveTime) + (roundTime - thisRoundToGo);
+    //return (secondsGone/totalSessionSeconds);
+}
+
 function nextRound() { 
     currentRoundNumber++;
     if(currentRoundNumber > settings.rounds)
@@ -244,8 +255,8 @@ function backward() {
     // your code goes here
     // last board, move or last round
     //(" back requested, currentBoardNumber " + currentBoardNumber + ", currentRoundNumber " + currentRoundNumber);
-    var originalThisRoundToGo = thisRoundToGo;
-    var originalTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime - (roundTime - thisRoundToGo);
+    //var originalThisRoundToGo = thisRoundToGo;
+    var originalTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime +  thisRoundToGo;
     var boardActuallyReached = settings.boardsPerRound * (currentRoundNumber - 1) + currentBoardNumber;
     var roundToGoAtStartOfCurrentBoard = roundTime - settings.boardTime * (currentBoardNumber - 1);
     //("boardActiallyReached " + boardActuallyReached);
@@ -267,7 +278,7 @@ function backward() {
         boardActuallyReached--;
         
         currentRoundNumber = 1 + Math.floor((boardActuallyReached-1)/settings.boardsPerRound);
-        currentBoardNumber = 1 + (boardActuallyReached%settings.boardsPerRound);
+        currentBoardNumber = 1 + ((boardActuallyReached-1)%settings.boardsPerRound);
         thisRoundToGo = roundTime - settings.boardTime * (currentBoardNumber - 1);
         //("change to board number -- boardActuallyReached now " + boardActuallyReached );
         //("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
@@ -284,7 +295,7 @@ function backward() {
     if (settings.average) {
         setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - actualAverageSeconds / roundTime));
     }
-    var revisedTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime;
+    var revisedTimeLeftToGo = (roundTime + settings.moveTime) * (settings.rounds - currentRoundNumber) - settings.moveTime + thisRoundToGo;
     var changeFinishTime = revisedTimeLeftToGo - originalTimeLeftToGo;
     projectedFinishTime = addMillisecondsToDate(projectedFinishTime, changeFinishTime * 1000);
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
