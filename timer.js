@@ -61,9 +61,9 @@ function start() {
 
     roundTime = settings.boardsPerRound * settings.boardTime + overtimeInSeconds;
     if (overtimeInSeconds > 0) {
-        
-        setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds)/(roundTime));
-        
+
+        setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds) / (roundTime));
+
     }
     thisRoundToGo = roundTime;
     degreesPerBoard = settings.boardTime / roundTime * 360;
@@ -107,9 +107,9 @@ function start() {
     currentRoundNumber = 1;
     setRound(currentRoundNumber);
     startTime = new Date();
-  
+
     projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
-  
+
     blnFirstAttempt = true;
     blnChangedColour = true;
     //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
@@ -128,11 +128,11 @@ function start() {
 
 // called once and repeats until such time as the timer interval is cleared.
 function update() {
-    
+
     if (blnFirstAttempt) {
         var safetyCountDown = 20000;
         startTime = new Date();
-        projectedFinishTime= addMinutesToDate(startTime, totalSessionMinutes);
+        projectedFinishTime = addMinutesToDate(startTime, totalSessionMinutes);
         setMode("normal", true);
         blnFirstAttempt = false;
         perUnitTimeGone = 0.0;
@@ -153,7 +153,7 @@ function update() {
 
             return;
         }
-        thisRoundToGo = thisRoundToGo - updateInterval/1000;
+        thisRoundToGo = thisRoundToGo - updateInterval / 1000;
         safetyCountDown = safetyCountDown - 1;
         if (safetyCountDown < 1) {
         // should stop for testing
@@ -165,27 +165,24 @@ function update() {
     setProjectedTime(projectedFinishTime.getHours() + ":" + toTwoDigitString(projectedFinishTime.getMinutes()));
     // check end of board, overtime, round limits
     //either move on to the next round or go to move time or finish
-    if (thisRoundToGo < 0 ) {
-        if(currentRoundNumber  >= settings.rounds || thisRoundToGo < -settings.moveTime)
-        {
+    if (thisRoundToGo < 0) {
+        if (currentRoundNumber >= settings.rounds || thisRoundToGo < -settings.moveTime) {
             nextRound();
         }
-    else if (thisRoundToGo < 0 ) {
+        else if (thisRoundToGo < 0) {
             moving(-thisRoundToGo);
-            if(blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound){
+            if (blnPauseAfterRoundN && currentRoundNumber == settings.pauseAfterRound) {
                 blnPaused = true;
                 pause();
             }
-           // else
-           // {
-               // moving(-thisRoundToGo);
-           // }
+            // else
+            // {
+            // moving(-thisRoundToGo);
+            // }
         }
     }
-    else
-    {
-        if (thisRoundToGo < actualAverageSeconds && settings.average && thisRoundToGo > overtimeInSeconds)
-        {
+    else {
+        if (thisRoundToGo < actualAverageSeconds && settings.average && thisRoundToGo > overtimeInSeconds) {
             setMode("average");
         }
         if (thisRoundToGo < overtimeInSeconds) {
@@ -202,16 +199,16 @@ function update() {
             }
         }
 
-    // your code goes here after start has been pressed at the interval set by the timer - started out at every half second
-    var date = new Date();
-    //test used actual time, in reality needs time remaining for round
-    //setClockTime(date.getMinutes(), date.getSeconds());
-    //setClockHand(date.getMinutes() * 60 + date.getSeconds());
+        // your code goes here after start has been pressed at the interval set by the timer - started out at every half second
+        var date = new Date();
+        //test used actual time, in reality needs time remaining for round
+        //setClockTime(date.getMinutes(), date.getSeconds());
+        //setClockHand(date.getMinutes() * 60 + date.getSeconds());
 
-    setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
+        setClockHand(360 * (roundTime - thisRoundToGo) / roundTime);
 
-    setClockTime(thisRoundToGo);
-    //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
+        setClockTime(thisRoundToGo);
+        //setClockTime(Math.floor(thisRoundToGo / 60), Math.floor(thisRoundToGo % 60)); Ian changed to just give seconds 21/10/19
     }
 }
 function dragSlider(newSliderPosition){
@@ -354,7 +351,7 @@ function play() {
     // your code goes here
     blnPaused = false;
     blnPauseAfterRoundN = false;
-    
+
     hide('paused');
 }
 function calcPerUnitTimeGone() {
@@ -366,20 +363,20 @@ function calcPerUnitTimeGone() {
 }
 function addMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
- }
- function addMillisecondsToDate(date, milliseconds) {
+}
+function addMillisecondsToDate(date, milliseconds) {
     return new Date(date.getTime() + milliseconds);
- }
- function getFarewell() {
+}
+function getFarewell() {
     var hour = new Date().getHours();
     if (hour < 6)
-       return 'Good bye';
+        return 'Good bye';
     else if (hour < 12)
-       return 'Good morning';
+        return 'Good morning';
     else if (hour < 17)
-       return 'Good afternoon';
+        return 'Good afternoon';
     else if (hour < 20)
         return 'Good evening';
     else
-       return 'Good night';
- }
+        return 'Good night';
+}
