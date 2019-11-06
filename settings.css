@@ -1,0 +1,46 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+td.label {
+    text-align: right; 
+    padding-right:15px;
+}
+
+td.summaryLabel {
+    padding-right:15px;
+}
+
+aside.right {
+    float: right;
+}
+
+option {
+    padding:3px; 
+}
+
+input, select {
+    padding:3px; 
+    /* font-size:large; */
+}
+
+summary {
+    /* font-size: x-large; */
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+button.big {
+    font-family: Calibri;
+    /* background-color: #4CAF50; Green */
+    font-size: 36px;
+}
+
+span.help {
+    font-size: x-large;
+    font-weight: normal;
+    padding-left: 5px;
+    color: lightskyblue;
+}

@@ -2,151 +2,13 @@
 <html  xml:lang="en" lang="en">
   <head>
     <title>Bridge Timer Settings</title>
-    <script>
-      function load() {
-        document.getElementById('boardsHelp').setAttribute('title', getLongText());
-      }
-
-      function getLongText() {
-        return "thesis noun a long piece of writing that is the final part of an advanced university degree \
-dissertation noun a long piece of writing on a particular subject that you do as part of a university degree \n \n \
-essay noun a short piece of writing on a particular subject that is published in a book, magazine, or newspaper \
-monograph noun a formal piece of writing, or a short book on a particular subject";
-      }
-
-      function getHelp() {
-        document.getElementById('help').innerText = "You can receive help wit this functions";
-      }
-    </script>
-    <style>
-      body {
-        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        padding-left: 100px;
-        padding-right: 100px;
-      }
-
-      td.label {
-        text-align: right; 
-        padding-right:15px;
-      }
-
-      td.summaryLabel {
-        padding-right:15px;
-      }
-
-      aside.right {
-        float: right;
-      }
-
-      option {
-        padding:3px; 
-      }
-
-      input, select {
-        padding:3px; 
-        /* font-size:large; */
-      }
-
-      summary {
-        /* font-size: x-large; */
-        font-weight: bold;
-        font-size: 1.5em;
-      }
-
-      button.big {
-        font-family: Calibri;
-        /* background-color: #4CAF50; Green */
-        font-size: 36px;
-      }
-
-    </style>
-    <script>
-        function loadValues(name) {
-          var settings = getSettingsByName(name);
-          if (settings == null)
-            return;
-
-          setValue('boardsPerRound', settings.boardsPerRound);
-          setValue('numRounds', settings.rounds);
-          setValue('displayName', settings.title);
-          setCheck('hasTones', settings.tones);
-          setCheck('hasVoice', settings.voiceCommands);
-          setValue('hasPause', settings.pause);
-          setValue('numPause', settings.pauseAfterRound);
-          setValue('boardTime', settings.boardTime);
-          setValue('overtime', settings.overtime);
-          setCheck("autoCalcOvertime", false);
-          setValue('movetime', settings.moveTime);
-          setCheck('hasAverage', settings.average);
-          setOption('averageOption', 'percent');
-          setValue('averagePercent', 'averagePercent');
-          setValue('averageSeconds', 'averageSeconds');
-        }
-
-        function setValue(name, value) { document.getElementById(name).value = value; }
-        function setCheck(name, value) { document.getElementById(name).checked = value; }
-        function setSelect(name, value) { document.getElementById(name).setSelect(); }
-
-        function getSettingsByName(name) {
-          var settings = getSettings();
-          for (i=0; i < settings.sets.length; i++) {
-            if (settings.sets[i].name == name && settings.sets[i].enabled)
-              return settings.sets[i];
-          }
-        }
-
-        function getSettings() {
-          return {
-            "sets": [
-              {
-                "version": "1.0",
-                "enabled": true,
-                "name": "8 rounds of 3 boards",
-                "displayName": "My Local Bridge Club",
-                "boardsPerRound": "3",
-                "rounds": "9",
-                "tones": true,
-                "voiceCommands": true,
-                "pause": true,
-                "pauseAfterRound": "3",
-                "boardTime": "375",
-                "overtime": "160",
-                "autoCalcOvertime": false,
-                "moveTime": "100",
-                "average": true,
-                "averageOption": "percent",
-                "averagePercent": "100",
-                "averageSeconds": "300" 
-              },
-              {
-                "version": "1.0",
-                "enabled": true,
-                "name": "Friday evening",
-                "displayName": "My Local Bridge Club",
-                "boardsPerRound": "4",
-                "rounds": "6",
-                "tones": false,
-                "voiceCommands": false,
-                "pause": true,
-                "pauseAfterRound": "4",
-                "boardTime": "400",
-                "overtime": "75",
-                "autoCalcOvertime": true,
-                "moveTime": "120",
-                "average": true,
-                "averageOption": "percent",
-                "averagePercent": "80",
-                "averageSeconds": "320" 
-              }
-            ]};  
-        }
-      </script>
+    <link type="text/css" href="settings.css" rel="stylesheet" >
+    <script src="settings.js" ></script>
+    <script src="help.js" ></script>
   </head>
-
   <body onload="load();">
-    <h1>Settings</h1>
+    <h1>Settings<span id="startHelp" class="help" >&#x1F6C8;</span></h1>
     <article>
-
       <aside class="right" >
         <div style="background: green; color: white;padding:10px 30px 30px 30px;">
           <h2>Summary</h2>
@@ -165,15 +27,7 @@ monograph noun a formal piece of writing, or a short book on a particular subjec
           Save/overwrite these settings for next time<input type="checkbox" id="saveSettings" checked /><br />&nbsp;&nbsp;
           <input type="text" id="saveSettingsName" placeholder="name" style="min-width:30px" />
         </div>
-        <div id="help" style="padding:20px 30px 30px 30px;outline: 1px dotted gray;margin-top:20px">
-          help
-          </div>
-            <!-- Help
-            <div id="help" >
-          </aside> -->
       </aside>
-
-
 
       <section>
         <h2>Use saved settings</h2>
@@ -188,25 +42,23 @@ monograph noun a formal piece of writing, or a short book on a particular subjec
       </section>
 
       <section>
-        <h2>Basic</h2>
+        <h2>Basic<span id="basicHelp" class="help" >&#x1F6C8;</span></h2>
                   <table><tr><th style="text-align: left;">
         <h3>Boards and rounds</h3>
                   </th></tr><tr><td class="label" >
-        <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" />&nbsp;&nbsp;
-        <span id="boardsHelp" onmouseover="getHelp('boardsPerRound');" style="font-size:x-large;color: lightskyblue;">&#xFFFD;</span>
-        <!-- 1F6C8 -->
+        <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" />
                   </td></tr><tr><td class="label">
         <label>Number of rounds</label></td><td><input type="number" id="numRounds" min="1" max="50" />
                   </td></tr><tr><td class="label" >
         <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title"/>
                   </td></tr><tr><th style="text-align: left;">
-        <h3>Sounds</h3>
+        <h3>Sounds <span id="soundsHelp" class="help" >&#x1F6C8;</span></h3>
                   </th></tr><tr><td class="label" >
         <label>Tones</label></td><td><input type="checkbox" id="hasTones" checked />
                   </td></tr><tr><td class="label" >
         <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" checked />
                   </td></tr><tr><th style="text-align: left;">
-        <h3>Pause</h3>
+        <h3>Pause <span id="pauseHelp" class="help" >&#x1F6C8;</span></h3>
                   </tr><tr><td class="label" >
         <label>Automatically pause play after round</label></td><td>
         <input type="checkbox" name="hasPause" checked >
@@ -220,7 +72,7 @@ monograph noun a formal piece of writing, or a short book on a particular subjec
       <details>
         <summary>Advanced settings</summary>
                 <table><tr><th style="text-align: left;">
-        <h3>Timings</h3>
+        <h3>Timings<span id="timesHelp" class="help" >&#x1F6C8;</span></h3>
                 </th></tr><tr><td class="label" >
         <label>Time required to play an average board</label></td><td><input type="number" name="boardTime" value="375" min="30" max="1000" /> seconds
                 </td></tr><tr><td class="label" >
@@ -230,7 +82,8 @@ monograph noun a formal piece of writing, or a short book on a particular subjec
                 </td></tr><tr><td class="label" >
         <label>Move time between rounds</label></td><td><input type="number" name="moveTime" value="90" min="0" max="1000" /> seconds
                 </td></tr><tr><td class="label" style="vertical-align: top;" >
-        <label>Signal no further boards should be started<br /> in the current round after less than </label></td><td>
+        <label>Signal no further boards should be started<br /> in the current round after less than </label>
+        <span id="averagingHelp" class="help" >&#x1F6C8;</span></td><td>
         <input type="checkbox" name="hasAverage" value="true" /><br />
         <input type="radio" id="at1" name="averageOption" value="percent" checked />
         <input id="averagePercent" type="number" min="5" max="200" /> percent of an average board time<br />
