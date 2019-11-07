@@ -1,15 +1,14 @@
-function load() {
+var sets;
+
+function loadSettings() {
+    sets = getSettingSets();
     setHelp();
 }
 
-function setHelp() {
-    document.getElementById('basicHelp').setAttribute('title', getHelp('basic'));
-    document.getElementById('startHelp').setAttribute('title', getHelp('start'));
-    document.getElementById('timesHelp').setAttribute('title', getHelp('times'));
-    document.getElementById('soundsHelp').setAttribute('title', getHelp('sounds'));
-    document.getElementById('pauseHelp').setAttribute('title', getHelp('pause'));
-    document.getElementById('averagingHelp').setAttribute('title', getHelp('averaging'));
-}
+
+function getSettings() { return getSettingsByName('active'); }
+
+// #region private and helper functions
 
 function loadValues(name) {
     var settings = getSettingsByName(name);
@@ -31,85 +30,105 @@ function loadValues(name) {
     setOption('averageOption', 'percent');
     setValue('averagePercent', 'averagePercent');
     setValue('averageSeconds', 'averageSeconds');
-  }
+}
 
-  function setValue(name, value) { document.getElementById(name).value = value; }
-  function setCheck(name, value) { document.getElementById(name).checked = value; }
-  function setSelect(name, value) { document.getElementById(name).setSelect(); }
+function setHelp() {
+    setTitle('basicHelp', getHelp('basic'));
+    setTitle('startHelp', getHelp('start'));
+    setTitle('timesHelp', getHelp('times'));
+    setTitle('soundsHelp', getHelp('sounds'));
+    setTitle('pauseHelp', getHelp('pause'));
+    setTitle('averagingHelp', getHelp('averaging'));
+}
 
-  function getSettingsByName(name) {
-    var settings = getSettings();
-    for (i=0; i < settings.sets.length; i++) {
-      if (settings.sets[i].name == name && settings.sets[i].enabled)
-        return settings.sets[i];
+function setValue(name, value) { document.getElementById(name).value = value; }
+function setCheck(name, value) { document.getElementById(name).checked = value; }
+function setSelect(name, value) { document.getElementById(name).setSelect(); }
+function setTitle(id, value) { document.getElementById(id).setAttribute('title', value); }
+
+function getSettingsByName(name) {
+    if (sets == null)
+        sets = getSettingSets();
+
+    for (i=0; i < sets.sets.length; i++) {
+        if (settings.sets[i].name == name && settings.sets[i].enabled)
+            return settings.sets[i];
     }
-  }
+}
 
-function getSettings() {
+function getSettingSets() {
     return {
         "sets": [
         {
             "version": "1.0",
             "enabled": true,
-            "name": "8 rounds of 3 boards",
-            "displayName": "My Local Bridge Club",
-            "boardsPerRound": "3",
-            "rounds": "9",
-            "tones": true,
+            "isDefault": true,
+            "name": "active",
+            "displayName": "Hollies Club",
+            "boardsPerRound": 3,
+            "rounds": 8,
+            "tones": false,
             "voiceCommands": true,
             "pause": true,
-            "pauseAfterRound": "3",
-            "boardTime": "375",
-            "overtime": "160",
-            "autoCalcOvertime": false,
-            "moveTime": "100",
+            "pauseAfterRound": 4,
+            "pauseRepeat": false,
+            "pauseTime": 600,
+            "boardTime": 375,
+            "overtime": 160,
+            "autoCalcOvertime": true,
+            "moveTime": 90,
             "average": true,
             "averageOption": "percent",
-            "averagePercent": "100",
-            "averageSeconds": "300" 
+            "averagePercent": 60,
+            "averageSeconds": 90 
         },
         {
             "version": "1.0",
             "enabled": true,
-            "name": "Friday evening",
-            "displayName": "My Local Bridge Club",
-            "boardsPerRound": "4",
-            "rounds": "6",
-            "tones": false,
-            "voiceCommands": false,
-            "pause": true,
-            "pauseAfterRound": "4",
-            "boardTime": "400",
-            "overtime": "75",
+            "isDefault": false,
+            "name": "factory",
+            "displayName": "Bridge Timer",
+            "boardsPerRound": 3,
+            "rounds": 8,
+            "tones": true,
+            "voiceCommands": true,
+            "pause": false,
+            "pauseAfterRound": 4,
+            "pauseRepeat": false,
+            "pauseTime": 600,
+            "boardTime": 375,
+            "overtime": 160,
             "autoCalcOvertime": true,
-            "moveTime": "120",
+            "moveTime": 90,
             "average": true,
             "averageOption": "percent",
-            "averagePercent": "80",
-            "averageSeconds": "320" 
+            "averagePercent": 60,
+            "averageSeconds": 90 
+        },
+        {
+            "version": "1.0",
+            "enabled": true,
+            "isDefault": false,
+            "name": "8 rounds of 3 boards",
+            "displayName": "My Local Bridge Club",
+            "boardsPerRound": 3,
+            "rounds": 9,
+            "tones": true,
+            "voiceCommands": true,
+            "pause": true,
+            "pauseAfterRound": 3,
+            "pauseTime": 600,
+            "pauseRepeat": true,
+            "boardTime": 375,
+            "overtime": 160,
+            "autoCalcOvertime": false,
+            "moveTime": 100,
+            "average": true,
+            "averageOption": "percent",
+            "averagePercent": 100,
+            "averageSeconds": 300
         }
     ]};  
 }
 
-function getSettings() {
-    return {
-        "version": "1.0",
-        "enabled": true,
-        "name": "Friday evening",
-        "displayName": "Stafford Bridge Club",
-        "boardsPerRound": 3,
-        "rounds": 8,
-        "tones": false,
-        "voiceCommands": true,
-        "pause": true,
-        "pauseAfterRound": 4,
-        "boardTime": 375,
-        "overtime": 160,
-        "autoCalcOvertime": true,
-        "moveTime": 90,
-        "average": true,
-        "averageOption": "percent",
-        "averagePercent": 60,
-        "averageSeconds": 90 
-        };
-}
+// #endregion private and helper functions
