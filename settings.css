@@ -44,3 +44,32 @@ span.help {
     padding-left: 5px;
     color: lightskyblue;
 }
+
+.tooltip {
+    font-size: x-large;
+    font-weight: normal;
+    position: relative;
+    display: inline-block;
+    /* border-bottom: 1px dotted black; */
+    padding-left: 5px;
+    color: lightskyblue;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 5px;
+    width: 600px;
+    border-radius: 10px;
+    padding: 15px;
+    background: lightgrey;
+    z-index: 1;
+    position: absolute;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

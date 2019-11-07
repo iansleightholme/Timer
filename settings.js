@@ -33,18 +33,18 @@ function loadValues(name) {
 }
 
 function setHelp() {
-    setTitle('basicHelp', getHelp('basic'));
-    setTitle('startHelp', getHelp('start'));
-    setTitle('timesHelp', getHelp('times'));
-    setTitle('soundsHelp', getHelp('sounds'));
-    setTitle('pauseHelp', getHelp('pause'));
-    setTitle('averagingHelp', getHelp('averaging'));
+    setHelpToolTip('basicHelp', getHelp('basic'));
+    setHelpToolTip('startHelp', getHelp('start'));
+    setHelpToolTip('timesHelp', getHelp('times'));
+    setHelpToolTip('soundsHelp', getHelp('sounds'));
+    setHelpToolTip('pauseHelp', getHelp('pause'));
+    setHelpToolTip('averagingHelp', getHelp('averaging'));
 }
 
 function setValue(name, value) { document.getElementById(name).value = value; }
 function setCheck(name, value) { document.getElementById(name).checked = value; }
 function setSelect(name, value) { document.getElementById(name).setSelect(); }
-function setTitle(id, value) { document.getElementById(id).setAttribute('title', value); }
+function setHelpToolTip(id, html) { document.getElementById(id).innerHTML = html; }
 
 function getSettingsByName(name) {
     if (sets == null)

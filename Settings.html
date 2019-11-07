@@ -8,7 +8,7 @@
   </head>
 
   <body onload="loadSettings();">
-    <h1>Settings<span id="startHelp" class="help" >&#x2370;</span></h1>
+    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span></h1>
     <article>
       <aside class="right" >
         <div style="background: green; color: white;padding:10px 30px 30px 30px;">
@@ -33,7 +33,7 @@
       <section>
         <h2>Use saved settings</h2>
         If you've previously saved settings, then you can select them again &nbsp;&nbsp;&nbsp;
-        <select name="saved" title="Saved settings" onchange="loadValues(this.value);">
+        <select name="saved" onchange="loadValues(this.value);">
           <option value="Default">Default</option>
           <option value="Monday">Monday lessons</option>
           <option value="8 rounds of 3 boards">8 rounds of 3 boards</option>
@@ -43,7 +43,7 @@
       </section>
 
       <section>
-        <h2>Basic<span id="basicHelp" class="help" >&#x2370;</span></h2>
+        <h2>Basic<span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></h2>
                   <table><tr><th style="text-align: left;">
         <h3>Boards and rounds</h3>
                   </th></tr><tr><td class="label" >
@@ -53,13 +53,13 @@
                   </td></tr><tr><td class="label" >
         <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title"/>
                   </td></tr><tr><th style="text-align: left;">
-        <h3>Sounds <span id="soundsHelp" class="help" >&#x2370;</span></h3>
+        <h3>Sounds <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span></h3>
                   </th></tr><tr><td class="label" >
         <label>Tones</label></td><td><input type="checkbox" id="hasTones" checked />
                   </td></tr><tr><td class="label" >
         <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" checked />
                   </td></tr><tr><th style="text-align: left;">
-        <h3>Pause <span id="pauseHelp" class="help" >&#x2370;</span></h3>
+        <h3>Pause <span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></h3>
                   </tr><tr><td class="label" >
         <label>Automatically pause play after round</label></td><td>
         <input type="checkbox" name="hasPause" checked >
@@ -73,7 +73,7 @@
       <details>
         <summary>Advanced settings</summary>
                 <table><tr><th style="text-align: left;">
-        <h3>Timings<span id="timesHelp" class="help" >&#x2370;</span></h3>
+        <h3>Timings<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span></h3>
                 </th></tr><tr><td class="label" >
         <label>Time required to play an average board</label></td><td><input type="number" name="boardTime" value="375" min="30" max="1000" /> seconds
                 </td></tr><tr><td class="label" >
@@ -84,7 +84,7 @@
         <label>Move time between rounds</label></td><td><input type="number" name="moveTime" value="90" min="0" max="1000" /> seconds
                 </td></tr><tr><td class="label" style="vertical-align: top;" >
         <label>Signal no further boards should be started<br /> in the current round after less than </label>
-        <span id="averagingHelp" class="help" >&#x2370;</span></td><td>
+        <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
         <input type="checkbox" name="hasAverage" value="true" /><br />
         <input type="radio" id="at1" name="averageOption" value="percent" checked />
         <input id="averagePercent" type="number" min="5" max="200" /> percent of an average board time<br />
