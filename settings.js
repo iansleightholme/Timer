@@ -1,4 +1,4 @@
-function load() {
+function loadSettings() {
     setHelp();
 }
 
@@ -98,11 +98,13 @@ function getSettings() {
         "name": "Friday evening",
         "displayName": "Hollies Club",
         "boardsPerRound": 3,
-        "rounds": 4,
-        "tones": true,
+        "rounds": 8,
+        "tones": false,
         "voiceCommands": true,
-        "pause": false,
+        "pause": true,
         "pauseAfterRound": 4,
+        "pauseRepeat": false,
+        "pauseTime": 0,
         "boardTime": 375,
         "overtime": 160,
         "autoCalcOvertime": true,

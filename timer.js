@@ -60,6 +60,7 @@ function start() {
     overtimePlusPlayTime = normalPlayTime + overtimeInSeconds;
 
     roundTime = settings.boardsPerRound * settings.boardTime + overtimeInSeconds;
+    
     if (overtimeInSeconds > 0) {
 
         setOvertime(360 * (roundTime - 0.5 * overtimeInSeconds) / (roundTime));
