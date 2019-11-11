@@ -18,12 +18,3 @@ function getBrowserConfig() {
         + "&Version=3.0.3"
         + "&Referrer=" + encodeURIComponent(document.referrer);
 }
-
-// function getBrowserConfig() {
-//     return {
-//         "TimeZoneOffset" : (new Date()).getTimezoneOffset(),
-//         "Resolution" : screen.width + 'x' + screen.height,
-//         "Version" : "3.0",
-//         "Referrer" : encodeURIComponent(document.referrer)
-//     };
-// }

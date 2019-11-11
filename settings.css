@@ -38,13 +38,6 @@ button.big {
     font-size: 36px;
 }
 
-span.help {
-    font-size: x-large;
-    font-weight: normal;
-    padding-left: 5px;
-    color: lightskyblue;
-}
-
 .tooltip {
     font-size: x-large;
     font-weight: normal;

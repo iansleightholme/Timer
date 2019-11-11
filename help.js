@@ -20,7 +20,7 @@ function getHelpStart() {
 \"Boards per round\", \"Number of rounds\" and \"Title/club name\" should be amended to the correct values for the session.  <br /><br />\
 All settings other than those mentioned above contain default values that are broadly standard and may be accepted unchanged.  <br /><br />\
 The green box on the right shows a brief summary/overview of the session with the currently configured options.  Primarily, this is given as a reasonableness check on the configured options.   <br /><br />\
-Further help is available by clicking on the blue i's.  <br /><br />\
+Further help is available by clicking on the blue ?'s.  <br /><br />\
 This timer is designed to be viewed by a session director initially seated at a normal distance from the monitor and by bridge players seated some way from the screen.  Inactive buttons (used only by the director) fade out to invisible but will reappear as the mouse is moved anywhere on the screen.";
 }
 
