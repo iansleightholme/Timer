@@ -1,11 +1,11 @@
 // JSON.parse JSON.stringify
 
-function getSettings() {
+function getActiveSettings() {
     var active = localStorage.getItem('active');
     return active != null ? JSON.parse(active) : getFactoryDefaultSets().sets[0];
 }
 
-function setSettings(value) {
+function setActiveSettings(value) {
     localStorage.setItem('active', JSON.stringify(value));
 }
 

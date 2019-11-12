@@ -20,7 +20,7 @@
           </td></tr><tr><td class="summaryLabel" >
           Total session time </td><td><span id="numSessionHoursMins"></span>
           </td></tr><tr><td class="summaryLabel" >
-          Boards per hour </td><td><span id="numBoardsPerHour"></span>
+          Boards per hour (excl. breaks)</td><td><span id="numBoardsPerHour"></span>
           </td></tr></table><br />
           <button class="big" onclick="next();" >Next</button>
         </div><br />
@@ -35,10 +35,12 @@
         <h2>Use saved settings</h2>
         If you've previously saved settings, then you can select them again &nbsp;&nbsp;&nbsp;<br />
         <div style="padding-top:5px;">
-          <select id="saved" onchange="changeSelection(this.value);" ></select>&nbsp;&nbsp;
-          <button id="undoChangesId" disabled >Undo changes</button>&nbsp;&nbsp;
-          <button >Set as default</button>&nbsp;&nbsp;
-          <button onclick="createNew();" >Create new</button>
+          <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
+          <button class="small" onclick="addNew();" >+</button>
+          <button class="small" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
+          <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
+          <button class="small" id="setDefaultId" onclick="setDefault();" >Set as default</button>&nbsp;&nbsp;
         </div>
         <br />
       </section>
@@ -96,9 +98,9 @@
                 <tr><th style="text-align: left;">
         <h3>Saved settings</h3>
                 </th></tr><tr><td class="label" >
-        <label>Restore standard/default setting only</label></td><td><button onclick="resetStandard();" >Restore default</button>
+        <label>Restore standard setting only</label></td><td><button class="small" onclick="resetStandard();" >Restore standard</button>
                 </td></tr><tr><td class="label" >
-        <label>Clear all saved settings</label></td><td><button onclick="clearSettings();">Clear</button>
+        <label>Clear all saved settings</label></td><td><button class="small" onclick="clearSettings();">Clear</button>
                 </td></tr></table>
       </details>
     </article>

@@ -38,6 +38,11 @@ button.big {
     font-size: 36px;
 }
 
+button.small {
+    font-family: Calibri;
+    font-size: 18px;
+}
+
 .tooltip {
     font-size: x-large;
     font-weight: normal;

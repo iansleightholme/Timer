@@ -35,11 +35,11 @@ var perUnitTimeGone = 0.0;
 function load() {
     // your code goes here
 
-    settings = getSettings();
+    settings = getActiveSettings();
     setDisplayName(settings.displayName);
     blnPauseAfterRoundN = settings.pause;
     alert("blnPauseAfterRoundN " + blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
-    start();
+    //start();
 }
 
 // start is after settings agreed

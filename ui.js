@@ -12,6 +12,9 @@ function setMode(mode, value) {
       return;
 
    switch(mode) {
+      case 'ready':
+         // starts in ready position
+         break;
       case 'normal':
          hide('ready');
          hide('summary');
@@ -40,34 +43,34 @@ function setMode(mode, value) {
          soundNextBoard(settings.tones, true);
          break;
       case 'move':
-        hide('normalPlay');
+         hide('normalPlay');
         hide('movePlay');
-        hide('breakPlay');
-        hide('overtimePlay');
-        hide('sessionEnded');
-        show('movePlay');
-        soundMove(settings.tones, settings.voiceCommands);
-        break;
+         hide('breakPlay');
+         hide('overtimePlay');
+         hide('sessionEnded');
+         show('movePlay');
+         soundMove(settings.tones, settings.voiceCommands);
+         break;
       case 'break':
-        hide('normalPlay');
-        hide('movePlay');
-        hide('breakPlay');
-        hide('overtimePlay');
-        hide('sessionEnded');
+         hide('normalPlay');
+         hide('movePlay');
+         hide('breakPlay');
+         hide('overtimePlay');
+         hide('sessionEnded');
          show('breakPlay');
          break;
       case 'ended':
-        hide('normalPlay');
-        hide('movePlay');
-        hide('overtimePlay');
-        hide('breakPlay');
-        hide('leftTextNormal');
-        hide('rightText');
-        hide('normalPlay');
-        hide('navigation');
-        hide('progressBar1');
-        setText('farewell', value);
-        show('sessionEnded');
+         hide('normalPlay');
+         hide('movePlay');
+         hide('overtimePlay');
+         hide('breakPlay');
+         hide('leftTextNormal');
+         hide('rightText');
+         hide('normalPlay');
+         hide('navigation');
+         hide('progressBar1');
+         setText('farewell', value);
+         show('sessionEnded');
          break;
    }
 

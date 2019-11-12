@@ -5,7 +5,7 @@ var endTime;
 function load() {
     // your code goes here
     // playing audio on load causes a promise exception
-    settings = getSettings();
+    settings = getActiveSettings();
 
     setDisplayName(settings.displayName);
     createBoards(5, 60);

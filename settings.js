@@ -3,18 +3,20 @@ var settings;   // current setting
 
 function load() {
     sets = getSets();
-    updateSelectionOptions(getSettingsNames());
+    loadSelectOptions(getSettingsNames());
     setSelection(getDefaultSettingsName());
     setHelp();
 }
 
-function getSettingsByName(name) {
-    for (i=0; i < sets.length; i++)
-        if (sets[i].name == name && sets[i].enabled)
-            return sets[i];
+// buttons and events
+function selectChange(value) {
+    if (isChanged() 
+        && !confirm('There are unsaved changes.  Cancel & save changes or Ok to proceed'))
+        return;
+    setSelection(value);
 }
 
-function createNew() {
+function addNew() {
     // requests distinct name
     var names = getSettingsNames();
     var name = prompt('Please enter a name for your settings', '');
@@ -24,7 +26,7 @@ function createNew() {
         return;
 
     // copies the default set
-    settings = getFactoryDefaultSets().sets[0];
+    settings = getFormSettings();
     settings.name = name;
     saveSettings(settings, name);
 
@@ -35,70 +37,55 @@ function createNew() {
     setSelection(name);
 }
 
-function next() {
-    getValue('saved');
-//    location.href = 'html5test.html';
-    // if (document.getElementById('makeDefault').checked) {
-    //     // 
-    // }
+function save() {
+    if (!isChanged())
+        return;
+    var formSettings = getFormSettings();
+    settings = formSettings;
+    saveSettings(formSettings, formSettings.name);
 
-    // // TODO set active settings
-    // // localStorage.setItem('activeSettings', JSON.stringify(sets));
-    // localStorage.setItem('allSettings', JSON.stringify(sets));
+    if (settings.isDefault)
+        for (i = 0; i < sets.length; i++)
+            if (sets[i].name != settings.name)
+                sets[i].isDefault = false;
+}
+
+function setDefault() {
+    setBoolValue('isDefaultId', true);
+    enable('setDefaultId', false);
+    valueChanged();
+}
+
+function next() {
+    setActiveSettings(getFormSettings());
+    setSets(sets);
+    location.href = 'html5test.html';
 }
 
 function resetStandard() {
-    settings = getFactoryDefaultSets().sets[0];
-    saveSettings(settings, 'Standard');
-    if (getValue('saved') == 'Standard')
-        changeSelection('Standard');
+    if (isChanged() 
+        && !confirm('There are unsaved changes.  Cancel & save changes or Ok to proceed'))
+    saveSettings(getFactoryDefaultSets().sets[0], 'Standard');
+    selectChange('Standard');
 }
 
 function clearSettings() {
+    // No confirm.  All settings are being cleared.
     sets = getFactoryDefaultSets().sets;
-    updateSelectionOptions(getSettingsNames());
+    loadSelectOptions(getSettingsNames());
     setSelection('Standard');
 }
 
-
-
-function saveSettings(settings, name) {
-    for(i = 0; i < sets.length; i++)
-        if (sets[i].name == name) {
-            sets[i] = settings;
-            return;
-        }
-
-    sets.push(settings);
-}
-
-
-
-
-
-function updateSelectionOptions() {
-    var select = document.getElementById('saved');
-    select.innerHTML = '';
-    sets.forEach(setting => {
-        if (setting.enabled)
-            addOption(setting.name, setting.isDefault);
-    });
-}
-
-function addOption(name, isDefault) {
-    var select = document.getElementById('saved');
-    var option = document.createElement('option');
-    option.setAttribute('value', name);
-    option.innerText = name;
-    if (isDefault)
-        option.selected = true;
-    select.appendChild(option);
-}
-
 function valueChanged() {
-    document.getElementById('undoChangesId').disabled = !isChanged();
+    var changed = isChanged();
+    enable('undoChangesId', changed);
+    enable('saveChangesId', changed);
+
+    if (isChanged)
+        updateSummary();
 }
 
+// #region private and helper functions
 function isChanged() {
     return getValue('boardsPerRound') != settings.boardsPerRound
         || getValue('numRounds') != settings.rounds
@@ -111,23 +98,39 @@ function isChanged() {
         || getValue('breakTime') != settings.pauseTime
         || getValue('boardTime') != settings.boardTime
         || getValue('overtime') != settings.overtime
-        || getCheck("autoCalcOvertime") != settings.autoCalcOvertime
+        || getCheck('autoCalcOvertime') != settings.autoCalcOvertime
         || getValue('moveTime') != settings.moveTime
         || getCheck('hasAverage') != settings.average
-        || getCheck('averageOptionPercent') != (settings.averageOption == "percent")
+        || getCheck('averageOptionPercent') != (settings.averageOption == 'percent')
         || getValue('averagePercent') != settings.averagePercent
-        || getValue('averageSeconds') != settings.averageSeconds;
+        || getValue('averageSeconds') != settings.averageSeconds
+        || getBoolValue('isDefaultId') != settings.isDefault;
 }
 
-// #region private and helper functions
-function setSelection(value) {
-    setValue('saved', value);
-    changeSelection(value);
-}
-
-function changeSelection(name) {
-    settings = getSettingsByName(name);
-    loadValuesIntoForm(settings);
+function getFormSettings() {
+    return {
+        "version": "1.0",
+        "enabled": true,
+        "isDefault": getBoolValue('isDefaultId'),
+        "name": getValue('saved'),
+        "displayName": getValue('displayName'),
+        "boardsPerRound": getValue('boardsPerRound'),
+        "rounds": getValue('numRounds'),
+        "tones": getCheck('hasTones'),
+        "voiceCommands": getCheck('hasVoice'),
+        "pause": getCheck('hasPause'),
+        "pauseAfterRound": getValue('numPause'),
+        "pauseRepeat": getCheck('hasPauseRepeat'),
+        "pauseTime": getValue('breakTime'),
+        "boardTime": getValue('boardTime'),
+        "overtime": getValue('overtime'),
+        "autoCalcOvertime": getCheck("autoCalcOvertime"),
+        "moveTime": getValue('moveTime'),
+        "average": getCheck('hasAverage'),
+        "averageOption": (getCheck('averageOptionPercent') ? "percent" : "fixed"),
+        "averagePercent": getValue('averagePercent'),
+        "averageSeconds": getValue('averageSeconds')
+    }
 }
 
 function loadValuesIntoForm(settings) {
@@ -142,7 +145,7 @@ function loadValuesIntoForm(settings) {
     setValue('breakTime', settings.pauseTime);
     setValue('boardTime', settings.boardTime);
     setValue('overtime', settings.overtime);
-    setCheck("autoCalcOvertime", settings.autoCalcOvertime);
+    setCheck('autoCalcOvertime', settings.autoCalcOvertime);
     setValue('moveTime', settings.moveTime);
     setCheck('hasAverage', settings.average);
     if (settings.averageOption == 'percent')
@@ -151,6 +154,83 @@ function loadValuesIntoForm(settings) {
         setCheck('averageOptionFixed', true);
     setValue('averagePercent', settings.averagePercent);
     setValue('averageSeconds', settings.averageSeconds);
+    setBoolValue('isDefaultId', settings.isDefault);
+    enable('setDefaultId', !settings.isDefault);
+    updateSummary();
+}
+
+function updateSummary() {
+    var formSettings = getFormSettings();
+    var numSessionBoards = formSettings.boardsPerRound * formSettings.rounds;
+    setSpanValue('numBoards', numSessionBoards);
+
+    var nonBreakTime = getSessionTimeExclBreaks(formSettings);
+    var breakTime = getBreakTime(formSettings);
+    var duration = nonBreakTime + breakTime;
+    setSpanValue('numSessionHoursMins', secondsToHoursMins(duration));
+
+    var rate = numSessionBoards / nonBreakTime * 3600;
+    rate = Math.round(rate * 10)/ 10;
+    setSpanValue('numBoardsPerHour', rate);
+}
+
+function getSessionTimeExclBreaks(settings) {
+    var numSessionBoards = settings.boardsPerRound * settings.rounds;
+    var playingTime = numSessionBoards * settings.boardTime;
+    var breakTime = (settings.rounds - 1) * settings.moveTime;
+    return playingTime + breakTime;
+}
+
+function getBreakTime(settings) {
+    if (!settings.pause)
+        return 0;
+    var numBreaks = settings.pauseRepeat
+        ? Math.floor((settings.rounds - 1)/ settings.pauseAfterRound)
+        : settings.rounds > settings.pauseAfterRound
+        ? 1 : 0;
+    return numBreaks * settings.pauseTime; 
+}
+
+function secondsToHoursMins(value) {
+    var mins = Math.floor((value % 3600) / 60); 
+    return Math.floor(value/3600) + ':' 
+        + (mins < 10 ? '0' : '') + mins;
+}
+
+function setSelection(value) {
+    if (getValue('saved') != value)
+        setValue('saved', value);
+    settings = getSettingsByName(value);
+    loadValuesIntoForm(settings);
+}
+
+function loadSelectOptions() {
+    var select = document.getElementById('saved');
+    select.innerHTML = '';
+    sets.forEach(setting => {
+        if (setting.enabled)
+            addOption(setting.name, setting.isDefault);
+    });
+}
+
+function saveSettings(settings, name) {
+    for(i = 0; i < sets.length; i++)
+        if (sets[i].name == name) {
+            sets[i] = settings;
+            return;
+        }
+
+    sets.push(settings);
+}
+
+function addOption(name, isDefault) {
+    var select = document.getElementById('saved');
+    var option = document.createElement('option');
+    option.setAttribute('value', name);
+    option.innerText = name;
+    if (isDefault)
+        option.selected = true;
+    select.appendChild(option);
 }
 
 function setHelp() {
@@ -160,6 +240,12 @@ function setHelp() {
     setHelpToolTip('soundsHelp', getHelp('sounds'));
     setHelpToolTip('pauseHelp', getHelp('pause'));
     setHelpToolTip('averagingHelp', getHelp('averaging'));
+}
+
+function getSettingsByName(name) {
+    for (i=0; i < sets.length; i++)
+        if (sets[i].name == name && sets[i].enabled)
+            return sets[i];
 }
 
 function getSettingsNames() {
@@ -180,15 +266,15 @@ function getDefaultSettingsName() {
     return sets[0].name;
 }
 
-function resetToFactoryDefaults() {
-    sets = getFactoryDefaultSets().sets[0];
-}
-
 function setValue(name, value) { document.getElementById(name).value = value; }
 function getValue(name) { return document.getElementById(name).value; }
+function setBoolValue(name, value) { setValue(name, value ? "true" : "false"); }
+function getBoolValue(name) { return getValue(name) == "true"; }
+function setSpanValue(name, value) { document.getElementById(name).innerText = value; }
 function setCheck(name, value) { document.getElementById(name).checked = value; }
 function getCheck(name) { return document.getElementById(name).checked; }
 function setSelect(name, value) { document.getElementById(name).setSelect(); }
 function setHelpToolTip(id, html) { document.getElementById(id).innerHTML = html; }
+function enable(name, enable) { document.getElementById(name).disabled = !enable; }
 
 // #endregion private and helper functions
