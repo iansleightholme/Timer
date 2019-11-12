@@ -28,7 +28,7 @@ function addNew() {
     // copies the default set
     settings = getFormSettings();
     settings.name = name;
-    saveSettings(settings, name);
+    saveSettings(settings);
 
     // adds an option to saved setting sets
     addOption(settings.name, false);
@@ -37,17 +37,29 @@ function addNew() {
     setSelection(name);
 }
 
+function  undo() {
+    loadValuesIntoForm(settings);
+    valueChanged();
+}
+
 function save() {
     if (!isChanged())
         return;
-    var formSettings = getFormSettings();
-    settings = formSettings;
-    saveSettings(formSettings, formSettings.name);
+    settings = getFormSettings();
+    saveSettings(settings);
 
     if (settings.isDefault)
         for (i = 0; i < sets.length; i++)
             if (sets[i].name != settings.name)
                 sets[i].isDefault = false;
+}
+
+function del() {
+    removeOption(settings.name);
+    deleteSettings(settings.name);
+    if (sets.length == 0)
+        clearSettings(); 
+    setSelection(getDefaultSettingsName());
 }
 
 function setDefault() {
@@ -56,16 +68,12 @@ function setDefault() {
     valueChanged();
 }
 
-function next() {
-    setActiveSettings(getFormSettings());
-    setSets(sets);
-    location.href = 'html5test.html';
-}
-
 function resetStandard() {
     if (isChanged() 
         && !confirm('There are unsaved changes.  Cancel & save changes or Ok to proceed'))
-    saveSettings(getFactoryDefaultSets().sets[0], 'Standard');
+    var standard = getFactoryDefaultSets().sets[0];
+    standard.name = 'Standard';
+    saveSettings(standard);
     selectChange('Standard');
 }
 
@@ -74,6 +82,12 @@ function clearSettings() {
     sets = getFactoryDefaultSets().sets;
     loadSelectOptions(getSettingsNames());
     setSelection('Standard');
+}
+
+function next() {
+    setActiveSettings(getFormSettings());
+    setSets(sets);
+    location.href = 'html5test.html';
 }
 
 function valueChanged() {
@@ -213,14 +227,22 @@ function loadSelectOptions() {
     });
 }
 
-function saveSettings(settings, name) {
+function saveSettings(settings) {
     for(i = 0; i < sets.length; i++)
-        if (sets[i].name == name) {
+        if (sets[i].name == settings.name) {
             sets[i] = settings;
             return;
         }
 
     sets.push(settings);
+}
+
+function deleteSettings(name) {
+    for(i = 0; i < sets.length; i++)
+        if (sets[i].name == name) {
+            sets.splice(i, 1);
+            return;
+        }
 }
 
 function addOption(name, isDefault) {
@@ -231,6 +253,16 @@ function addOption(name, isDefault) {
     if (isDefault)
         option.selected = true;
     select.appendChild(option);
+}
+
+function removeOption(name) {
+    var select = document.getElementById('saved');
+    for (i = 0; i < select.childNodes.length; i++)
+        if (select.childNodes[i].getAttribute('value') == name)
+        {
+            select.removeChild(select.childNodes[i]);
+            return;
+        }
 }
 
 function setHelp() {
