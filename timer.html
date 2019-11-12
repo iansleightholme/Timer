@@ -5,6 +5,7 @@
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
       <link type="text/css" href="theme.css" rel="stylesheet" >
       <script src="fakeTimer.js" ></script>
+      <script src="page.js" ></script>
       <script src="ui.js" ></script>
       <script src="audio.js" ></script>
       <script src="dal.settings.js" ></script>
@@ -238,7 +239,7 @@
                <use x=-180 y=42 xlink:href="#triangle" class="button" onclick="soundUp();" />
                <use x=-180 y=33 xlink:href="#triangle" class="button" onclick="soundDown();" transform="rotate(180 -180 35)" />
 
-               <g transform="translate(-110 40)" onclick="backward();" class="button" >
+               <g id="backwardId" transform="translate(-110 40)" onclick="backward();" class="button" visibility="hidden" >
                   <use xlink:href="#button" />
                   <use x=0 y=4 xlink:href="#triangle" transform="rotate(270)" /> 
                   <use x=0 y=12 xlink:href="#triangle" transform="rotate(270)" /> 
@@ -250,7 +251,7 @@
                   <use id="pauseId" xlink:href="#pauseLines" visibility="hidden" />
                </g>
 
-               <g transform="translate(110 40)" onclick="forward();" class="button" >
+               <g id="forwardId" transform="translate(110 40)" onclick="forward();" class="button" visibility="hidden" >
                   <use xlink:href="#button" />
                   <use x=0 y=3 xlink:href="#triangle" transform="rotate(90)" /> 
                   <use x=0 y=11 xlink:href="#triangle" transform="rotate(90)" />

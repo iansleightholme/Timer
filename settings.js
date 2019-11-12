@@ -3,7 +3,6 @@ var settings;   // current setting
 
 function load() {
     sets = getSets();
-    alert(sets == null);
     loadSelectOptions(getSettingsNames());
     setSelection(getDefaultSettingsName());
     setHelp();

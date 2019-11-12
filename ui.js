@@ -8,125 +8,76 @@ var fadeTimer;
 var lastMouseMove;
 
 function setMode(mode, value) {
-   if (mode == _mode)
-      return;
-
-   switch(mode) {
-      case 'ready':
-         // starts in ready position
-         break;
-      case 'normal':
-         hide('ready');
-         hide('summary');
-         hide('leftTextSummary');
-         hide('movePlay');
-         hide('overtimePlay');
-         hide('ifStartedNow');
-         hide('sessionEnded');
-         show('leftTextNormal');
-         show('rightText');
-         setAveragingTheme(false);
-         show('normalPlay');
-         show('progressBar1');
-         break;
-      case 'average':
-         setAveragingTheme(true);
-         soundAverage(settings.tones, settings.voiceCommands);
-         break;
-      case 'overtime':
-         hide('normalPlay');
-         hide('movePlay');
-         hide('breakPlay');
-         hide('overtimePlay');
-         hide('sessionEnded');
-         show('overtimePlay');
-         soundNextBoard(settings.tones, true);
-         break;
-      case 'move':
-         hide('normalPlay');
-        hide('movePlay');
-         hide('breakPlay');
-         hide('overtimePlay');
-         hide('sessionEnded');
-         show('movePlay');
-         soundMove(settings.tones, settings.voiceCommands);
-         break;
-      case 'break':
-         hide('normalPlay');
-         hide('movePlay');
-         hide('breakPlay');
-         hide('overtimePlay');
-         hide('sessionEnded');
-         show('breakPlay');
-         break;
-      case 'ended':
-         hide('normalPlay');
-         hide('movePlay');
-         hide('overtimePlay');
-         hide('breakPlay');
-         hide('leftTextNormal');
-         hide('rightText');
-         hide('normalPlay');
-         hide('navigation');
-         hide('progressBar1');
-         setText('farewell', value);
-         show('sessionEnded');
-         break;
-   }
-
-   _mode = mode;
-}
-
-function togglePlayPause() {
-   if (isPaused) {
-      isPaused = false;
-      hide('pauseId');
-      show('playId');
-      pause();
-   }
-   else {
-      isPaused = true;
-      hide('playId');
-      show('pauseId');
-      play();
-   }
-}
-
-function mouseMove() {
-   show('navigation');
-   document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
-
-   lastMouseMove = new Date();
-   if (fadeTimer == null)
-      fadeTimer = setInterval(fadeOut, 100);
-}
-
-function fadeOut() {
-   var diff = new Date() - lastMouseMove;
-   if (diff > 9000)
-   {
-      fadeTimer = null;
-      hide('navigation');
-      // document.getElementById('navigation').setAttribute('fill-opacity', 1.0);
-   }
-   if (diff > 5000) {
-      var opacity = 1.0 - Math.min(diff - 5000, 4000)/4000;
-      document.getElementById('navigation').setAttribute('fill-opacity', opacity);
-   }
-}
-
-function setSummary() {
-   setText('numBoardsPerRound', settings.boardsPerRound);
-   setText('numRounds', settings.rounds);
-   setText('breaks', settings.pause);
-   setText('boardTime', getHoursMinutesSecond(settings.boardTime));
-   setText('overtimeSummary', getHoursMinutesSecond(settings.overtime));
-   setText('averagingSummary', getHoursMinutesSecond(settings.averageSeconds));
-   setText('moveSummary', getHoursMinutesSecond(settings.moveTime));
-   show('summary');
-}
-
-// #endregion experimental
+    if (mode == _mode)
+       return;
+ 
+    switch(mode) {
+       case 'ready':
+          // starts in ready position
+          break;
+       case 'normal':
+          hide('ready');
+          show('forwardId');
+          show('backwardId');
+          hide('summary');
+          hide('leftTextSummary');
+          hide('movePlay');
+          hide('overtimePlay');
+          hide('ifStartedNow');
+          hide('sessionEnded');
+          show('leftTextNormal');
+          show('rightText');
+          setAveragingTheme(false);
+          show('normalPlay');
+          show('progressBar1');
+          break;
+       case 'average':
+          setAveragingTheme(true);
+          soundAverage(settings.tones, settings.voiceCommands);
+          break;
+       case 'overtime':
+          hide('normalPlay');
+          hide('movePlay');
+          hide('breakPlay');
+          hide('overtimePlay');
+          hide('sessionEnded');
+          show('overtimePlay');
+          soundNextBoard(settings.tones, true);
+          break;
+       case 'move':
+          hide('normalPlay');
+          hide('movePlay');
+          hide('breakPlay');
+          hide('overtimePlay');
+          hide('sessionEnded');
+          show('movePlay');
+          soundMove(settings.tones, settings.voiceCommands);
+          break;
+       case 'break':
+          hide('normalPlay');
+          hide('movePlay');
+          hide('breakPlay');
+          hide('overtimePlay');
+          hide('sessionEnded');
+          show('breakPlay');
+          break;
+       case 'ended':
+          hide('normalPlay');
+          hide('movePlay');
+          hide('overtimePlay');
+          hide('breakPlay');
+          hide('leftTextNormal');
+          hide('rightText');
+          hide('normalPlay');
+          hide('navigation');
+          hide('progressBar1');
+          setText('farewell', value);
+          show('sessionEnded');
+          break;
+    }
+ 
+    _mode = mode;
+ }
 
 // #region public functions
 function setDisplayName(value) { setText('displayName', value); }
@@ -254,6 +205,43 @@ function soundNextBoard(tones, repeat) {
 // #endregion public functions
 
 // #region private and helper functions
+function togglePlayPause() {
+   if (isPaused) {
+      isPaused = false;
+      hide('pauseId');
+      show('playId');
+      pause();
+   }
+   else {
+      isPaused = true;
+      hide('playId');
+      show('pauseId');
+      play();
+   }
+}
+
+function mouseMove() {
+   show('navigation');
+   setOpacity('navigation', 1.0);
+
+   lastMouseMove = new Date();
+   if (fadeTimer == null)
+      fadeTimer = setInterval(fadeOut, 100);
+}
+
+function fadeOut() {
+   var diff = new Date() - lastMouseMove;
+   if (diff > 9000)
+   {
+      fadeTimer = null;
+      hide('navigation');
+   }
+   if (diff > 5000) {
+      var opacity = 1.0 - Math.min(diff - 5000, 4000)/4000;
+      setOpacity('navigation', opacity);
+   }
+}
+
 function fullscreen() {
    hide('fullscreenId'); 
    show('exitFullscreenId') 
@@ -266,6 +254,7 @@ function exitFullScreen() {   // function cannot have the same name as document.
    document.exitFullscreen(); 
 }
 
+function setOpacity(id, value) { document.getElementById(id).setAttribute('fill-opacity', value); }
 function setText(id, value) { document.getElementById(id).textContent = value; }
 function show(id) { document.getElementById(id).setAttribute('visibility', 'inherit'); }
 function hide(id) { document.getElementById(id).setAttribute('visibility', 'hidden'); }
