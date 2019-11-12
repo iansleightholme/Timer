@@ -92,6 +92,14 @@ function next() {
 
 function valueChanged() {
     var changed = isChanged();
+
+    if (getCheck('autoCalcOvertime')) {
+        enable('overtime', false);
+        setValue('overtime', calcOvertime(getValue('boardsPerRound'), getValue('boardTime')));
+    }
+    else
+        enable('overtime', true);
+
     enable('undoChangesId', changed);
     enable('saveChangesId', changed);
 
@@ -159,6 +167,7 @@ function loadValuesIntoForm(settings) {
     setValue('breakTime', settings.pauseTime);
     setValue('boardTime', settings.boardTime);
     setValue('overtime', settings.overtime);
+    enable('overtime', !settings.autoCalcOvertime);
     setCheck('autoCalcOvertime', settings.autoCalcOvertime);
     setValue('moveTime', settings.moveTime);
     setCheck('hasAverage', settings.average);
@@ -203,6 +212,10 @@ function getBreakTime(settings) {
         : settings.rounds > settings.pauseAfterRound
         ? 1 : 0;
     return numBreaks * settings.pauseTime; 
+}
+
+function calcOvertime(numBoards, boardTime) {
+    return Math.floor(boardTime * 0.2 * Math.sqrt(numBoards));
 }
 
 function secondsToHoursMins(value) {

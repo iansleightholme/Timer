@@ -3,8 +3,8 @@
   <head>
     <title>Bridge Timer Settings</title>
     <link type="text/css" href="settings.css" rel="stylesheet" >
-    <script src="dal.settings.js" ></script>
     <script src="settings.js" ></script>
+    <script src="dal.settings.js" ></script>
     <script src="help.js" ></script>
   </head>
 
@@ -24,11 +24,6 @@
           </td></tr></table><br />
           <button class="big" onclick="next();" >Next</button>
         </div><br />
-        <!-- <div style="padding:20px 30px 30px 30px;outline: 1px dotted gray;">
-          Save these settings as the default settings<input type="checkbox" id="makeDefault" /><br /><br />
-          Save/overwrite these settings for next time<input type="checkbox" id="saveSettings" checked /><br />&nbsp;&nbsp;
-          <input type="text" id="saveSettingsName" placeholder="name" style="min-width:30px" />
-        </div> -->
       </aside>
 
       <section>
@@ -37,13 +32,12 @@
         <div style="padding-top:5px;">
           <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
           <button class="small" title="Add new" onclick="addNew();" >+</button>
-          <button class="small" title="undo" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" title="Undo" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
           <button class="small" title="Save" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
           <button class="small" title="Delete" onclick="del();" >&#x1F5D1;</button>
           <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
           <button class="small" id="setDefaultId" onclick="setDefault();" >Set as default</button>&nbsp;&nbsp;
-        </div>
-        <br />
+        </div><br />
       </section>
 
       <section>
@@ -71,8 +65,7 @@
                   </td></tr><tr><td class="label" >
         <label>and repeat</label></td><td><input type="checkbox" id="hasPauseRepeat" onchange="valueChanged();" checked >
                   </td></tr></table>
-      </section>
-      <br /><br />
+      </section><br /><br />
         
       <details>
         <summary>Advanced settings</summary>
@@ -83,7 +76,7 @@
                 </td></tr><tr><td class="label" >
         <label>Overtime at the end of each round</label></td><td>
         <label>(auto-calculate)<input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
-        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" /> seconds
+        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> seconds
                 </td></tr><tr><td class="label" >
         <label>Move time between rounds</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> seconds
                 </td></tr><tr><td class="label" style="vertical-align: top;" >
