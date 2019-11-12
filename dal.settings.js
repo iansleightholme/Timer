@@ -11,7 +11,7 @@ function setActiveSettings(value) {
 
 function getSets() {
     var sets = localStorage.getItem('sets');
-    return sets != null ? JSON.parse(sets).sets : getFactoryDefaultSets().sets;
+    return sets != null ? JSON.parse(sets) : getFactoryDefaultSets().sets;
 }
 
 function setSets(value) { 

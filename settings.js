@@ -3,6 +3,7 @@ var settings;   // current setting
 
 function load() {
     sets = getSets();
+    alert(sets == null);
     loadSelectOptions(getSettingsNames());
     setSelection(getDefaultSettingsName());
     setHelp();
@@ -87,7 +88,7 @@ function clearSettings() {
 function next() {
     setActiveSettings(getFormSettings());
     setSets(sets);
-    location.href = 'html5test.html';
+    location.href = 'timer.html';
 }
 
 function valueChanged() {
