@@ -201,30 +201,31 @@ function soundNextBoard(tones, repeat) {
            setTimeout("playAudio('dong');", 700);
    }
 }
-
 // #endregion public functions
 
 // #region private and helper functions
 function togglePlayPause() {
-   if (isPaused) {
+   if (!isStarted) {
+      isStarted = true;
       isPaused = false;
-      hide('pauseId');
-      show('playId');
-      pause();
-   }
-   else {
       hide('playId');
       show('pauseId');
-
-      if (!isStarted) {
-         isStarted = true;
-         start();
-      }
-      else {
-         isPaused = true;
-         play();
-      }
-   } 
+      start();
+   }
+   else if (isPaused) {
+      isPaused = false;
+      hide('playId');
+      show('pauseId');
+      hide('paused');
+      play();
+   }
+   else {
+      isPaused = true;
+      hide('pauseId');
+      show('playId');
+      show('paused');
+      pause();
+   }
 }
 
 function mouseMove() {
