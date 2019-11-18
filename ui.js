@@ -3,7 +3,7 @@ var volume = 7;
 var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
-var count = 0;
+var isStarted = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -213,11 +213,18 @@ function togglePlayPause() {
       pause();
    }
    else {
-      isPaused = true;
       hide('playId');
       show('pauseId');
-      play();
-   }
+
+      if (!isStarted) {
+         isStarted = true;
+         start();
+      }
+      else {
+         isPaused = true;
+         play();
+      }
+   } 
 }
 
 function mouseMove() {

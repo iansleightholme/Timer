@@ -37,6 +37,7 @@ function load() {
 
     settings = getActiveSettings();
     setDisplayName(settings.displayName);
+    setSummary();
     blnPauseAfterRoundN = settings.pause;
     alert("blnPauseAfterRoundN " + blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
     //start();

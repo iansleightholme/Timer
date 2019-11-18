@@ -23,7 +23,6 @@ function load() {
     // var config = getBrowserConfig();
     // alert(JSON.stringify(config));
     
-    //
 }
 
 function start() {
