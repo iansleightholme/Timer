@@ -7,8 +7,9 @@ var state;
 function load() {
     // your code goes here
     settings = getActiveSettings();
-    state = getInitialState().state;
+    state = getEmptyState();
     setDisplayName(settings.displayName);
+    setTotalBoards(settings.boardsPerRound * settings.rounds);
     setSummary();
     state.blnPauseAfterRoundN = settings.pause;
     if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
@@ -38,14 +39,15 @@ function start() {
         state.actualAverageSeconds = settings.boardTime * settings.averagePercent / 100;
     else
         state.actualAverageSeconds = settings.averageSeconds;
-    if (state.actualAverageSeconds < settings.boardTime) { state.actualAverageSeconds = settings.boardTime };
+    if (state.actualAverageSeconds < settings.boardTime)
+        state.actualAverageSeconds = settings.boardTime;
 
     minsAverage = Math.floor(state.actualAverageSeconds / 60);
     secsAverage = state.actualAverageSeconds % 60;
     // only if average  actually required go through set average
     if (settings.average)
         setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
-    setTotalBoards(settings.boardsPerRound * settings.rounds);
+        //setAverage(state.actualAverageSeconds, 360 * (1 - state.actualAverageSeconds / state.roundTime));
 
     state.totalSessionSeconds = settings.rounds * (state.roundTime + settings.moveTime) - settings.moveTime;
     state.totalSessionMinutes = state.totalSessionSeconds / 60;
@@ -60,8 +62,7 @@ function start() {
 
     //if (DEBUG) alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
     //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
-    setProjectedTime(state.projectedFinishTime.getHours() + ":" + state.projectedFinishTime.getMinutes());
-    //document.getElementById('paused').setAttribute('visibility', 'hidden');
+    setProjectedTime(state.projectedFinishTime.getHours() + ":" + toTwoDigitString(state.projectedFinishTime.getMinutes()));
     timer = setInterval(update, updateInterval);
 }
 
@@ -154,30 +155,25 @@ function nextRound() {
         setRound(state.currentRoundNumber);
         state.thisRoundToGo = state.roundTime;
         degreesPerBoard = settings.boardTime / state.roundTime * 360;
-        createBoards(settings.boardsPerRound, state.degreesPerBoard);
+        // createBoards(settings.boardsPerRound, state.degreesPerBoard);
         setClockHand(0);
-        if (settings.average) {
-            setAverage(state.minsAverage + ":" + toTwoDigitString(state.secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
-        }
+        // if (settings.average) {
+        //     setAverage(state.minsAverage + ":" + toTwoDigitString(state.secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
+        // }
     }
 }
 
 function backward() {
     // your code goes here
     // last board, move or last round
-    var originalThisRoundToGo = state.thisRoundToGo;
+    // var originalThisRoundToGo = state.thisRoundToGo;
     var originalTimeLeftToGo = (state.roundTime + settings.moveTime) * (settings.rounds - state.currentRoundNumber) - settings.moveTime - (state.roundTime - state.thisRoundToGo);
     var boardActuallyReached = settings.boardsPerRound * (state.currentRoundNumber - 1) + state.currentBoardNumber;
     var roundToGoAtStartOfCurrentBoard = state.roundTime - settings.boardTime * (state.currentBoardNumber - 1);
-    //("boardActiallyReached " + boardActuallyReached);
-    //("thisRoundToGo - roundToGoAtStartOfCurrentBoard " + (thisRoundToGo - roundToGoAtStartOfCurrentBoard ));
-    //("settings.boardTime * 0.05 " + settings.boardTime * 0.05);
     
-    if (roundToGoAtStartOfCurrentBoard - state.thisRoundToGo > 5 || state.boardActuallyReached == 1) {
-        //if (roundToGoAtStartOfCurrentBoard - thisRoundToGo > (settings.boardTime * 0.01) || boardActuallyReached == 1) {
+    if (roundToGoAtStartOfCurrentBoard - state.thisRoundToGo > 5 || state.boardActuallyReached == 1)
         //just restart last board
         state.thisRoundToGo = roundToGoAtStartOfCurrentBoard;
-    }
     else
     {
         //go back one board
@@ -185,21 +181,21 @@ function backward() {
         state.currentRoundNumber = 1 + Math.floor((boardActuallyReached-1)/settings.boardsPerRound);
         state.currentBoardNumber = 1 + (boardActuallyReached % settings.boardsPerRound);
         state.thisRoundToGo = state.roundTime - settings.boardTime * (state.currentBoardNumber - 1);
-        //("change to board number -- boardActuallyReached now " + boardActuallyReached );
-        //("currentRoundNumber " + currentRoundNumber + ", currentBoardNumber " + currentBoardNumber);
     }
+
     setClockHand(360 * (state.roundTime - state.thisRoundToGo) / state.roundTime);
     setClockTime(state.thisRoundToGo);
     setMode('normal');
     setBoard(state.currentBoardNumber);
     setRound(state.currentRoundNumber);
-    createBoards(settings.boardsPerRound, state.degreesPerBoard);
+    // createBoards(settings.boardsPerRound, state.degreesPerBoard);
     
-    if (settings.average)
-        setAverage(state.minsAverage + ":" + toTwoDigitString(state.secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
+    // if (settings.average)
+    //     setAverage(state.minsAverage + ":" + toTwoDigitString(state.secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
     var revisedTimeLeftToGo = (state.roundTime + settings.moveTime) * (settings.rounds - state.currentRoundNumber) - settings.moveTime;
     var changeFinishTime = revisedTimeLeftToGo - originalTimeLeftToGo;
     state.projectedFinishTime = addMillisecondsToDate(state.projectedFinishTime, changeFinishTime * 1000);
+
     setProjectedTime(state.projectedFinishTime.getHours() + ":" + toTwoDigitString(state.projectedFinishTime.getMinutes()));
 }
 
@@ -252,32 +248,30 @@ function calcPerUnitTimeGone() {
    return (secondsGone/state.totalSessionSeconds);
 }
 
-function getInitialState() {
+function getEmptyState() {
     return { 
-        "state": {
-            "blnFirstAttempt": true,
-            "totalSessionSeconds": 0,
-            "totalSessionMinutes": 0,
-            "normalPlayTime": 0,
-            "overtimePlusPlayTime": 0,
-            "overtimeInSeconds": 0,
-            "actualAverageSeconds": 0,
-            "roundTime": 0,
-            "thisRoundToGo": 0,
-            "degreesPerBoard": 0,
-            "minsAverage": 0,
-            "secsAverage": 0,
-            "totalSessionSeconds": 0,
-            "totalSessionMinutes": 0,
-            "currentBoardNumber": 1,
-            "currentRoundNumber": 1,
-            "startTime": new Date(),
-            "projectedFinishTime": new Date(),
-            "blnChangedColour": true,
-            "blnPaused": false,
-            "blnMoving": false,
-            "blnPauseAfterRoundN": false,
-            "perUnitTimeGone": 0.0
-        }
+        "blnFirstAttempt": true,
+        "totalSessionSeconds": 0,
+        "totalSessionMinutes": 0,
+        "normalPlayTime": 0,
+        "overtimePlusPlayTime": 0,
+        "overtimeInSeconds": 0,
+        "actualAverageSeconds": 0,
+        "roundTime": 0,
+        "thisRoundToGo": 0,
+        "degreesPerBoard": 0,
+        "minsAverage": 0,
+        "secsAverage": 0,
+        "totalSessionSeconds": 0,
+        "totalSessionMinutes": 0,
+        "currentBoardNumber": 1,
+        "currentRoundNumber": 1,
+        "startTime": new Date(),
+        "projectedFinishTime": new Date(),
+        "blnChangedColour": true,
+        "blnPaused": false,
+        "blnMoving": false,
+        "blnPauseAfterRoundN": false,
+        "perUnitTimeGone": 0.0
     };
 }
