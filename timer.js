@@ -21,6 +21,23 @@ function start() {
     // your code goes here
     setClockHand(0);
     state.normalPlayTime = settings.boardsPerRound * settings.boardTime;
+    // set up pause options and calculate extra time for pause
+    state.totalPauseTime = 0;
+    state.nextRoundToPause = settings.nextRound;
+    if (DEBUG) alert("state.totalPauseTime a " + state.totalPauseTime);
+    if(settings.pause && settings.pauseAfterRound > settings.rounds) {
+        state.nextRoundToPause = settings.pauseAfterRound;
+    } 
+    if (settings.rounds > settings.pauseAfterRound){
+        state.totalPauseTime = settings.pauseTime;  
+        if (DEBUG) alert("state.totalPauseTime b " + state.totalPauseTime);
+    }
+    if (settings.pauseRepeat){
+        if (DEBUG) alert("settings.pauseTime " + settings.pauseTime + ", settings.rounds " + settings.rounds + ", settings.pauseAfterRound " + settings.pauseAfterRound);
+        state.totalPauseTime = settings.pauseTime * (Math.floor ((settings.rounds-1)/settings.pauseAfterRound));
+        if (DEBUG) alert("state.totalPauseTime c " + state.totalPauseTime);
+    }
+    if (DEBUG) alert("state.totalPauseTime d " + state.totalPauseTime);
     // overtimeInSeconds needs to be calculated as yet 18/10/2019
     state.overtimeInSeconds = settings.overtime;
     // ensure averaging cannot be less than a board and overtime is sensible
@@ -50,7 +67,7 @@ function start() {
         setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
         //setAverage(state.actualAverageSeconds, 360 * (1 - state.actualAverageSeconds / state.roundTime));
 
-    state.totalSessionSeconds = settings.rounds * (state.roundTime + settings.moveTime) - settings.moveTime;
+    state.totalSessionSeconds = settings.rounds * (state.roundTime + settings.moveTime) - settings.moveTime + state.totalPauseTime;
     state.totalSessionMinutes = state.totalSessionSeconds / 60;
     state.currentBoardNumber = 1;
     setBoard(state.currentBoardNumber);
@@ -273,6 +290,8 @@ function getEmptyState() {
         "blnPaused": false,
         "blnMoving": false,
         "blnPauseAfterRoundN": false,
-        "perUnitTimeGone": 0.0
+        "perUnitTimeGone": 0.0,
+        "nextRoundToPause": 100,
+        "totalPauseTime": 0
     };
 }
