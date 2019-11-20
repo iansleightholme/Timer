@@ -3,7 +3,7 @@ var volume = 7;
 var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
-var count = 0;
+var isStarted = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -201,22 +201,30 @@ function soundNextBoard(tones, repeat) {
            setTimeout("playAudio('dong');", 700);
    }
 }
-
 // #endregion public functions
 
 // #region private and helper functions
 function togglePlayPause() {
-   if (isPaused) {
+   if (!isStarted) {
+      isStarted = true;
       isPaused = false;
-      hide('pauseId');
-      show('playId');
-      pause();
+      hide('playId');
+      show('pauseId');
+      start();
+   }
+   else if (isPaused) {
+      isPaused = false;
+      hide('playId');
+      show('pauseId');
+      hide('paused');
+      play();
    }
    else {
       isPaused = true;
-      hide('playId');
-      show('pauseId');
-      play();
+      hide('pauseId');
+      show('playId');
+      show('paused');
+      pause();
    }
 }
 

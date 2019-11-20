@@ -136,22 +136,22 @@ function getFormSettings() {
         "isDefault": getBoolValue('isDefaultId'),
         "name": getValue('saved'),
         "displayName": getValue('displayName'),
-        "boardsPerRound": getValue('boardsPerRound'),
-        "rounds": getValue('numRounds'),
+        "boardsPerRound": Number(getValue('boardsPerRound')),
+        "rounds": Number(getValue('numRounds')),
         "tones": getCheck('hasTones'),
         "voiceCommands": getCheck('hasVoice'),
         "pause": getCheck('hasPause'),
-        "pauseAfterRound": getValue('numPause'),
+        "pauseAfterRound": Number(getValue('numPause')),
         "pauseRepeat": getCheck('hasPauseRepeat'),
-        "pauseTime": getValue('breakTime'),
-        "boardTime": getValue('boardTime'),
-        "overtime": getValue('overtime'),
+        "pauseTime": Number(getValue('breakTime')),
+        "boardTime": Number(getValue('boardTime')),
+        "overtime": Number(getValue('overtime')),
         "autoCalcOvertime": getCheck("autoCalcOvertime"),
-        "moveTime": getValue('moveTime'),
+        "moveTime": Number(getValue('moveTime')),
         "average": getCheck('hasAverage'),
         "averageOption": (getCheck('averageOptionPercent') ? "percent" : "fixed"),
-        "averagePercent": getValue('averagePercent'),
-        "averageSeconds": getValue('averageSeconds')
+        "averagePercent": Number(getValue('averagePercent')),
+        "averageSeconds": Number(getValue('averageSeconds'))
     }
 }
 

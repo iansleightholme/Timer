@@ -8,6 +8,14 @@ function setSummary() {
     setText('moveSummary', getHoursMinutesSecond(settings.moveTime));
     show('summary');
 }
+
+function addMinutesToDate(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
+}
+
+function addMillisecondsToDate(date, milliseconds) {
+    return new Date(date.getTime() + milliseconds);
+}
  
 function getFarewell() {
     var hour = new Date().getHours();
