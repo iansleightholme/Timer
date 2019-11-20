@@ -13,7 +13,7 @@ function load() {
     setSummary();
     state.blnPauseAfterRoundN = settings.pause;
     if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
-    registerClient();
+    registerClientAsync();
 }
 
 // start is after settings agreed

@@ -1,4 +1,4 @@
-function registerClient() {
+async function registerClientAsync() {
     // register client config
     console.log("Registration response:", 200);
 }

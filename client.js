@@ -1,4 +1,4 @@
-function registerClient() {
+async function registerClientAsync() {
     fetch("registerclient.aspx", {
         method: "POST", 
         headers: {
