@@ -215,7 +215,7 @@ function getBreakTime(settings) {
 }
 
 function calcOvertime(numBoards, boardTime) {
-    return Math.floor(boardTime * 0.2 * Math.sqrt(numBoards));
+    return Math.floor(boardTime * 0.2 * 0.25 * Math.sqrt(numBoards)) * 5;
 }
 
 function secondsToHoursMins(value) {
