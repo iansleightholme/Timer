@@ -23,7 +23,7 @@ function start() {
     state.normalPlayTime = settings.boardsPerRound * settings.boardTime;
     // set up pause options and calculate extra time for pause
     state.totalPauseTime = 0;
-    state.nextRoundToPause = settings.nextRound;
+    state.nextRoundToPause = settings.rounds;
     if (DEBUG) alert("state.totalPauseTime a " + state.totalPauseTime);
     if(settings.pause && settings.pauseAfterRound > settings.rounds) {
         state.nextRoundToPause = settings.pauseAfterRound;
@@ -77,6 +77,7 @@ function start() {
     state.projectedFinishTime = addMinutesToDate(state.startTime, state.totalSessionMinutes);
     state.blnFirstAttempt = true;
     state.blnChangedColour = true;
+    blnPausedForBreak = false;
 
     //if (DEBUG) alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
     //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
@@ -122,7 +123,8 @@ function update() {
             nextRound();
         else if (state.thisRoundToGo < 0) {
             moving(-state.thisRoundToGo);
-            if (state.blnPauseAfterRoundN && state.currentRoundNumber == settings.pauseAfterRound) {
+            // if (state.blnPauseAfterRoundN && state.currentRoundNumber == settings.pauseAfterRound) { state.nextRoundToPause
+            if (state.blnPauseAfterRoundN && state.currentRoundNumber == state.nextRoundToPause) {
                 state.blnPaused = true;
                 if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  currentRoundNumber " + state.currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
                 pause();
@@ -292,6 +294,7 @@ function getEmptyState() {
         "blnPauseAfterRoundN": false,
         "perUnitTimeGone": 0.0,
         "nextRoundToPause": 100,
+        "blnPausedForBreak": false,
         "totalPauseTime": 0
     };
 }

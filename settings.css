@@ -1,7 +1,18 @@
-body {
+header, footer, section, article, aside {
+    margin: 10px;
+    background: green;
+    border-radius: 6px;
+    color: white;
+    font: 14px/24px "Lucida Console";
+    padding: 24px 15px;
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+    display:block;
+  }
+  body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding-left: 100px;
     padding-right: 100px;
+    background: #E9FAFF;
 }
 
 td.label {
