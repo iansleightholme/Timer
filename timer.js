@@ -158,6 +158,7 @@ function nextRound() {
         degreesPerBoard = settings.boardTime / state.roundTime * 360;
         // createBoards(settings.boardsPerRound, state.degreesPerBoard);
         setClockHand(0);
+        soundNextBoard(settings.tones);
         // if (settings.average) {
         //     setAverage(state.minsAverage + ":" + toTwoDigitString(state.secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
         // }

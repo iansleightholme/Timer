@@ -70,6 +70,7 @@ function setMode(mode, value) {
           hide('rightText');
           hide('normalPlay');
           hide('navigation');
+          hide('navControls');
           hide('progressBar1');
           setText('farewell', value);
           show('sessionEnded');
