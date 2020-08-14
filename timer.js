@@ -13,7 +13,15 @@ function load() {
     setSummary();
     state.blnPauseAfterRoundN = settings.pause;
     if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
+
+    // async calls
+    loadBackground();
     registerClientAsync();
+}
+
+async function loadBackground()
+{
+    document.body.style="background-image: url('747581329-vector.svg'); background-size: cover;";
 }
 
 // start is after settings agreed
