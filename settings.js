@@ -6,6 +6,12 @@ function load() {
     loadSelectOptions(getSettingsNames());
     setSelection(getDefaultSettingsName());
     setHelp();
+    loadBackground();
+}
+
+async function loadBackground()
+{
+    document.body.style="background-image: url('747581329-vector.svg'); background-size: cover;";
 }
 
 // buttons and events

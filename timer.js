@@ -7,27 +7,29 @@ var state;
 function load() {
     // your code goes here
     settings = getActiveSettings();
-    state = getEmptyState();
     setDisplayName(settings.displayName);
     setTotalBoards(settings.boardsPerRound * settings.rounds);
     setSummary();
-    state.blnPauseAfterRoundN = settings.pause;
-    if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
 
     // async calls
     loadBackground();
     registerClientAsync();
+
+    initState();
+    update();
+    timer = setInterval(update, updateInterval);
 }
 
-async function loadBackground()
-{
+async function loadBackground() {
     document.body.style="background-image: url('747581329-vector.svg'); background-size: cover;";
 }
 
-// start is after settings agreed
-function start() {
-    // your code goes here
-    setClockHand(0);
+// initState is part of load
+function initState() {
+    state = getEmptyState();
+    state.blnPauseAfterRoundN = settings.pause;
+    if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
+
     state.normalPlayTime = settings.boardsPerRound * settings.boardTime;
     // overtimeInSeconds needs to be calculated as yet 18/10/2019
     state.overtimeInSeconds = settings.overtime;
@@ -37,12 +39,8 @@ function start() {
 
     state.overtimePlusPlayTime = state.normalPlayTime + state.overtimeInSeconds;
     state.roundTime = settings.boardsPerRound * settings.boardTime + state.overtimeInSeconds;
-    if (state.overtimeInSeconds > 0)
-        setOvertime(360 * (state.roundTime - 0.5 * state.overtimeInSeconds) / (state.roundTime));
     state.thisRoundToGo = state.roundTime;
     state.degreesPerBoard = settings.boardTime / state.roundTime * 360;
-    createBoards(settings.boardsPerRound, state.degreesPerBoard);
-
     state.actualAverageSeconds = 0;
     if (settings.averageOption == "percent" )
         state.actualAverageSeconds = settings.boardTime * settings.averagePercent / 100;
@@ -51,34 +49,44 @@ function start() {
     if (state.actualAverageSeconds < settings.boardTime)
         state.actualAverageSeconds = settings.boardTime;
 
-    minsAverage = Math.floor(state.actualAverageSeconds / 60);
-    secsAverage = state.actualAverageSeconds % 60;
-    // only if average  actually required go through set average
-    if (settings.average)
-        setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
-        //setAverage(state.actualAverageSeconds, 360 * (1 - state.actualAverageSeconds / state.roundTime));
-
     state.totalSessionSeconds = settings.rounds * (state.roundTime + settings.moveTime) - settings.moveTime;
     state.totalSessionMinutes = state.totalSessionSeconds / 60;
     state.currentBoardNumber = 1;
-    setBoard(state.currentBoardNumber);
     state.currentRoundNumber = 1;
-    setRound(state.currentRoundNumber);
-    state.startTime = new Date();
-    state.projectedFinishTime = addMinutesToDate(state.startTime, state.totalSessionMinutes);
     state.blnFirstAttempt = true;
     state.blnChangedColour = true;
+}
 
-    //if (DEBUG) alert("startTime(getHours) " + startTime(getHours) + ", startTime(getMinutes) " + startTime(getMinutes) + ", totalSessionMinutes " + totalSessionMinutes );
-    //+ ", projectedFinishTime(getHours()) " + projectedFinishTime(getHours) + ", projectedFinishTime(getMinutes) " + projectedFinishTime(getMinutes));
+function start() {
+    // your code goes here
+    setClockHand(0);
+    if (state.overtimeInSeconds > 0)
+        setOvertime(360 * (state.roundTime - 0.5 * state.overtimeInSeconds) / (state.roundTime));
+    createBoards(settings.boardsPerRound, state.degreesPerBoard);
+    setBoard(state.currentBoardNumber);
+    setRound(state.currentRoundNumber);
+    // only if average  actually required go through set average
+    if (settings.average) {
+        minsAverage = Math.floor(state.actualAverageSeconds / 60);
+        secsAverage = state.actualAverageSeconds % 60;
+        setAverage(minsAverage + ":" + toTwoDigitString(secsAverage), 360 * (1 - state.actualAverageSeconds / state.roundTime));
+    }
     setProjectedTime(state.projectedFinishTime.getHours() + ":" + toTwoDigitString(state.projectedFinishTime.getMinutes()));
-    timer = setInterval(update, updateInterval);
+    state.preStart = false;
+    setMode('normal')
 }
 
 // called once and repeats until such time as the timer interval is cleared.
 function update() {
     // your code goes here
-    if (state.blnFirstAttempt) {
+    if (state.preStart)
+    {
+        state.startTime = new Date();
+        state.projectedFinishTime = addMinutesToDate(state.startTime, state.totalSessionMinutes);    
+        setProjectedTime(state.projectedFinishTime.getHours() + ":" + toTwoDigitString(state.projectedFinishTime.getMinutes()));
+        return;
+    }
+    else if (state.blnFirstAttempt) {
         var safetyCountDown = 20000;
         state.startTime = new Date();
         state.projectedFinishTime = addMinutesToDate(state.startTime, state.totalSessionMinutes);
@@ -213,7 +221,7 @@ function forward() {
     // your code goes here
     // move either to next board, move  or new round
     var originalThisRoundToGo = state.thisRoundToGo;
-    if (state.currentBoardNumber < settings.boardsPerRound){
+    if (state.currentBoardNumber < settings.boardsPerRound) {
         state.thisRoundToGo = state.roundTime - (state.currentBoardNumber * settings.boardTime) ;
         state.currentBoardNumber++;
         setBoard(state.currentBoardNumber);
@@ -259,7 +267,8 @@ function calcPerUnitTimeGone() {
 }
 
 function getEmptyState() {
-    return { 
+    return {
+        "preStart": true,
         "blnFirstAttempt": true,
         "totalSessionSeconds": 0,
         "totalSessionMinutes": 0,
