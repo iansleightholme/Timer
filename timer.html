@@ -106,6 +106,7 @@
                <rect  x="-32" y="-40" rx="5" ry="5" width="64" height="80" style="fill:#2F8C64;stroke-width:3.5;stroke:#015127;" />
             </g>
             <path id="boardMarker" fill="#ffffff" d="M-8 0 a 220 220 0 0 1 8 8 l 8 -8 Z" />
+            <path id="playedBoardMarker" fill="#191919" d="M-8 0 a 220 220 0 0 1 8 8 l 8 -8 Z" />
             <path id="averageMark" d="M8 0 L0 12 L-8 0 L0 -12 Z" style="fill:#ff9900"/>
             <g id="averageTab" >
                <rect  rx="10" ry="10" x="-44" y="-34" width="88" height="68" fill="#222222" />
@@ -203,9 +204,12 @@
                   <!-- board children created dynamically 
                      <use xlink:href="#reverseBoard" x=0 y=-155 /><use xlink:href="#board" x=0 y=-155 /><use xlink:href="#boardMarker" x=0 y=-220 /> -->
                   <g id="playedBoards" />
-                  <g id="activeBoards" clip-path="url(#clip)"><circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" /></g>
+                  <g id="playedBoardMarkers" />
+                  <g id="activeBoards" clip-path="url(#clip)">
+                     <circle id="patt1" cx="0" cy="0" r="220" fill="url(#jigsaw)" />
+                     <g id="boardMarkers" ><use xlink:href="#boardMarker" x=0 y=-220 /></g>
+                  </g>
                   <use id="overtimeText" xlink:href="#overtime" visibility="hidden" />
-                  <g id="boardMarkers" ><use xlink:href="#boardMarker" x=0 y=-220 /></g>
                   <use id="clockHand1" xlink:href="#clockhand" x="0" y="0" transform="rotate(135 0 0)" />
 
                   <!-- centre -->

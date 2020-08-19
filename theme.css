@@ -53,30 +53,27 @@ text.normal {
 }
 
 text.overtime {
-   /* font-family: Impact; */
    font-family: Chela One;
    fill: url(#redChecker);
-   stroke: #FF0000;
+   stroke: #000000;
    stroke-width: 2px;
    stroke-linecap: butt;
    stroke-linejoin: miter;
 }
 
 text.move {
-   /* font-family: Impact; */
    font-family: Chela One;
    fill: url(#blueChecker);
-   stroke: #0000ff;
-   stroke-width: 1px;
+   stroke: #000000;
+   stroke-width: 2px;
    stroke-linecap: butt;
    stroke-linejoin: miter;
 }
 
 text.break {
-   /* font-family: Impact; */
    font-family: Chela One;
    font-size: 252;
-   fill: url(#checker);
+   fill: url(#blueChecker);
    stroke: #000000;
    stroke-width: 5px;
    stroke-linecap: butt;
@@ -84,11 +81,10 @@ text.break {
 }
 
 text.farewell {
-   /* font-family: Roboto Condensed, sans-serif; */
    font-family: Chela One;
    fill: url(#blueChecker);
-   stroke: #0000ff;
-   stroke-width: 1px;
+   stroke: #000000;
+   stroke-width: 5px;
    stroke-linecap: butt;
    stroke-linejoin: miter;
 }

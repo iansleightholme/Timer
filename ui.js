@@ -4,6 +4,7 @@ var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
 var isStarted = false;
+var isBreaked = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -23,8 +24,8 @@ function setMode(mode, value) {
           hide('leftTextSummary');
           hide('movePlay');
           hide('overtimePlay');
+          hide('breakPlay');
           hide('ifStartedNow');
-          hide('sessionEnded');
           show('leftTextNormal');
           show('rightText');
           setAveragingTheme(false);
@@ -40,7 +41,6 @@ function setMode(mode, value) {
           hide('movePlay');
           hide('breakPlay');
           hide('overtimePlay');
-          hide('sessionEnded');
           show('overtimePlay');
           soundNextBoard(settings.tones, true);
           break;
@@ -49,17 +49,18 @@ function setMode(mode, value) {
           hide('movePlay');
           hide('breakPlay');
           hide('overtimePlay');
-          hide('sessionEnded');
           show('movePlay');
           soundMove(settings.tones, settings.voiceCommands);
           break;
        case 'break':
           hide('normalPlay');
           hide('movePlay');
-          hide('breakPlay');
-          hide('overtimePlay');
-          hide('sessionEnded');
           show('breakPlay');
+          hide('overtimePlay');
+          isPaused = true;
+          hide('pauseId');
+          show('playId');
+          hide('paused');
           break;
        case 'ended':
           hide('normalPlay');
@@ -128,6 +129,7 @@ function createBoards(numBoards, rotation) {
 
    var playedBoards = document.getElementById('playedBoards');
    var boardMarkers = document.getElementById('boardMarkers');
+   var playedBoardMarkers = document.getElementById('playedBoardMarkers');
 
    for (i = 0; i < numBoards; i++) {
       // active
@@ -151,9 +153,16 @@ function createBoards(numBoards, rotation) {
       played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#boardMarker');
       played.setAttribute('x', 0);
       played.setAttribute('y', -220);
-      played.setAttribute('fill', "white");
       played.setAttribute('transform', 'rotate(' + ((i + 1) * rotation) + ' 0 0)');
       boardMarkers.appendChild(played);
+
+      // played marker
+      var played = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#playedBoardMarker');
+      played.setAttribute('x', 0);
+      played.setAttribute('y', -220);
+      played.setAttribute('transform', 'rotate(' + ((i + 1) * rotation) + ' 0 0)');
+      playedBoardMarkers.appendChild(played);
    }
 }
 
