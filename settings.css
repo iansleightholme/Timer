@@ -1,24 +1,26 @@
 header, footer, section, article, aside {
     margin: 10px;
-    background: green;
+    background: #E9FAFF;
     border-radius: 6px;
-    color: white;
-    font: 14px/24px "Lucida Console";
+    color: black;
+    font: 16px/24px "Calibri";
     padding: 24px 15px;
     box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
     display:block;
   }
   body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     padding-left: 100px;
     padding-right: 100px;
     background: #E9FAFF;
+    font-weight: 900;
 }
 
 td.label {
     text-align: right; 
-    padding-right:15px;
+    padding-right:4px;
 }
+
 
 td.summaryLabel {
     padding-right:15px;
@@ -26,6 +28,12 @@ td.summaryLabel {
 
 aside.right {
     float: right;
+}
+aside.left {
+    float: left;
+}
+tr.alignTop {
+    vertical-align: top;
 }
 
 option {
@@ -42,11 +50,20 @@ summary {
     font-weight: bold;
     font-size: 1.5em;
 }
+td.headingBlueBackground{
+    background:  linear-gradient(to right, #3399ff 0%, #0000ff 50%);
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
 
-button.big {
+button.big { background: linear-gradient(to right, #3399ff 0%, #0000ff 50%);
     font-family: Calibri;
     /* background-color: #4CAF50; Green */
+    background: linear-gradient(to right, #006600 70%, #000000 100%);
+    border-radius: 10px;
     font-size: 36px;
+    color: white;
 }
 
 button.small {

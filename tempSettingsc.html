@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html  xml:lang="en" lang="en">
+  <head>
+    <title>Bridge Timer Settings</title>
+    <link type="text/css" href="settings.css" rel="stylesheet" >
+    <script src="settings.js" ></script>
+    <script src="dal.settings.js" ></script>
+    <script src="help.js" ></script>
+  </head>
+
+  <body onload="load();" >
+    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span></h1>
+    <table style="width: 100%; border: 0px; padding: 6px; ">
+        
+        
+    <tr class="alignTop"><td width=75% ><table style="width: 100%; background:      
+        black;color: white;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;"><tr><td class="headingBlueBackground">
+        <h2>Basics
+            
+        </h2></td><td><span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></td> <td  class="headingBlueBackground" >
+            <h3>Sounds</h3><td><span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
+                      </td></tr>
+                  <tr><td class="label" >
+        <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
+                  </td><td class="label" >
+                    <label>Tones</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked /></td></tr><td class="label" >
+                        
+        <label>Number of rounds</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
+                  </td><td class="label" >
+                    <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
+                    </td></tr><tr><td class="label" >
+        <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
+                  </td></tr><tr></tr>
+                  
+                  
+                  
+                  <tr><td   class="headingBlueBackground">
+        <h3>Pause</h3></td> <td><span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></td>
+                  </tr><tr><td class="label" >
+        <label>pause after round</label></td><td>
+        <input type="checkbox" id="hasPause" onchange="valueChanged();" checked >
+        <input type="number" id="numPause" min="1" max="50" onchange="valueChanged();" >
+                  </td></tr><tr><td class="label" >
+        <label>and repeat</label></td><td><input type="checkbox" id="hasPauseRepeat" onchange="valueChanged();" checked >
+                  </td></tr></table><table style="width: 100%;
+                  color: black;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;"><tr><td class="headingBlueBackground">    <h3>Adjustable Timings</h3></td><td><span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
+                      </td></tr><tr><td class="label" >
+              <label>Time for an average board</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> seconds
+                      </td></tr><tr><td class="label" >
+              <label>Round Overtime</label>
+              <label>(auto-calculate)<input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked /></label></td><td>
+              <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> seconds
+                      </td></tr><tr><td class="label" >
+              <label>Move time between rounds</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> seconds
+                      </td></tr><tr><td class="label" style="vertical-align: top;" >
+              <label>Signal no further boards should be started<br /> in the current round after less than </label>
+              <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
+              <input type="checkbox" id="hasAverage" onchange="valueChanged();" /><br />
+              <input type="radio" name="averageOption" id="averageOptionPercent" value="percent" onchange="valueChanged();" checked />
+              <input id="averagePercent" type="number" min="5" max="200" onchange="valueChanged();" /> % board time<br />
+              <input type="radio" name="averageOption" id="averageOptionFixed" value="fixed" onchange="valueChanged();" />
+              <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> seconds
+                      </td></tr><tr><td class="label" >
+              <label>Pause/Break time (Zero to wait for play button press)</label></td><td>
+                
+                
+                <input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> seconds.</td></tr></table> </td><td style="width: 25%;"><aside style=" border-style: solid; border-width: 1px; border-radius: 10px; border-color: black; padding:10px 30px 30px 30px;">
+                  <h2>Checklist</h2>
+        <span>1.  If necessary, disable the computer's screensaver (otherwise the timer may disappear from view as the screensaver displays) </span><br /><br />
+        <span>2.  Check that the totals & board rate in the summary box below look reasonable.</span>
+                
+              </aside>
+              <aside >    <div style="background:      
+                black; width:200px; color: white;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
+                  <h2>Summary</h2>
+                  
+                  <table style="border-width: 0px;"><tr><td class="summaryLabel" >
+                  Total session boards </td><td style="background-color: green; text-align: right;"><span   id="numBoards" ></span>
+                  </td></tr><tr><td class="summaryLabel" >
+                  Total session time </td><td style="background-color: green; text-align: right;"><span id="numSessionHoursMins"></span>
+                  </td></tr>
+                  <tr><td class="summaryLabel" >
+                    Boards per hour</td><td style="background-color: green; text-align: right;"><span id="numBoardsPerHour"></span>
+                    </td></tr>
+                  <tr><td class="summaryLabel" >
+                  Start now finish at </td><td style="background-color: green; text-align: right;"><span id="finishTime"></span>
+                  </td></tr>
+
+                </table>
+                
+        </div></aside>
+              
+                <table style="width: 100%; 
+                padding:10px 30px 30px 30px; border-radius: 10px; "><tr><td>&nbsp</td><td style="text-align: right;">
+        <button class="big" onclick="next();" >Next</button></td></tr></table>
+      </td></tr>
+        
+      
+      
+      
+      <tr><td colspan="2">         
+    <table style="width: 100%;  background:      
+    silver;color: black;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
+    <tr><td class="headingBlueBackground" style="width: 25% ;" >Saved Settings</td>
+     
+      <td class="label"  style="width: 25% ;">
+        <label>Restore standard setting only</label><td style="width: 25% ;"><button class="small" onclick="resetStandard();" >Restore standard</button>
+    </td><td class="label" style="width: 25% ;">
+<label>Clear all saved settings</label></td><td style="width: 25% ;"><button class="small" onclick="clearSettings();">Clear</button>
+    </td></tr>
+    <tr><td colspan="4">
+      
+       
+        If you've previously saved settings, then you can select them again &nbsp;&nbsp;&nbsp;
+        
+          <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
+          <button class="small" title="Add new" onclick="addNew();" >+</button>
+          <button class="small" title="Undo" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" title="Save" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
+          <button class="small" title="Delete" onclick="del();" >&#x1F5D1;</button>
+          <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
+          <button class="small" id="setDefaultId" onclick="setDefault();" >Set as default</button>&nbsp;&nbsp;
+        
+          
+     
+    </td></tr>
+
+
+
+
+  </table></td></tr>
+</table>
+  
+  
+  
+
+  </body>
+</html>
