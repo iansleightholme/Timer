@@ -349,7 +349,9 @@ function getAudioFile(sound) {
          return './sounds/alert.mp3';
       case 'triangle':
          // http://soundbible.com/1525-Triangle-Dinner-Bell.html
-         return './sounds/triangle.mp3';
+         // return './sounds/triangle.mp3';
+         // http://soundbible.com/1630-Computer-Magic.html
+         return './sounds/magic1901299923.mp3';
       case 'move':
          // https://cloud.google.com/text-to-speech/
          return getMoveVoiceCommand();
