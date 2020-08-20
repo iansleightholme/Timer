@@ -27,8 +27,8 @@ async function loadBackground() {
 // initState is part of load
 function initState() {
     state = getEmptyState();
-    state.blnPauseAfterRoundN = settings.pause;
-    if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
+    //state.blnPauseAfterRoundN = settings.pause;
+    //if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  settings.pauseAfterRound " + settings.pauseAfterRound);
 
     state.normalPlayTime = settings.boardsPerRound * settings.boardTime;
     // overtimeInSeconds needs to be calculated as yet 18/10/2019
@@ -100,7 +100,7 @@ function update() {
         //possibilities are normal mid round play, averaging, overtime, move time, paused, fast forward, back 
         state.perUnitTimeGone = calcPerUnitTimeGone();
         setProgress(state.perUnitTimeGone);
-        if (state.blnPaused) {
+        if (state.blnPaused || state.blnOnBreak) {
             state.projectedFinishTime = addMillisecondsToDate(state.projectedFinishTime, updateInterval);
             setProjectedTime(state.projectedFinishTime.getHours() + ":" + toTwoDigitString(state.projectedFinishTime.getMinutes()));
             return;
@@ -120,16 +120,17 @@ function update() {
         if (state.currentRoundNumber >= settings.rounds || state.thisRoundToGo < -settings.moveTime)
             nextRound();
         else if (state.thisRoundToGo < 0) {
-            moving(-state.thisRoundToGo);
-            if (state.blnPauseAfterRoundN && state.currentRoundNumber == settings.pauseAfterRound) {
+            if (settings.pause && (
+                state.currentRoundNumber == settings.pauseAfterRound
+                || (settings.pauseRepeat && state.currentRoundNumber % settings.pauseAfterRound == 0))) {
                 state.blnPaused = true;
                 if (DEBUG) alert("blnPauseAfterRoundN " + state.blnPauseAfterRoundN + ",  currentRoundNumber " + state.currentRoundNumber + ", settings.pauseAfterRound" + settings.pauseAfterRound);
                 pause();
+                state.blnOnBreak = true;
+                goToBreak();
             }
-            // else
-            // {
-            // moving(-thisRoundToGo);
-            // }
+            else
+                moving(-state.thisRoundToGo);
         }
     }
     else {
@@ -257,7 +258,12 @@ function moving(movingTime) {
 function play() {
     // your code goes here
     state.blnPaused = false;
-    state.blnPauseAfterRoundN = false;
+    if (state.blnOnBreak)
+    {
+        state.blnOnBreak = false;
+        state.thisRoundToGo = -settings.moveTime - 1;
+    }
+    // state.blnPauseAfterRoundN = false;
 }
 
 function calcPerUnitTimeGone() {
@@ -290,7 +296,7 @@ function getEmptyState() {
         "blnChangedColour": true,
         "blnPaused": false,
         "blnMoving": false,
-        "blnPauseAfterRoundN": false,
+        "blnOnBreak": false,
         "perUnitTimeGone": 0.0
     };
 }

@@ -4,7 +4,7 @@ var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
 var isStarted = false;
-var isBreaked = false;
+var isOnBreak = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -57,7 +57,6 @@ function setMode(mode, value) {
           hide('movePlay');
           show('breakPlay');
           hide('overtimePlay');
-          isPaused = true;
           hide('pauseId');
           show('playId');
           hide('paused');
@@ -222,6 +221,14 @@ function togglePlayPause() {
       show('pauseId');
       start();
    }
+   else if (isOnBreak) {
+      isOnBreak = false;
+      isPaused = false;
+      hide('playId');
+      show('pauseId');
+      hide('paused');
+      play();
+   }
    else if (isPaused) {
       isPaused = false;
       hide('playId');
@@ -236,6 +243,12 @@ function togglePlayPause() {
       show('paused');
       pause();
    }
+}
+
+function goToBreak() {
+   isOnBreak = true;
+   isPaused = false;
+   setMode('break');
 }
 
 function mouseMove() {
