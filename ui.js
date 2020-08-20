@@ -152,7 +152,7 @@ function createBoards(numBoards, rotation) {
       var played = document.createElementNS('http://www.w3.org/2000/svg', 'use');
       played.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#boardMarker');
       played.setAttribute('x', 0);
-      played.setAttribute('y', -220);
+      played.setAttribute('y', -221);
       played.setAttribute('transform', 'rotate(' + ((i + 1) * rotation) + ' 0 0)');
       boardMarkers.appendChild(played);
 
