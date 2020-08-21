@@ -10,39 +10,43 @@
 
   <body onload="load();" >
     <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span></h1>
-    <table style="width: 100%; border: 0px; padding: 6px; ">
-        
-        
-    <tr class="alignTop"><td width=75% ><table style="width: 100%; background:      
-        black;color: white;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;"><tr><td class="headingBlueBackground">
-        <h2>Basics
-            
-        </h2></td><td><span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></td> <td  class="headingBlueBackground" >
-            <h3>Sounds</h3><td><span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
-                      </td></tr>
-                  <tr><td class="label" >
-        <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
-                  </td><td class="label" >
-                    <label>Tones</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked /></td></tr><td class="label" >
+    <table style="width: 100%; border-width: 0px; padding: 0px; border-color: black;">
+      <tr class="alignTop">
+        <td style="width: 75%;" >
+        <table style="width: 100%; background:      
+        black;color: white;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
+          <tr><td class="headingBlueBackground">        <h2>Basics</h2></td>
+            <td><span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></td> 
+            <td  class="headingBlueBackground" ><h3>Sounds</h3></td><td><span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
+                      </td>
+                    </tr>
+                  <tr>
+                    <td class="label" >
+                      <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
+                  </td>
+                  <td class="label" >
+                    <label>Tones</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked /></td></tr>
+                    <tr><td class="label" >
                         
         <label>Number of rounds</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
                   </td><td class="label" >
                     <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
                     </td></tr><tr><td class="label" >
         <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
-                  </td></tr><tr></tr>
+                  </td><td></td><td></td></tr>
                   
                   
                   
                   <tr><td   class="headingBlueBackground">
-        <h3>Pause</h3></td> <td><span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></td>
+        <h3>Pause</h3></td> <td><span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></td><td></td><td></td>
                   </tr><tr><td class="label" >
-        <label>pause after round</label></td><td>
+        <label>pause after round</label>
+                  </td><td>
         <input type="checkbox" id="hasPause" onchange="valueChanged();" checked >
         <input type="number" id="numPause" min="1" max="50" onchange="valueChanged();" >
-                  </td></tr><tr><td class="label" >
+                  </td><td></td><td></td></tr><tr><td class="label" >
         <label>and repeat</label></td><td><input type="checkbox" id="hasPauseRepeat" onchange="valueChanged();" checked >
-                  </td></tr></table><table style="width: 100%;
+                  </td><td></td><td></td></tr></table><table style="width: 100%;
                   color: black;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;"><tr><td class="headingBlueBackground">    <h3>Adjustable Timings</h3></td><td><span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
                       </td></tr><tr><td class="label" >
               <label>Time for an average board</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> seconds
@@ -70,11 +74,10 @@
         <span>2.  Check that the totals & board rate in the summary box below look reasonable.</span>
                 
               </aside>
-              <aside >    <div style="background:      
-                black; width:200px; color: white;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
-                  <h2>Summary</h2>
-                  
-                  <table style="border-width: 0px;"><tr><td class="summaryLabel" >
+              <aside>
+                <table style="background:      
+                  black;  color: white;padding:10px 30px 10px 30px; width: 100%; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
+                    <tr><td  class="headingBlueBackground"> <h2 >Summary</h2></td><td>&nbsp;</td></tr><tr><td class="summaryLabel" >
                   Total session boards </td><td style="background-color: green; text-align: right;"><span   id="numBoards" ></span>
                   </td></tr><tr><td class="summaryLabel" >
                   Total session time </td><td style="background-color: green; text-align: right;"><span id="numSessionHoursMins"></span>
@@ -82,22 +85,16 @@
                   <tr><td class="summaryLabel" >
                     Boards per hour</td><td style="background-color: green; text-align: right;"><span id="numBoardsPerHour"></span>
                     </td></tr>
-                  <tr><td class="summaryLabel" >
-                  Start now finish at </td><td style="background-color: green; text-align: right;"><span id="finishTime"></span>
-                  </td></tr>
+                  
 
                 </table>
                 
-        </div></aside>
+        </aside>
               
                 <table style="width: 100%; 
-                padding:10px 30px 30px 30px; border-radius: 10px; "><tr><td>&nbsp</td><td style="text-align: right;">
+                padding:5px 5px 5px 5px; border-radius: 10px; "><tr><td>&nbsp;</td><td style="text-align: right;">
         <button class="big" onclick="next();" >Next</button></td></tr></table>
-      </td></tr>
-        
-      
-      
-      
+      </td></tr>      
       <tr><td colspan="2">         
     <table style="width: 100%;  background:      
     silver;color: black;padding:10px 30px 30px 30px; border-radius: 10px; border-width: 6px; border-color: gray; border-style: groove;">
@@ -120,19 +117,10 @@
           <button class="small" title="Delete" onclick="del();" >&#x1F5D1;</button>
           <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
           <button class="small" id="setDefaultId" onclick="setDefault();" >Set as default</button>&nbsp;&nbsp;
-        
-          
-     
-    </td></tr>
-
-
-
-
-  </table></td></tr>
+    </td><td>&nbsp;</td>
+  </tr>
+</table></td>
+</tr>
 </table>
-  
-  
-  
-
   </body>
 </html>

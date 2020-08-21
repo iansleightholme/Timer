@@ -69,6 +69,9 @@ button.big { background: linear-gradient(to right, #3399ff 0%, #0000ff 50%);
 button.small {
     font-family: Calibri;
     font-size: 18px;
+    background: linear-gradient(to right, #006600 70%, #000000 100%);
+    border-radius: 10px;
+    color: white;
 }
 
 .tooltip {
