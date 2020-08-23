@@ -50,11 +50,15 @@ summary {
     font-weight: bold;
     font-size: 1.5em;
 }
-td.headingBlueBackground{
+span.headingBlueBackground{
     background:  linear-gradient(to right, #3399ff 0%, #0000ff 50%);
     border-radius: 10px;
     color: white;
-    text-align: center;
+    padding: 10px  10px  10px  10px;
+    text-align: left;
+    
+   
+   
 }
 
 button.big { background: linear-gradient(to right, #3399ff 0%, #0000ff 50%);

@@ -99,7 +99,8 @@ function valueChanged() {
     }
     else
         enable('overtime', true);
-
+   
+    setSpanValue('numBoardTimeConvMinSec', secondsToMinSecs( getValue('boardTime')));
     enable('undoChangesId', changed);
     enable('saveChangesId', changed);
 
@@ -186,12 +187,13 @@ function updateSummary() {
     var formSettings = getFormSettings();
     var numSessionBoards = formSettings.boardsPerRound * formSettings.rounds;
     setSpanValue('numBoards', numSessionBoards);
-
+    setSpanValue('numBoardTimeConvMinSec', secondsToMinSecs( getValue('boardTime')));
+    setSpanValue('breakTimeConvMinSec', secondsToMinSecs( getValue('breakTime')));
     var nonBreakTime = getSessionTimeExclBreaks(formSettings);
     var breakTime = getBreakTime(formSettings);
     var duration = nonBreakTime + breakTime;
     setSpanValue('numSessionHoursMins', secondsToHoursMins(duration));
-
+    setSpanValue('breakTimeConvMinSec', secondsToMinSecs( getValue('breakTime')));
     var rate = numSessionBoards / nonBreakTime * 3600;
     rate = Math.round(rate * 10)/ 10;
     setSpanValue('numBoardsPerHour', rate);
@@ -222,6 +224,12 @@ function secondsToHoursMins(value) {
     var mins = Math.floor((value % 3600) / 60); 
     return Math.floor(value/3600) + ':' 
         + (mins < 10 ? '0' : '') + mins;
+}
+
+function secondsToMinSecs(value) {
+    var secs = Math.floor(value % 60); 
+    return Math.floor(value/60) + ':' 
+        + (secs < 10 ? '0' : '') + secs;
 }
 
 function setSelection(value) {
