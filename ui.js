@@ -4,7 +4,7 @@ var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
 var isStarted = false;
-var isOnBreak = false;
+//var isOnBreak = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -40,13 +40,11 @@ function setMode(mode, value) {
           hide('normalPlay');
           hide('movePlay');
           hide('breakPlay');
-          hide('overtimePlay');
           show('overtimePlay');
           soundNextBoard(settings.tones, true);
           break;
        case 'move':
           hide('normalPlay');
-          hide('movePlay');
           hide('breakPlay');
           hide('overtimePlay');
           show('movePlay');
@@ -57,9 +55,13 @@ function setMode(mode, value) {
           hide('movePlay');
           show('breakPlay');
           hide('overtimePlay');
-          hide('pauseId');
-          show('playId');
-          hide('paused');
+          if (value)
+          {
+             show('breakPause');
+             togglePlayPause(true);
+          }
+          else
+              show('breakCounter');
           break;
        case 'ended':
           hide('normalPlay');
@@ -104,9 +106,11 @@ function setClockTime(seconds) {
    }
    setText('moveMinutes', mins);
    setText('overtimeMinutes', mins);
+   setText('breakMinutes', mins);
    setText('timeSeconds', toTwoDigitString(secs));
    setText('moveSeconds', toTwoDigitString(secs));
    setText('overtimeSeconds', toTwoDigitString(secs));
+   setText('breakSeconds', toTwoDigitString(secs));
 }
 
 function setAverage(value, rotation) {
@@ -213,21 +217,13 @@ function soundNextBoard(tones, repeat) {
 // #endregion public functions
 
 // #region private and helper functions
-function togglePlayPause() {
+function togglePlayPause(isBreak) {
    if (!isStarted) {
       isStarted = true;
       isPaused = false;
       hide('playId');
       show('pauseId');
       start();
-   }
-   else if (isOnBreak) {
-      isOnBreak = false;
-      isPaused = false;
-      hide('playId');
-      show('pauseId');
-      hide('paused');
-      play();
    }
    else if (isPaused) {
       isPaused = false;
@@ -241,14 +237,9 @@ function togglePlayPause() {
       hide('pauseId');
       show('playId');
       show('paused');
-      pause();
+      if (!isBreak)
+         pause();
    }
-}
-
-function goToBreak() {
-   isOnBreak = true;
-   isPaused = false;
-   setMode('break');
 }
 
 function mouseMove() {
