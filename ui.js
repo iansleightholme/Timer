@@ -4,7 +4,6 @@ var isMute = false;
 var isFullscreen = false;
 var isPaused = false;
 var isStarted = false;
-//var isOnBreak = false;
 var fadeTimer;
 var lastMouseMove;
 
@@ -53,7 +52,6 @@ function setMode(mode, value) {
        case 'break':
           hide('normalPlay');
           hide('movePlay');
-          show('breakPlay');
           hide('overtimePlay');
           if (value)
           {
@@ -61,7 +59,8 @@ function setMode(mode, value) {
              togglePlayPause(true);
           }
           else
-              show('breakCounter');
+             show('breakCounter');
+          show('breakPlay');
           break;
        case 'ended':
           hide('normalPlay');
