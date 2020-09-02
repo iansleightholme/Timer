@@ -1,15 +1,15 @@
-var _mode;
-var volume = 7;
-var isMute = false;
-var isFullscreen = false;
-var isPaused = false;
-var isStarted = false;
-var isOnBreak = false;
-var fadeTimer;
-var lastMouseMove;
+var ui = { 
+   "_mode": null,
+   "volume": 7,
+   "isMute": false,
+   "isPaused": false,
+   "isStarted": false,
+   "fadeTimer": null,
+   "lastMouseMove": null
+}
 
 function setMode(mode, value) {
-    if (mode == _mode)
+    if (mode == ui._mode)
        return;
  
     switch(mode) {
@@ -40,14 +40,14 @@ function setMode(mode, value) {
           hide('normalPlay');
           hide('movePlay');
           hide('breakPlay');
-          hide('overtimePlay');
           show('overtimePlay');
           soundNextBoard(settings.tones, true);
           break;
        case 'move':
           hide('normalPlay');
-          hide('movePlay');
           hide('breakPlay');
+          hide('breakPause');
+          hide('breakCounter');
           hide('overtimePlay');
           show('movePlay');
           soundMove(settings.tones, settings.voiceCommands);
@@ -55,11 +55,20 @@ function setMode(mode, value) {
        case 'break':
           hide('normalPlay');
           hide('movePlay');
-          show('breakPlay');
           hide('overtimePlay');
-          hide('pauseId');
-          show('playId');
-          hide('paused');
+          if (value)
+          {
+             hide('breakCounter');
+             show('breakPause');
+             togglePlayPause(true);
+          }
+          else
+          {
+             hide('breakPause');
+             show('breakCounter');
+          }
+
+          show('breakPlay');
           break;
        case 'ended':
           hide('normalPlay');
@@ -77,7 +86,7 @@ function setMode(mode, value) {
           break;
     }
  
-    _mode = mode;
+    ui._mode = mode;
  }
 
 // #region public functions
@@ -85,7 +94,8 @@ function setDisplayName(value) { setText('displayName', value); }
 function setRound(value) { setText('round', value); }
 function setBoard(value) { setText('boardIndex', value); }
 function setTotalBoards(value) { setText('totalBoards', value); }
-function setProjectedTime(value) { setText('projectedTime', value); }
+function setDuration(value) { setText('duration', getHoursMinutes(value)); }
+function setProjectedTime(value) { setText('projectedTime', getTime(value)); }
 function setProgress(perunit) { document.getElementById('progress').setAttribute('width', 8 + 400 * (perunit > 1.0 ? 1.0 : perunit < 0.0 ? 0.0 : perunit)); }
 
 function setClockTime(seconds) {
@@ -104,13 +114,15 @@ function setClockTime(seconds) {
    }
    setText('moveMinutes', mins);
    setText('overtimeMinutes', mins);
+   setText('breakMinutes', mins);
    setText('timeSeconds', toTwoDigitString(secs));
    setText('moveSeconds', toTwoDigitString(secs));
    setText('overtimeSeconds', toTwoDigitString(secs));
+   setText('breakSeconds', toTwoDigitString(secs));
 }
 
-function setAverage(value, rotation) {
-   setText('average', value);
+function setAverage(seconds, rotation) {
+   setText('average', getMinutesSecond(seconds));
    rotate('averageTab1', rotation);
    show('averageTab1');
    rotate('averageMark1', rotation);
@@ -176,7 +188,7 @@ function setClockHand(rotation) {
 }
 
 function soundAverage(tones, commands) {
-   if (isMute)
+   if (ui.isMute)
       return;
    if (tones && commands) {
        playAudio('alert');
@@ -189,7 +201,7 @@ function soundAverage(tones, commands) {
 }
 
 function soundMove(tones, commands) {
-   if (isMute)
+   if (ui.isMute)
       return;
    if (tones && commands) {
        playAudio('triangle');
@@ -202,7 +214,7 @@ function soundMove(tones, commands) {
 }
 
 function soundNextBoard(tones, repeat) {
-   if (isMute)
+   if (ui.isMute)
       return;
    if (tones) {
        playAudio('dong');
@@ -213,58 +225,45 @@ function soundNextBoard(tones, repeat) {
 // #endregion public functions
 
 // #region private and helper functions
-function togglePlayPause() {
-   if (!isStarted) {
-      isStarted = true;
-      isPaused = false;
+function togglePlayPause(isBreak) {
+   if (!ui.isStarted) {
+      ui.isStarted = true;
+      ui.isPaused = false;
       hide('playId');
       show('pauseId');
       start();
    }
-   else if (isOnBreak) {
-      isOnBreak = false;
-      isPaused = false;
-      hide('playId');
-      show('pauseId');
-      hide('paused');
-      play();
-   }
-   else if (isPaused) {
-      isPaused = false;
+   else if (ui.isPaused) {
+      ui.isPaused = false;
       hide('playId');
       show('pauseId');
       hide('paused');
       play();
    }
    else {
-      isPaused = true;
+      ui.isPaused = true;
       hide('pauseId');
       show('playId');
       show('paused');
-      pause();
+      if (!isBreak)
+        pause();
    }
-}
-
-function goToBreak() {
-   isOnBreak = true;
-   isPaused = false;
-   setMode('break');
 }
 
 function mouseMove() {
    show('navigation');
    setOpacity('navigation', 1.0);
 
-   lastMouseMove = new Date();
-   if (fadeTimer == null)
-      fadeTimer = setInterval(fadeOut, 100);
+   ui.lastMouseMove = new Date();
+   if (ui.fadeTimer == null)
+      ui.fadeTimer = setInterval(fadeOut, 100);
 }
 
 function fadeOut() {
-   var diff = new Date() - lastMouseMove;
+   var diff = new Date() - ui.lastMouseMove;
    if (diff > 9000)
    {
-      fadeTimer = null;
+      ui.fadeTimer = null;
       hide('navigation');
    }
    if (diff > 5000) {
@@ -368,46 +367,49 @@ function getAudioFile(sound) {
 
 function playAudio(sound) {
    var snd = new Audio(getAudioFile(sound));
-   snd.volume = volume /10;
+   snd.volume = ui.volume /10;
    snd.play();
 }
 
 function toggleMute() {
-   if (!isMute) {
-      isMute = true;
+   if (!ui.isMute) {
+      ui.isMute = true;
       show('muted');
    }
    else {
-      isMute = false;
+      ui.isMute = false;
       hide('muted');
-      if (volume == 0)
-         volume = 1;
+      if (ui.volume == 0)
+         ui.volume = 1;
       playAudio('beep');
    }
 }
 
 function soundUp() {
-   setVolume(volume + 1);
+   setVolume(ui.volume + 1);
 }
 
 function soundDown() {
-   setVolume(volume - 1);
+   setVolume(ui.volume - 1);
 }
 
 function setVolume(value) {
-   volume = value;
-   if (volume > 10)
-      volume = 10;
-   else if (volume < 0.0)
-      volume = 0;
+   ui.volume = value;
+   if (ui.volume > 10)
+      ui.volume = 10;
+   else if (ui.volume < 0.0)
+      ui.volume = 0;
 
-   if (isMute)
+   if (ui.isMute)
       toggleMute();
-      //mute = false;
 
-   setText('volume1', volume);
+   setText('volume1', ui.volume);
    
    playAudio('beep');
+}
+
+function getTime(date) {
+   return date.getHours() + ':' + toTwoDigitString(date.getMinutes());
 }
 
 function getHoursMinutesSecond(seconds) {
@@ -416,5 +418,19 @@ function getHoursMinutesSecond(seconds) {
    var secs = Math.floor(seconds % 60);
 
    return (hours > 0 ? hours + ':' + toTwoDigitString(minutes) : minutes) + ':' + toTwoDigitString(secs);
+}
+
+function getMinutesSecond(seconds) {
+   var minutes = Math.floor((seconds % 3600) / 60);
+   var secs = Math.floor(seconds % 60);
+
+   return (minutes > 0 ? minutes : "0") + ':' + toTwoDigitString(secs);
+}
+
+function getHoursMinutes(seconds) {
+   var hours = Math.floor(seconds / 3600);
+   var minutes = Math.floor((seconds % 3600) / 60);
+
+   return (hours + ':' + toTwoDigitString(minutes));
 }
  // #endregion private and helper functions
