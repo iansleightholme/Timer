@@ -38,7 +38,7 @@ function getPlan() {
     for (var i = 1; i <= settings.rounds; i++) {
         items.push({ "type": "round", "num": i, "start": sum, "length": state.roundTime});
         sum += state.roundTime;
-        if (settings.pause && i % settings.pauseAfterRound
+        if (settings.pause && i % settings.pauseAfterRound == 0
             && (i == settings.pauseAfterRound || settings.pauseRepeat)) {
                 var t = settings.pauseTime > 5 ? settings.pauseTime : 5 ; 
                 items.push({ "type": "break", "start": sum, "length": t});
