@@ -205,7 +205,7 @@ function updateSummary() {
 
 function getSessionTimeExclBreaks(settings) {
     var numSessionBoards = settings.boardsPerRound * settings.rounds;
-    var playingTime = numSessionBoards * settings.boardTime;
+    var playingTime = numSessionBoards * settings.boardTime + settings.rounds * settings.overtime;
     var breakTime = (settings.rounds - 1) * settings.moveTime;
     return playingTime + breakTime;
 }
