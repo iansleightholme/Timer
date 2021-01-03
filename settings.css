@@ -1,0 +1,73 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+td.label {
+    text-align: right; 
+    padding-right:15px;
+}
+
+td.summaryLabel {
+    padding-right:15px;
+}
+
+aside.right {
+    float: right;
+}
+
+option {
+    padding:3px; 
+}
+
+input, select {
+    padding:3px; 
+    /* font-size:large; */
+}
+
+summary {
+    /* font-size: x-large; */
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+button.big {
+    font-family: Calibri;
+    /* background-color: #4CAF50; Green */
+    font-size: 36px;
+}
+
+button.small {
+    font-family: Calibri;
+    font-size: 18px;
+}
+
+.tooltip {
+    font-size: x-large;
+    font-weight: normal;
+    position: relative;
+    display: inline-block;
+    /* border-bottom: 1px dotted black; */
+    padding-left: 5px;
+    color: lightskyblue;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 5px;
+    width: 600px;
+    border-radius: 10px;
+    padding: 15px;
+    background: lightgrey;
+    z-index: 1;
+    position: absolute;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

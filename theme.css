@@ -1,0 +1,112 @@
+.bevel2 {
+    filter: url(#bevel2);
+}
+
+ text.title {
+   font-family: Calibri;
+   font-size: 72px;
+   font-weight: bold; 
+   fill: #333333;
+}
+
+text.label {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 48px; 
+   fill: #888888;
+}
+
+text.smallLabel {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 36px; 
+   fill: #888888;
+}
+
+text.tinyLabel {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 14px; 
+   fill: #888888;
+}
+
+text.value {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 96px;
+   fill: #000000;
+   filter: url(#bevel2);
+}
+
+text.smallValue {
+   font-family: Roboto Condensed, sans-serif;
+   font-size: 72px;
+   fill: #000000;
+   filter: url(#bevel2);
+}
+
+text.info {
+   font-family: Arial, sans-serif;
+   font-size: 10px; 
+   fill: #888888;
+}
+
+text.normal {
+   font-family: Impact;
+   fill: white;
+}
+
+text.overtime {
+   font-family: 'Magra', serif;
+   font-weight: bold;
+   fill: url(#redChecker);
+   stroke: #000000;
+   stroke-width: 2px;
+   stroke-linecap: butt;
+   stroke-linejoin: miter;
+}
+
+text.move {
+   font-family: 'Magra', serif;
+   font-weight: bold;
+   fill: url(#blueChecker);
+   stroke: #000000;
+   stroke-width: 2px;
+   stroke-linecap: butt;
+   stroke-linejoin: miter;
+}
+
+text.break {
+   font-family: 'Magra', serif;
+   font-weight: bold;
+   fill: url(#blueChecker);
+   stroke: #000000;
+   stroke-width: 2px;
+   stroke-linecap: butt;
+   stroke-linejoin: miter;
+}
+
+text.farewell {
+   font-family: 'Magra', serif;
+   font-weight: bold;
+   fill: url(#blueChecker);
+   stroke: #000000;
+   stroke-width: 3.5px;
+   stroke-linecap: butt;
+   stroke-linejoin: miter;
+}
+
+text.summary {
+   font-family: Impact;
+   font-size: 10px; 
+   fill: #555555;
+}
+
+.button {
+   cursor: hand;
+   fill: #dddddd;
+}
+
+.button:hover {
+   fill: white;
+}
+
+.button:active{
+   fill: #ff9900;
+}

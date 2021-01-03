@@ -1,139 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html  xml:lang="en" lang="en">
   <head>
-      <script>
-        function loadValues(name) {
-          var settings = getSettingsByName(name);
-          if (settings == null)
-            return;
-
-          setValue('boardsPerRound', settings.boardsPerRound);
-          setValue('numRounds', settings.rounds);
-          setValue('displayName', settings.title);
-          setCheck('hasTones', settings.tones);
-          setCheck('hasVoice', settings.commands);
-          setValue('hasPause', settings.pause);
-          setValue('numPause', settings.pauseRounds);
-          setValue('boardTime', settings.boardTime);
-          setValue('overtime', settings.overtime);
-          setCheck("autoCalcOvertime", false);
-          setValue('movetime', settings.moveTime);
-          setCheck('hasAverage', settings.average);
-          setOption('averageOption', 'percent');
-          setValue('averagePercent', 'averagePercent');
-          setValue('averageSeconds', 'averageSeconds');
-        }
-
-        function setValue(name, value) { document.getElementById(name).value = value; }
-        function setCheck(name, value) { document.getElementById(name).checked = value; }
-        function setSelect(name, value) { document.getElementById(name).setSelect(); }
-
-        function getSettingsByName(name) {
-          var settings = getSettings();
-          for (i=0; i < settings.sets.length; i++) {
-            if (settings.sets[i].name == name && settings.sets[i].enabled)
-              return settings.sets[i];
-          }
-        }
-
-        function getSettings() {
-          return {
-            "sets": [
-              {
-                "version": "1.0",
-                "enabled": true,
-                "name": "8 rounds of 3 boards",
-                "displayName": "My Local Bridge Club",
-                "boardsPerRound": "3",
-                "rounds": "9",
-                "tones": true,
-                "commands": true,
-                "pause": true,
-                "pauseRounds": "3",
-                "boardTime": "375",
-                "overtime": "160",
-                "autoCalcOvertime": false,
-                "moveTime": "100",
-                "average": true,
-                "averageOption": "percent",
-                "averagePercent": "100",
-                "averageSeconds": "300" 
-              },
-              {
-                "version": "1.0",
-                "enabled": true,
-                "name": "Friday evening",
-                "displayName": "My Local Bridge Club",
-                "boardsPerRound": "4",
-                "rounds": "6",
-                "tones": false,
-                "commands": false,
-                "pause": true,
-                "pauseRounds": "4",
-                "boardTime": "400",
-                "overtime": "75",
-                "autoCalcOvertime": true,
-                "moveTime": "120",
-                "average": true,
-                "averageOption": "percent",
-                "averagePercent": "80",
-                "averageSeconds": "320" 
-              }
-            ]};  
-        }
-      </script>
+    <title>Bridge Timer Settings</title>
+    <link type="text/css" href="settings.css" rel="stylesheet" >
+    <script src="settings.js" ></script>
+    <script src="dal.settings.js" ></script>
+    <script src="help.js" ></script>
   </head>
 
-  <body>
-    <h1>Settings</h1>
-<h2>Use saved settings</h2>
-<select name="saved" title="Saved settings" onchange="loadValues(this.value);">
-    <option value="Default">Default</option>
-    <option value="Monday">Monday lessons</option>
-    <option value="8 rounds of 3 boards">8 rounds of 3 boards</option>
-    <option value="Friday evening">Friday evening</option>
-    <option value="Thursday evening">Captain</option>
-  </select>
+  <body onload="load();" >
+    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span></h1>
+    <article>
+      <aside class="right" >
+        <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
+          <h2>Checklist</h2>
+<span>1.  If necessary, disable the computer's screensaver (otherwise the timer may disappear from view as the screensaver displays) </span><br /><br />
+<span>2.  Check that the totals & board rate in the summary box below look reasonable.</span>
+        </div>
+        <br />
+        <div style="background: green; color: white;padding:10px 30px 30px 30px;">
+          <h2>Summary</h2>
+          Based on the settings you have chosen:<br /><br />
+          <table><tr><td class="summaryLabel" >
+          Total session boards </td><td><span id="numBoards" ></span>
+          </td></tr><tr><td class="summaryLabel" >
+          Total session time </td><td><span id="numSessionHoursMins"></span>
+          </td></tr><tr><td class="summaryLabel" >
+          Boards per hour (excl. breaks)</td><td><span id="numBoardsPerHour"></span>
+          </td></tr></table><br />
+          <button class="big" onclick="next();" >Next</button>
+        </div><br />
+      </aside>
 
-<p>
-Save these settings for subsequent sessions<br />
-Delete this setting<br />
-Restore factory defaults<br />
-</p>
+      <section>
+        <h2>Use saved settings</h2>
+        If you've previously saved settings, then you can select them again &nbsp;&nbsp;&nbsp;<br />
+        <div style="padding-top:5px;">
+          <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
+          <button class="small" title="Add new" onclick="addNew();" >+</button>
+          <button class="small" title="Undo" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" title="Save" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
+          <button class="small" title="Delete" onclick="del();" >&#x1F5D1;</button>
+          <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
+          <button class="small" id="setDefaultId" onclick="setDefault();" >Set as default</button>&nbsp;&nbsp;
+        </div><br />
+      </section>
 
-<h1>Basic</h1>
-
-<h4>Boards per round <input type="number" id="boardsPerRound" min="1" max="5" /></h4>
-<h4>Number of rounds <input type="number" id="numRounds" min="1" max="50" /></h4>
-<h4>Title/club name <input type="string" id="displayName" minlength="1" maxlength="50" width="50" /></h4>
-
-<div style="background-color: green; color:white;">
-  <h2>Summary</h2>
-<h4>Total session boards <span id="numBoards">27</span></h4>
-<h4>Total session time <span id="numBoards">3:24</span></h4>
-<h4>Boards per hour <span id="numBoards">7.9</span></h4>
-</div>
-<h3>Sounds</h3>
-<h4>Tones <input type="checkbox" id="hasTones" checked /></h4>
-<h4>Voice commands <input type="checkbox" id="hasVoice" value="true" /></h4>
-
-<h3>Pause</h3>
-<h4>Automatically pause play after <input type="number" name="numPause" min="1" max="50" value="4"> rounds <input type="checkbox" name="hasPause" value="true"></h4>
-
-<button onclick="document.getElementById('advanced').style.display = 'block';">Advanced</button>
-
-<div id="advanced" style="display:block">
-
-<h4>Time required to play an average board <input type="number" name="boardTime" value="375" min="30" max="1000"> seconds</h4>
-<h4>Overtime at the end of each round <input type="number" name="overtime" value="160" min="10" max="1000"> seconds</h4>
-Autocalculate overtime
-<h4>Move time between rounds <input type="number" name="moveTime" value="90" min="0" max="1000"> seconds</h4>
-
-<h2>Averaging</h2>
-<h4>Signal no further boards should be started in the current round after less than <input type="checkbox" name="hasAverage" value="true"></h4>
-<input type="radio" id="at1" name="averageOption" value="percent" checked="true"><input id="averagePercent" type="number" min="5" max="200" /> percent of an average board time</imput><br />
-<input type="radio" id="at2" name="averageOption" value="fixed"><input type="number" min="5" max="2000" /> seconds</imput>
-
-
+      <section>
+        <h2>Basic<span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></h2>
+                  <table><tr><th style="text-align: left;">
+        <h3>Boards and rounds</h3>
+                  </th></tr><tr><td class="label" >
+        <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
+                  </td></tr><tr><td class="label">
+        <label>Number of rounds</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
+                  </td></tr><tr><td class="label" >
+        <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
+                  </td></tr><tr><th style="text-align: left;">
+        <h3>Sounds <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span></h3>
+                  </th></tr><tr><td class="label" >
+        <label>Tones</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked />
+                  </td></tr><tr><td class="label" >
+        <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
+                  </td></tr><tr><th style="text-align: left;">
+        <h3>Pause <span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></h3>
+                  </tr><tr><td class="label" >
+        <label>Automatically pause play after round</label></td><td>
+        <input type="checkbox" id="hasPause" onchange="valueChanged();" checked >
+        <input type="number" id="numPause" min="1" max="50" onchange="valueChanged();" >
+                  </td></tr><tr><td class="label" >
+        <label>and repeat</label></td><td><input type="checkbox" id="hasPauseRepeat" onchange="valueChanged();" checked >
+                  </td></tr></table>
+      </section><br /><br />
+        
+      <details>
+        <summary>Advanced settings</summary>
+                <table><tr><th style="text-align: left;">
+        <h3>Timings<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span></h3>
+                </th></tr><tr><td class="label" >
+        <label>Time required to play an average board</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> seconds
+                </td></tr><tr><td class="label" >
+        <label>Overtime at the end of each round</label></td><td>
+        <label>(auto-calculate)<input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
+        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> seconds
+                </td></tr><tr><td class="label" >
+        <label>Move time between rounds</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> seconds
+                </td></tr><tr><td class="label" style="vertical-align: top;" >
+        <label>Signal no further boards should be started<br /> in the current round after less than </label>
+        <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
+        <input type="checkbox" id="hasAverage" onchange="valueChanged();" /><br />
+        <input type="radio" name="averageOption" id="averageOptionPercent" value="percent" onchange="valueChanged();" checked />
+        <input id="averagePercent" type="number" min="5" max="200" onchange="valueChanged();" /> percent of an average board time<br />
+        <input type="radio" name="averageOption" id="averageOptionFixed" value="fixed" onchange="valueChanged();" />
+        <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> seconds
+                </td></tr><tr><td class="label" >
+        <label>Pause/Break time</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> seconds.  Zero will wait until the play button is pressed.
+                <tr><th style="text-align: left;">
+        <h3>Saved settings</h3>
+                </th></tr><tr><td class="label" >
+        <label>Restore standard setting only</label></td><td><button class="small" onclick="resetStandard();" >Restore standard</button>
+                </td></tr><tr><td class="label" >
+        <label>Clear all saved settings</label></td><td><button class="small" onclick="clearSettings();">Clear</button>
+                </td></tr></table>
+      </details>
+    </article>
   </body>
 </html>
