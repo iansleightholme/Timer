@@ -328,4 +328,18 @@ function setSelect(name, value) { document.getElementById(name).setSelect(); }
 function setHelpToolTip(id, html) { document.getElementById(id).innerHTML = html; }
 function enable(name, enable) { document.getElementById(name).disabled = !enable; }
 
+function changeLanguage() {
+    var lang2 = document.getElementById("language").value;
+    if (language == lang2)
+        return;
+    switch(lang2) {
+        case "de":
+            window.location.href = "./de/settings.html";
+            break;
+        default:
+            window.location.href = "../settings.html";
+            break;
+    }
+}
+
 // #endregion private and helper functions

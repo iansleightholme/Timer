@@ -1,3 +1,7 @@
+function getPath(file) {
+    return path + file;
+}
+
 function setSummary() {
     setText('numBoardsPerRound', settings.boardsPerRound);
     setText('numRounds', settings.rounds);

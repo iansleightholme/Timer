@@ -1,4 +1,5 @@
 var language = "en";
+var path = "./"
 
 function getFarewell() {
     var hour = new Date().getHours();
