@@ -9,9 +9,10 @@
       <script src="../timer.js" ></script>
       <script src="../state.js" ></script>
       <script src="../common.js" ></script>
-      <script src="../audio.js" ></script>
+      <script src="audio.js" ></script>
       <script src="../dal.settings.js" ></script>
       <script src="../client.js" ></script>
+      <script src="language.js" ></script>
    </head>
    <body onload="load();resize();" onmousemove="mouseMove();" onresize="resize();" >
       <svg id="svg" xmlns="http://www.w3.org/2000/svg"
@@ -111,9 +112,9 @@
             <path id="playedBoardMarker" fill="#191919" d="M-7 0 a 220 220 0 0 1 7 7 l 7 -7 Z" />
             <path id="averageMark" d="M8 0 L0 12 L-8 0 L0 -12 Z" style="fill:#ff9900"/>
             <g id="averageTab" >
-               <rect  rx="10" ry="10" x="-44" y="-34" width="88" height="68" fill="#222222" />
-               <rect  rx="10" ry="10" x="-43" y="-32" width="84" height="64" fill="#343434" />
-               <text x="0" y="-21" fill="white" font-family="arial narrow" font-size="x-small" font-weight="bold" text-anchor="middle" >NO NEW BOARDS</text>
+               <rect  rx="10" ry="10" x="-47" y="-34" width="94" height="68" fill="#222222" />
+               <rect  rx="10" ry="10" x="-45" y="-32" width="90" height="64" fill="#343434" />
+               <text x="0" y="-21" fill="white" font-family="arial narrow" font-size="xx-small" font-weight="bold" text-anchor="middle" >KEINE NEUEN BOARDS</text>
                <text id="average" x="0" y="6" fill="#ff9900" font-family="arial narrow" font-size="32" text-anchor="middle" >00:00</text>
             </g>
             <clipPath id="clip">
@@ -127,7 +128,7 @@
                <rect x="-204" y="0" rx="4" ry="4" width="408" height="8" fill="#bbbbbb"></rect>
                <rect id="progress" x="-204" y="0" rx="4" ry="4" width="8" height="8" fill="#2F8C64"></rect>
             </g>
-            <text id="overtime" x="-194" y="8" font-family="Impact" fill="white" font-size="16px" >OVERTIME</text>
+            <text id="overtime" x="-206" y="8" font-family="Impact" fill="white" font-size="12px" >SPIELVERLÄNGERUNG</text>
             <g id="button" >
                <ellipse cx="0" cy="0" rx="34" ry="34" fill="#191919" />
                <ellipse cx="0" cy="0" rx="31" ry="31" fill="#222222" filter="url(#bevel2)" />
@@ -151,12 +152,12 @@
          <g id="active" >
             <g id="leftText" transform="translate(-570)" >
                <g id="leftTextSummary" >
-                  <text class="label" y="200" >Session</text>
-                  <text class="label" y="250" >Duration</text>
-                  <text id="duration" class="value" y="350" >3:30</text>
+                  <text class="label" y="200" >Sitzungsdauer</text>
+                  <!-- <text class="label" y="250" >Duration</text> -->
+                  <text id="duration" class="value" y="300" >3:30</text>
                </g>
                <g id="leftTextNormal" visibility="hidden" >
-                  <text class="label" y="200" >Round</text>
+                  <text class="label" y="200" >Runde</text>
                   <text id="round" class="value" y="300" />
                   <text class="label" y="490" >Board</text>
                   <text id="boardIndex" class="value" y="590" />
@@ -166,34 +167,34 @@
             <g id="summary" transform="translate(-540 380)" visibility="hidden" >
                <rect x=-20 width="200" rx="5" ry="5" height="220" fill="#cccccc" />
                <rect x=-10 y=10 width="180" rx="5" ry="5" height="200" fill="none" stroke="white" stroke-width="2px" />
-               <text y=30 class="summary" text-decoration="underline">Summary</text>
-               <text y=50 class="summary" >Boards per round:</text>
+               <text y=30 class="summary" text-decoration="underline">Zusammenfassung</text>
+               <text y=50 class="summary" >Boards pro Runde:</text>
                <text id="numBoardsPerRound" x=150 y=50 class="summary" text-anchor="end" />
-               <text y=70 class="summary" >Rounds:</text>
+               <text y=70 class="summary" >Runden:</text>
                <text id="numRounds" x=150 y=70 class="summary" text-anchor="end" />
-               <text y=90 class="summary" >Pausing/breaks:</text>
+               <text y=90 class="summary" >Pausen/Unterbrechungen:</text>
                <text id="breaks" x=150 y=90 class="summary" text-anchor="end" />
-               <text y=120 class="summary" >Time for one board:</text>
+               <text y=120 class="summary" >Zeit pro Board:</text>
                <text id="boardTime" x=150 y=120 class="summary" text-anchor="end" />
-               <text y=140 class="summary" >Round overtime:</text>
+               <text y=140 class="summary" >Runde-Spielverlängerung:</text>
                <text id="overtimeSummary" x=150 y=140 class="summary" text-anchor="end" />
-               <text y=160 class="summary" >Board averaging:</text>
+               <text y=160 class="summary" >Board Mittelwert:</text>
                <text id="averagingSummary" x=150 y=160 class="summary" text-anchor="end" />
-               <text y=172 class="summary" >(from the end of each round)</text>
-               <text y=192 class="summary" >Move between rounds:</text>
+               <text y=172 class="summary" >(vom Ende jeder Runde)</text>
+               <text y=192 class="summary" >Zeit wechseln:</text>
                <text id="moveSummary" x=150 y=192 class="summary" text-anchor="end" />
             </g>
 
             <g id="rightText" transform="translate(570 0)" text-anchor="end">
-               <text class="label" y="200" >Total Boards</text>
+               <text class="label" y="200" >Anzahl Boards</text>
                <text id="totalBoards" class="value" x="-30" y="300" />
-               <text class="label" y="390" >Projected</text>
-               <text class="label" y="440" >Session</text>
-               <text class="label" y="490" >End Time</text>
-               <text id="ifStartedNow" class="tinyLabel" y="507" >(if started now)</text>
+               <text class="label" y="440" >Projiziertes</text>
+               <text class="label" y="490" >Sitzungsende</text>
+               <!-- <text class="label" y="490" >End Time</text> -->
+               <text id="ifStartedNow" class="tinyLabel" y="507" >(wenn jetzt begonnen wird)</text>
                <text id="projectedTime" class="value" y="590" />
                <text class="info" y="670" >https://www.bridgetimer.com/timer.html</text>
-               <text class="info" y="685" >©SBV Computing 2011-2020.  All rights reserved</text>
+               <text class="info" y="685" >©SBV Computing 2011-2021.  Alle Rechte vorbehalten</text>
             </g>
 
             <g transform="translate(0 380)" >
@@ -225,7 +226,7 @@
                      </text>
                      <text class="normal" font-size="30" >:</text>
                      <text id="timeSeconds" class="normal" x="8" font-size="30" text-anchor="start" />
-                     <text id="paused" class="normal" x="-40" y="38" font-size="32" text-anchor="middle" visibility="hidden" >PAUSED</text>
+                     <text id="paused" class="normal" x="-40" y="30" font-size="26" text-anchor="middle" visibility="hidden" >ANGEHALTEN</text>
                   </g>
                </g>
                <g id="overtimePlay" transform="translate(0 100)" xml:space="preserve" visibility="hidden" >
@@ -234,21 +235,21 @@
                   <text id="overtimeSeconds" class="overtime" font-size="144" x="40" text-anchor="start" ></text>
                </g>
                <g id="movePlay" visibility="hidden" >
-                  <text class="move" font-size="252" text-anchor="middle" >MOVE</text>
-                  <text class="move" y="70"  font-size="72" text-anchor="middle" >for the next round</text>
+                  <text class="move" y ="-10" font-size="128" text-anchor="middle" >WECHSELN</text>
+                  <text class="move" y="70" font-size="72" text-anchor="middle" >zur nächste Runde</text>
                   <text class="move" x="-2" y="170" id="moveMinutes" font-size="96" text-anchor="end" word-spacing="-17px" ></text>
                   <text class="move" y="170" font-size="96">:</text>
                   <text id="moveSeconds" x="25" y="170" class="move" text-anchor="start" font-size="96">34</text>
                </g>
                <g id="breakPlay" visibility="hidden" >
-                  <text class="break" font-size="252" y="70" text-anchor="middle" >BREAK</text>
+                  <text class="break" font-size="252" y="70" text-anchor="middle" >PAUSE</text>
                   <g id="breakCounter" visibility="hidden">
                      <text class="break" x="-2" y="170" id="breakMinutes" font-size="96" text-anchor="end" word-spacing="-17px" ></text>
                      <text class="break" y="170" font-size="96">:</text>
                      <text id="breakSeconds" x="25" y="170" class="break" text-anchor="start" font-size="96"></text>
                   </g>
                   <g id="breakPause" visibility="hidden">
-                     <text class="break" y="170" text-anchor="middle" font-size="64" >PAUSED</text>
+                     <text class="break" y="170" text-anchor="middle" font-size="64" >ANGEHALTEN</text>
                   </g>
                </g>
                <g id="ready" transform="scale(5 5)">
@@ -299,8 +300,8 @@
          </g>
 
          <g id="sessionEnded" transform="translate(0 400)" visibility="hidden" >
-            <text class="farewell" font-size="144" text-anchor="middle" >Session Ended</text>
-            <text id="farewell" font-family="Roboto Condensed, sans-serif" y="100" fill="#7777ff" font-size="72" text-anchor="middle" >Good afternoon</text>
+            <text class="farewell" font-size="144" text-anchor="middle" >Sitzungsende</text>
+            <text id="farewell" font-family="Roboto Condensed, sans-serif" y="100" fill="#7777ff" font-size="72" text-anchor="middle" >Guten Tag</text>
          </g>
       </svg>
    </body>
