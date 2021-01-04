@@ -1,5 +1,5 @@
 var language = "de";
-var path = "../"
+var path = "../";   // path to English version
 
 function getFarewell() {
     var hour = new Date().getHours();
