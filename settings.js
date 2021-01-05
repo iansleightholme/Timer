@@ -11,7 +11,7 @@ function load() {
 
 async function loadBackground()
 {
-    document.body.style="background-image: url('747581329-vector.svg'); background-size: cover;";
+    document.body.style="background-image: url(" + getPath('747581329-vector.svg') + "); background-size: cover;";
 }
 
 // buttons and events
