@@ -5,7 +5,7 @@
  
 <% 
  
-String currentVersion = "3.1.0";
+String currentVersion = "3.1.2";
 String connectionstring = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
  
 NameValueCollection coll = Request.Form;
