@@ -20,13 +20,13 @@
       <aside class="right" >
         <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
           <h2>Checkliste</h2>
-<span>1.  Wenn notwendig den Bildschirmschoner deaktivieren (die Bridgeuhr könnte sich verabschieden wenn der Bildschirmschoner angeht) </span><br /><br />
-<span>2.  Prüfe die Angaben der Turniereckdaten auf Plausibilität.</span>
+<span>1.  Wenn notwendig den Bildschirmschoner deaktivieren (die Bridgeuhr k&#x00F6;nnte sich verabschieden wenn der Bildschirmschoner angeht) </span><br /><br />
+<span>2.  Pr&#x00FC;fe die Angaben der Turniereckdaten auf Plausibilit&#x00E4;t.</span>
         </div>
         <br />
         <div style="background: green; color: white;padding:10px 30px 30px 30px;">
           <h2>Zusammenfassung</h2>
-          Basierend auf den gewählten Einstellungen:<br /><br />
+          Basierend auf den gew&#x00E4;hlten Einstellungen:<br /><br />
           <table><tr><td class="summaryLabel" >
           Gesamtzahl Boards </td><td><span id="numBoards" ></span>
           </td></tr><tr><td class="summaryLabel" >
@@ -40,13 +40,13 @@
 
       <section>
         <h2>Gespeicherte Einstellungen</h2>
-        Wenn Sie zuvor Einstellungen gespeichert haben, können Sie diese hier erneut auswählen &nbsp;&nbsp;&nbsp;<br />
+        Wenn Sie zuvor Einstellungen gespeichert haben, k&#x00F6;nnen Sie diese hier erneut ausw&#x00E4;hlen &nbsp;&nbsp;&nbsp;<br />
         <div style="padding-top:5px;">
           <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
-          <button class="small" title="Neue hinzufügen" onclick="addNew();" >+</button>
-          <button class="small" title="Rückgängig machen" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" title="Neue hinzuf&#x00FC;gen" onclick="addNew();" >+</button>
+          <button class="small" title="R&#x00FC;ckg&#x00E4;ngig machen" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
           <button class="small" title="Speichern" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
-          <button class="small" title="Löschen" onclick="del();" >&#x1F5D1;</button>
+          <button class="small" title="L&#x00F6;schen" onclick="del();" >&#x1F5D1;</button>
           <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
           <button class="small" id="setDefaultId" onclick="setDefault();" >Als Standard einstellen</button>&nbsp;&nbsp;
         </div><br />
@@ -61,11 +61,11 @@
                   </td></tr><tr><td class="label">
         <label>Anzahl Runden</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
                   </td></tr><tr><td class="label" >
-        <label>Überschrift/Clubname</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
+        <label>&#x00DC;berschrift/Clubname</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
                   </td></tr><tr><th style="text-align: left;">
-        <h3>Geräusche <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span></h3>
+        <h3>Ger&#x00E4;usche <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span></h3>
                   </th></tr><tr><td class="label" >
-        <label>Töne</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked />
+        <label>T&#x00F6;ne</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked />
                   </td></tr><tr><td class="label" >
         <label>Sprachanweisungen</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
                   </td></tr><tr><th style="text-align: left;">
@@ -84,9 +84,9 @@
                 <table><tr><th style="text-align: left;">
         <h3>Timings<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span></h3>
                 </th></tr><tr><td class="label" >
-        <label>Spielzeit für ein Standardboard</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> Sekunden
+        <label>Spielzeit f&#x00FC;r ein Standardboard</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> Sekunden
                 </td></tr><tr><td class="label" >
-        <label>Spielverlängerung am Rundenende</label></td><td>
+        <label>Spielverl&#x00E4;ngerung am Rundenende</label></td><td>
         <label>(automatische Berechnung)<input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
         <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> Sekunden
                 </td></tr><tr><td class="label" >
@@ -100,13 +100,13 @@
         <input type="radio" name="averageOption" id="averageOptionFixed" value="fixed" onchange="valueChanged();" />
         <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> Sekunden
                 </td></tr><tr><td class="label" >
-        <label>Pause/Zeitdauer</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> Sekunden.  Bei Nulleingabe Spiel durch drücken der Spieltaste.
+        <label>Pause/Zeitdauer</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> Sekunden.  Bei Nulleingabe Spiel durch dr&#x00FC;cken der Spieltaste.
                 <tr><th style="text-align: left;">
         <h3>Gespeicherte Einstellungen</h3>
                 </th></tr><tr><td class="label" >
         <label>Wiederherstellen der Grunddaten</label></td><td><button class="small" onclick="resetStandard();" >Grunddaten wiederherstellen</button>
                 </td></tr><tr><td class="label" >
-        <label>Alle gesespeicherten Einstellungen löschen</label></td><td><button class="small" onclick="clearSettings();">löschen</button>
+        <label>Alle gesespeicherten Einstellungen l&#x00F6;schen</label></td><td><button class="small" onclick="clearSettings();">l&#x00F6;schen</button>
                 </td></tr></table>
       </details>
     </article>
