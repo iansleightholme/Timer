@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html  xml:lang="en" lang="en">
   <head>
+    <meta charset="UTF-8">
     <title>Bridge Timer Settings</title>
     <link type="text/css" href="settings.css" rel="stylesheet" >
     <script src="settings.js" ></script>
@@ -11,12 +12,13 @@
   </head>
 
   <body onload="load();" >
-    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <select id="language" onchange="changeLanguage()" >
-        <option value="en" >English - en</option>
-        <option value="de" >Deutsch - de</option>
-    </select></h1>
     <article>
+        <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <select id="language" onchange="changeLanguage()" >
+                <option value="en" >English - en</option>
+                <option value="de" >Deutsch - de</option>
+          </select>
+        </h1>
       <aside class="right" >
         <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
           <h2>Checklist</h2>
@@ -54,22 +56,22 @@
 
       <section>
         <h2>Basic<span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></h2>
-                  <table><tr><th style="text-align: left;">
-        <h3>Boards and rounds</h3>
+                  <table><tr><th colspan=2 style="text-align: left;">
+        Boards and rounds
                   </th></tr><tr><td class="label" >
         <label>Boards per round </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
                   </td></tr><tr><td class="label">
         <label>Number of rounds</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
                   </td></tr><tr><td class="label" >
         <label>Title/club name</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
-                  </td></tr><tr><th style="text-align: left;">
-        <h3>Sounds <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span></h3>
+                  </td></tr><tr><th colspan=2 style="text-align: left;">
+        Sounds <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
                   </th></tr><tr><td class="label" >
         <label>Tones</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked />
                   </td></tr><tr><td class="label" >
         <label>Voice commands</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
-                  </td></tr><tr><th style="text-align: left;">
-        <h3>Pause <span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span></h3>
+                  </td></tr><tr><th colspan=2 style="text-align: left;">
+        Pause <span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span>
                   </tr><tr><td class="label" >
         <label>Automatically pause play after round</label></td><td>
         <input type="checkbox" id="hasPause" onchange="valueChanged();" checked >
@@ -81,13 +83,13 @@
         
       <details>
         <summary>Advanced settings</summary>
-                <table><tr><th style="text-align: left;">
-        <h3>Timings<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span></h3>
+                <table><tr><th colspan=2 style="text-align: left;">
+        Timings<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
                 </th></tr><tr><td class="label" >
         <label>Time required to play an average board</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> seconds
                 </td></tr><tr><td class="label" >
         <label>Overtime at the end of each round</label></td><td>
-        <label>(auto-calculate)<input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
+        <label>(auto-calculate)</label><input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
         <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> seconds
                 </td></tr><tr><td class="label" >
         <label>Move time between rounds</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> seconds
@@ -101,8 +103,8 @@
         <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> seconds
                 </td></tr><tr><td class="label" >
         <label>Pause/Break time</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> seconds.  Zero will wait until the play button is pressed.
-                <tr><th style="text-align: left;">
-        <h3>Saved settings</h3>
+                <tr><th colspan=2 style="text-align: left;">
+        Saved settings
                 </th></tr><tr><td class="label" >
         <label>Restore standard setting only</label></td><td><button class="small" onclick="resetStandard();" >Restore standard</button>
                 </td></tr><tr><td class="label" >
