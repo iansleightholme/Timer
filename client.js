@@ -1,5 +1,5 @@
 async function registerClientAsync() {
-    fetch("registerclient.aspx", {
+    fetch(getPath("registerclient.aspx"), {
         method: "POST", 
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -15,6 +15,6 @@ async function registerClientAsync() {
 function getBrowserConfig() {
     return "TimeZoneOffset=" + (new Date()).getTimezoneOffset()
         + "&Resolution=" + screen.width + "x" + screen.height 
-        + "&Version=3.0.5"
+        + "&Version=3.1.2"
         + "&Referrer=" + encodeURIComponent(document.referrer);
 }

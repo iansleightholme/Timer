@@ -4,12 +4,18 @@
     <title>Bridge Timer Settings</title>
     <link type="text/css" href="settings.css" rel="stylesheet" >
     <script src="settings.js" ></script>
+    <script src="common.js" ></script>
     <script src="dal.settings.js" ></script>
+    <script src="language.js" ></script>
     <script src="help.js" ></script>
   </head>
 
   <body onload="load();" >
-    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span></h1>
+    <h1>Settings<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select id="language" onchange="changeLanguage()" >
+        <option value="en" >English - en</option>
+        <option value="de" >Deutsch - de</option>
+    </select></h1>
     <article>
       <aside class="right" >
         <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
