@@ -4,7 +4,7 @@ var path = "./"
 function getFarewell() {
     var hour = new Date().getHours();
     if (hour < 6)
-        return 'Good bye';
+        return 'Goodbye';
     else if (hour < 12)
         return 'Good morning';
     else if (hour < 17)

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html  xml:lang="en" lang="no">
+  <head>
+    <meta charset="UTF-8">
+    <title>Bridge Timer Settings</title>
+    <link type="text/css" href="../settings.css" rel="stylesheet" >
+    <script src="../settings.js" ></script>
+    <script src="../common.js" ></script>
+    <script src="../dal.settings.js" ></script>
+    <script src="language_no.js" ></script>
+    <script src="../help.js" ></script>
+  </head>
+
+  <body onload="load();" >
+    <article>
+        <h1>Innstillingar<span class="tooltip">&#x2370;<span id="startHelp" class="tooltiptext" ></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select id="language" onchange="changeLanguage()" >
+                <option value="en" >English - en</option>
+                <option value="de" >Deutsch - de</option>
+                <option value="no" selected >Norsk - no</option>
+                </select>
+        </h1>
+      <aside class="right" >
+        <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
+          <h2>Sjekklist</h2>
+<span>1.  Om naudsynt, sl&#xE5; av skjermsparer p&#xE5; datamaskina (elles kan det vera at klokka vert g&#xF8;ymd)  </span><br /><br />
+<span>2.  Pr&#x00FC;fe die Angaben der Turniereckdaten auf Plausibilit&#x00E4;t.</span>
+        </div>
+        <br />
+        <div style="background: green; color: white;padding:10px 30px 30px 30px;">
+          <h2>Oppsummering</h2>
+          Basert p&aring; innstillingane du har valt:<br /><br />
+          <table><tr><td class="summaryLabel" >
+          Spel totalt i &oslash;kta </td><td><span id="numBoards" ></span>
+          </td></tr><tr><td class="summaryLabel" >
+          Total &oslash;kttid </td><td><span id="numSessionHoursMins"></span>
+          </td></tr><tr><td class="summaryLabel" >
+          Spel i timen (utanom pausar)</td><td><span id="numBoardsPerHour"></span>
+          </td></tr></table><br />
+          <button class="big" onclick="next();" >Neste</button>
+        </div><br />
+      </aside>
+
+      <section>
+        <h2>Bruk lagra innstillingar</h2>
+        Har du tidlegare lagra innstillingane, kan du velja dei igjen &nbsp;&nbsp;&nbsp;<br />
+        <div style="padding-top:5px;">
+          <select id="saved" onchange="selectChange(this.value);" ></select>&nbsp;&nbsp;
+          <button class="small" title="Neue hinzuf&#x00FC;gen" onclick="addNew();" >+</button>
+          <button class="small" title="R&#x00FC;ckg&#x00E4;ngig machen" id="undoChangesId" onclick="undo();" disabled >&#x21b6;</button>&nbsp;&nbsp;
+          <button class="small" title="Speichern" id="saveChangesId" onclick="save();" disabled >&#x1F5AB;</button>
+          <button class="small" title="L&#x00F6;schen" onclick="del();" >&#x1F5D1;</button>
+          <input type="hidden" id="isDefaultId" onchange="valueChanged();" value=false />
+          <button class="small" id="setDefaultId" onclick="setDefault();" >Lagra som standardval</button>&nbsp;&nbsp;
+        </div><br />
+      </section>
+
+      <section>
+        <h2>Grunnleggjande<span class="tooltip">&#x2370;<span id="basicHelp" class="tooltiptext" ></span></span></h2>
+                  <table><tr><th colspan=2 style="text-align: left;">
+        Spel og rundar
+                  </th></tr><tr><td class="label" >
+        <label>Spel i runden </label></td><td><input type="number" id="boardsPerRound" min="1" max="30" onchange="valueChanged();" />
+                  </td></tr><tr><td class="label">
+        <label>Totalt antall runder</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
+                  </td></tr><tr><td class="label" >
+        <label>Tittel/klubbnamn</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
+                  </td></tr><tr><th colspan=2 style="text-align: left;">
+        Lydar  <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
+                  </th></tr><tr><td class="label" >
+        <label>Toner</label></td><td><input type="checkbox" id="hasTones" onchange="valueChanged();" checked />
+                  </td></tr><tr><td class="label" >
+        <label>R&oslash;ystkommandoar</label></td><td><input type="checkbox" id="hasVoice" onchange="valueChanged();" checked />
+                  </td></tr><tr><th colspan=2 style="text-align: left;">
+        Pause <span class="tooltip">&#x2370;<span id="pauseHelp" class="tooltiptext" ></span></span>
+                  </tr><tr><td class="label" >
+        <label>Automatisk pause etter runde</label></td><td>
+        <input type="checkbox" id="hasPause" onchange="valueChanged();" checked >
+        <input type="number" id="numPause" min="1" max="50" onchange="valueChanged();" >
+                  </td></tr><tr><td class="label" >
+        <label>og gjenta</label></td><td><input type="checkbox" id="hasPauseRepeat" onchange="valueChanged();" checked >
+                  </td></tr></table>
+      </section><br /><br />
+        
+      <details>
+        <summary>Avanserte innstillingar</summary>
+                <table><tr><th colspan=2 style="text-align: left;">
+        Tidsinnstillingar<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
+                </th></tr><tr><td class="label" >
+        <label>Tid til eit gjennomsnittleg spel</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> sekund
+                </td></tr><tr><td class="label" >
+        <label>Overtid p&aring; slutten av kvar runde</label></td><td>
+        <label>(auto-kalkuler)</label><input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
+        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> sekund
+                </td></tr><tr><td class="label" >
+        <label>Flyttetid melom rundane</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> sekund
+                </td></tr><tr><td class="label" style="vertical-align: top;" >
+        <label>Gje signal n&aring;r ingen nye spel kan byrja<br /> i den gjeldande runden etter mindre enn </label>
+        <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
+        <input type="checkbox" id="hasAverage" onchange="valueChanged();" /><br />
+        <input type="radio" name="averageOption" id="averageOptionPercent" value="percent" onchange="valueChanged();" checked />
+        <input id="averagePercent" type="number" min="5" max="200" onchange="valueChanged();" />  prosent av gjennomsnittleg speltid<br />
+        <input type="radio" name="averageOption" id="averageOptionFixed" value="fixed" onchange="valueChanged();" />
+        <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> sekund
+                </td></tr><tr><td class="label" >
+        <label>Pauselengd</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> sekund.  Null betyr manuell omstart.
+                <tr><th colspan=2 style="text-align: left;">
+        Lagra innstillingar
+                </th></tr><tr><td class="label" >
+        <label>Berre tilbakef&oslash;r standardinnstillingane</label></td><td><button class="small" onclick="resetStandard();" >Tilbakef&oslash;r standard</button>
+                </td></tr><tr><td class="label" >
+        <label>Nullstill alle lagra innstillingar</label></td><td><button class="small" onclick="clearSettings();">Nullstill</button>
+                </td></tr></table>
+      </details>
+    </article>
+  </body>
+</html>
