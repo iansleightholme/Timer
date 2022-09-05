@@ -332,14 +332,12 @@ function changeLanguage() {
     var lang2 = document.getElementById("language").value;
     if (language == lang2)
         return;
-    switch(lang2) {
-        case "de":
-            window.location.href = "./de/settings.html";
-            break;
-        default:
-            window.location.href = "../settings.html";
-            break;
-    }
+    else if (lang2 == "en")
+        window.location.href = "../settings.html";
+    else if (language == "en")
+        window.location.href = "./" + lang2 + "/settings.html";
+    else
+        window.location.href = "../" + lang2 + "/settings.html";
 }
 
 // #endregion private and helper functions
