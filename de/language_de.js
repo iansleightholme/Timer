@@ -6,11 +6,11 @@ function getFarewell() {
     if (hour < 6)
         return 'Auf Wiedersehen';
     else if (hour < 12)
-        return 'Guten Morgen';
+        return 'einen schönen Morgen';
     else if (hour < 17)
-        return 'Guten Tag';
+        return 'einen schönen Nachmittag';
     else if (hour < 20)
-        return 'Guten Abend';
+        return 'einen schönen Abend';
     else
-        return 'Gute Nacht';
+        return 'eine schöne Nacht';
 }
