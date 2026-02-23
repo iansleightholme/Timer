@@ -25,14 +25,14 @@
         <div style="width:270px; border-style: dotted;padding:10px 30px 30px 30px;">
           <h2>Lista kontrolna</h2>
 <span>1.  W razie potrzeby wyłącz wygaszacz ekranu komputera (w przeciwnym razie licznik może zniknąć z widoku podczas wyświetlania wygaszacza ekranu)</span><br /><br />
-<span>2.  Sprawdź, czy sumy i stawki za wyżywienie w poniższym polu podsumowania wyglądają rozsądnie.</span>
+<span>2.  Sprawdź czy wartości w podsumowaniu oraz liczba rozdań na godzinę wyglądają rozsądnie.</span>
         </div>
         <br />
         <div style="background: green; color: white;padding:10px 30px 30px 30px;">
           <h2>Podsumowanie</h2>
           Bazując na wybranych ustawieniach:<br /><br />
           <table><tr><td class="summaryLabel" >
-          Liczba rąk w sesji </td><td><span id="numBoards" ></span>
+          Liczba rozdań w sesji</td><td><span id="numBoards" ></span>
           </td></tr><tr><td class="summaryLabel" >
           Całkowity czas sesji </td><td><span id="numSessionHoursMins"></span>
           </td></tr><tr><td class="summaryLabel" >
@@ -88,7 +88,7 @@
                 <table><tr><th colspan=2 style="text-align: left;">
         Przebieg czasowy<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
                 </th></tr><tr><td class="label" >
-        <label>Czas potrzebny do rozegrania przeciętnej planszy</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> w sekundach
+        <label>Średni czas na rozegranie 1 rozdania</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> w sekundach
                 </td></tr><tr><td class="label" >
         <label>Dogrywka na koniec każdej rundy</label></td><td>
         <label>(obliczana automatycznie)</label><input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
@@ -96,7 +96,7 @@
                 </td></tr><tr><td class="label" >
         <label>Przesuń czas między rundami</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> w sekundach
                 </td></tr><tr><td class="label" style="vertical-align: top;" >
-        <label>Sygnał oznacza, że ​​nie należy rozpoczynać dalszych prac nad deskami<br /> w obecnej rundzie po mniej niż</label>
+        <label>Zasyganlizuj brak możliwości rozpoczynania nowych rozdań<br /> w danej rundzie, jeśli zostało mniej niż</label>
         <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
         <input type="checkbox" id="hasAverage" onchange="valueChanged();" /><br />
         <input type="radio" name="averageOption" id="averageOptionPercent" value="percent" onchange="valueChanged();" checked />
