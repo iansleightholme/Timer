@@ -115,7 +115,7 @@
             <g id="averageTab" >
                <rect  rx="10" ry="10" x="-47" y="-34" width="94" height="68" fill="#222222" />
                <rect  rx="10" ry="10" x="-45" y="-32" width="90" height="64" fill="#343434" />
-               <text x="0" y="-21" fill="white" font-family="arial narrow" font-size="xx-small" font-weight="bold" text-anchor="middle" >BRAK NOWYCH ROZDAŃ</text>
+               <text x="0" y="-21" fill="white" font-family="arial narrow" font-size="xx-small" font-weight="bold" text-anchor="middle" >ZADNYCH NOWYCH</text>
                <text id="average" x="0" y="6" fill="#ff9900" font-family="arial narrow" font-size="32" text-anchor="middle" >00:00</text>
             </g>
             <clipPath id="clip">
@@ -129,7 +129,7 @@
                <rect x="-204" y="0" rx="4" ry="4" width="408" height="8" fill="#bbbbbb"></rect>
                <rect id="progress" x="-204" y="0" rx="4" ry="4" width="8" height="8" fill="#2F8C64"></rect>
             </g>
-            <text id="overtime" x="-206" y="8" font-family="Impact" fill="white" font-size="20px" >DODATKOWY CZAS</text>
+            <text id="overtime" x="-206" y="8" font-family="Impact" fill="white" font-size="20px" ><tspan>DODATKOWY</tspan>CZAS<tspan></tspan></text> 
             <g id="button" >
                <ellipse cx="0" cy="0" rx="34" ry="34" fill="#191919" />
                <ellipse cx="0" cy="0" rx="31" ry="31" fill="#222222" filter="url(#bevel2)" />
@@ -158,9 +158,9 @@
                   <text id="duration" class="value" y="300" >3:30</text>
                </g>
                <g id="leftTextNormal" visibility="hidden" >
-                  <text class="label" y="200" >Rundę</text>
+                  <text class="label" y="200" >Runda</text>
                   <text id="round" class="value" y="300" />
-                  <text class="label" y="490" >Rozdać</text>
+                  <text class="label" y="490" >Rozdanie</text>
                   <text id="boardIndex" class="value" y="590" />
                </g>
             </g>
@@ -168,14 +168,14 @@
             <g id="summary" transform="translate(-540 380)" visibility="hidden" >
                <rect x=-20 width="200" rx="5" ry="5" height="220" fill="#cccccc" />
                <rect x=-10 y=10 width="180" rx="5" ry="5" height="200" fill="none" stroke="white" stroke-width="2px" />
-               <text y=30 class="summary" text-decoration="underline">Streszczenie</text>
+               <text y=30 class="summary" text-decoration="underline">Podsumowanie</text>
                <text y=50 class="summary" >Rozdań na rundę:</text>
                <text id="numBoardsPerRound" x=150 y=50 class="summary" text-anchor="end" />
                <text y=70 class="summary" >Rundy:</text>
                <text id="numRounds" x=150 y=70 class="summary" text-anchor="end" />
                <text y=90 class="summary" >Pauzy/przerwy:</text>
                <text id="breaks" x=150 y=90 class="summary" text-anchor="end" />
-               <text y=120 class="summary" >Czas na jedną rozdać:</text>
+               <text y=120 class="summary" >Czas na jedno rozdanie:</text>
                <text id="boardTime" x=150 y=120 class="summary" text-anchor="end" />
                <text y=140 class="summary" >Dogrywka w rundzie:</text>
                <text id="overtimeSummary" x=150 y=140 class="summary" text-anchor="end" />
@@ -189,9 +189,9 @@
             <g id="rightText" transform="translate(570 0)" text-anchor="end">
                <text class="label" y="200" >Liczba rozdań</text>
                <text id="totalBoards" class="value" x="-30" y="300" />
-               <text class="label" y="440" >Przewidywany czas</text>
-               <text class="label" y="490" >zakończenia sesji</text>
-               <!-- <text class="label" y="490" >End Time</text> -->
+               <text class="label" y="390" font-size="20">Przewidywany</text>
+               <text class="label" y="440" font-size="20">czas</text>
+               <text class="label" y="490" font-size="20">zakończenia sesji</text>
                <text id="ifStartedNow" class="tinyLabel" y="507" >(jeśli zaczniesz teraz)</text>
                <text id="projectedTime" class="value" y="590" />
                <text class="info" y="670" >https://www.bridgetimer.com/timer.html</text>
@@ -236,21 +236,21 @@
                   <text id="overtimeSeconds" class="overtime" font-size="144" x="40" text-anchor="start" ></text>
                </g>
                <g id="movePlay" visibility="hidden" >
-                  <text class="move" y ="-10" font-size="128" text-anchor="middle" >PRZENIEŚ SIĘ</text>
+                  <text class="move" y ="-10" font-size="128" text-anchor="middle" >PRZEJDŹ</text>
                   <text class="move" y="70" font-size="72" text-anchor="middle" >do następnej rundy</text>
                   <text class="move" x="-2" y="170" id="moveMinutes" font-size="96" text-anchor="end" word-spacing="-17px" ></text>
                   <text class="move" y="170" font-size="96">:</text>
                   <text id="moveSeconds" x="25" y="170" class="move" text-anchor="start" font-size="96">34</text>
                </g>
                <g id="breakPlay" visibility="hidden" >
-                  <text class="break" font-size="252" y="70" text-anchor="middle" >PAUSE</text>
+                  <text class="break" font-size="252" y="70" text-anchor="middle" >PRZERWA</text>
                   <g id="breakCounter" visibility="hidden">
                      <text class="break" x="-2" y="170" id="breakMinutes" font-size="96" text-anchor="end" word-spacing="-17px" ></text>
                      <text class="break" y="170" font-size="96">:</text>
                      <text id="breakSeconds" x="25" y="170" class="break" text-anchor="start" font-size="96"></text>
                   </g>
                   <g id="breakPause" visibility="hidden">
-                     <text class="break" y="170" text-anchor="middle" font-size="64" >ANGEHALTEN</text>
+                     <text class="break" y="170" text-anchor="middle" font-size="64" >CZAS WSTRZYMANY</text>
                   </g>
                </g>
                <g id="ready" transform="scale(5 5)">

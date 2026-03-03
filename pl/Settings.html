@@ -36,7 +36,7 @@
           </td></tr><tr><td class="summaryLabel" >
           Całkowity czas sesji </td><td><span id="numSessionHoursMins"></span>
           </td></tr><tr><td class="summaryLabel" >
-          Liczba rozdań na godzinę (nie uwzgl. ewentulnej przerwy)</td><td><span id="numBoardsPerHour"></span>
+          Liczba rozdań na godzinę (bez ewentualnej przerwy)</td><td><span id="numBoardsPerHour"></span>
           </td></tr></table><br />
           <button class="big" onclick="next();" >Przejdź dalej</button>
         </div><br />
@@ -65,7 +65,7 @@
                   </td></tr><tr><td class="label">
         <label>Liczba rund</label></td><td><input type="number" id="numRounds" min="1" max="50" onchange="valueChanged();" />
                   </td></tr><tr><td class="label" >
-        <label>&#x00DC;Tytuł/Nazwa klubu</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
+        <label>Tytuł/Nazwa klubu</label></td><td><input type="text" id="displayName" minlength="1" maxlength="50" placeholder="Display title" onchange="valueChanged();" />
                   </td></tr><tr><th colspan=2 style="text-align: left;">
         Dzwięki <span class="tooltip">&#x2370;<span id="soundsHelp" class="tooltiptext" ></span></span>
                   </th></tr><tr><td class="label" >
@@ -84,33 +84,33 @@
       </section><br /><br />
         
       <details>
-        <summary>Ustawienia zaawansowana</summary>
+        <summary>Ustawienia zaawansowane</summary>
                 <table><tr><th colspan=2 style="text-align: left;">
         Przebieg czasowy<span class="tooltip">&#x2370;<span id="timesHelp" class="tooltiptext" ></span></span>
                 </th></tr><tr><td class="label" >
-        <label>Średni czas na rozegranie 1 rozdania</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> w sekundach
+        <label>Średni czas na rozegranie 1 rozdania</label></td><td><input type="number" id="boardTime" min="30" max="1000" onchange="valueChanged();" /> sekund
                 </td></tr><tr><td class="label" >
         <label>Dogrywka na koniec każdej rundy</label></td><td>
         <label>(obliczana automatycznie)</label><input type="checkbox" id="autoCalcOvertime" onchange="valueChanged();" checked />
-        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> w sekundach
+        <input type="number" id="overtime" min="10" max="1000" onchange="valueChanged();" disabled /> sekund
                 </td></tr><tr><td class="label" >
-        <label>Przesuń czas między rundami</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> w sekundach
+        <label>Czas na przejście między rundami</label></td><td><input type="number" id="moveTime" min="0" max="1000" onchange="valueChanged();" /> sekund
                 </td></tr><tr><td class="label" style="vertical-align: top;" >
         <label>Zasyganlizuj brak możliwości rozpoczynania nowych rozdań<br /> w danej rundzie, jeśli zostało mniej niż</label>
         <span class="tooltip">&#x2370;<span id="averagingHelp" class="tooltiptext" ></span></span></td><td>
         <input type="checkbox" id="hasAverage" onchange="valueChanged();" /><br />
         <input type="radio" name="averageOption" id="averageOptionPercent" value="percent" onchange="valueChanged();" checked />
-        <input id="averagePercent" type="number" min="5" max="200" onchange="valueChanged();" /> procent czasu przewidzianego na przeciętnego rozdania<br />
+        <input id="averagePercent" type="number" min="5" max="200" onchange="valueChanged();" /> procent czasu przewidzianego na przeciętne rozdanie<br />
         <input type="radio" name="averageOption" id="averageOptionFixed" value="fixed" onchange="valueChanged();" />
-        <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> w sekundach
+        <input id="averageSeconds" type="number" min="5" max="2000" onchange="valueChanged();" /> sekund
                 </td></tr><tr><td class="label" >
-        <label>Czas przerwa w trakcie sesji</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> w sekundach.  Zero będzie czekać, aż zostanie naciśnięty przycisk odtwarzania.
+        <label>Czas przerwy w trakcie sesji</label></td><td><input type="number" id="breakTime" min="0" max="1000" onchange="valueChanged();" /> sekund.  Wpisanie zera, oznacza przerwę trwającą do czasu naciśnięcia przycisku start.
                 <tr><th colspan=2 style="text-align: left;">
         Zapamiętaj ustawienia
                 </th></tr><tr><td class="label" >
         <label>Przywróć standardowe ustawienia</label></td><td><button class="small" onclick="resetStandard();" >Przywróć domyślne</button>
                 </td></tr><tr><td class="label" >
-        <label>Skasuj wszystkie zapisane ustawienie</label></td><td><button class="small" onclick="clearSettings();">Skasuj</button>
+        <label>Skasuj wszystkie zapisane ustawienia</label></td><td><button class="small" onclick="clearSettings();">Skasuj</button>
                 </td></tr></table>
       </details>
     </article>
